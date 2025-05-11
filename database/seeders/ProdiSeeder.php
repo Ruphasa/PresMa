@@ -18,6 +18,6 @@ class ProdiSeeder extends Seeder
             ['prodi_id' => 02, 'kode_prodi' => 'SIB', 'nama_prodi' => 'D4 Sistem Informasi Bisnis'],
             ['prodi_id' => 03, 'kode_prodi' => 'PPLS', 'nama_prodi' => 'D2 Pengembangan Piranti Lunak Situs'],
         ];
-        DB::table('prodi')->insert($data);
+        DB::table('m_prodi')->insert($data);
     }
 }
