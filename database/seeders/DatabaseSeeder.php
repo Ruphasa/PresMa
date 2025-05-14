@@ -20,6 +20,10 @@ class DatabaseSeeder extends Seeder
             DosenSeeder::class,
             MahasiswaSeeder::class,
             AdminSeeder::class,
+            PrestasiSeeder::class,
+            SertifikatSeeder::class,
+            KategoriLombaSeeder::class,
+            LombaSeeder::class,            
         ]);
     }
 }

@@ -14,7 +14,7 @@ class CreatePrestasiTable extends Migration
     public function up()
     {
         Schema::create('prestasi', function (Blueprint $table) {
-            $table->id();
+            $table->id('prestasi_id');
             $table->string('tingkatPrestasi');
             $table->integer('juaraKe');
             $table->string('namaLomba');
