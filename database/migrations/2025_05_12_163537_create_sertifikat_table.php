@@ -19,11 +19,13 @@ class CreateSertifikatTable extends Migration
             $table->integer('nomorSeri');
             $table->string('kategoriSertif');
             $table->string('image')->nullable;  // Anda dapat menyesuaikan tipe data jika image disimpan sebagai file
+            $table->unsignedBigInteger('nim');  // Foreign key untuk mahasiswa
             $table->unsignedBigInteger('prestasi_id');  // Foreign key untuk prestasi
             $table->timestamps();
 
             // Menambahkan foreign key constraint
             $table->foreign('prestasi_id')->references('prestasi_id')->on('prestasi');
+            $table->foreign('nim')->references('nim')->on('m_mahasiswa');
         });
     }
 

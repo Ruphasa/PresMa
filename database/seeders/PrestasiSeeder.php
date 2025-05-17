@@ -13,12 +13,13 @@ class PrestasiSeeder extends Seeder
      */
     public function run(): void
     {
-         $prestasis = [
+        $prestasis = [
             [
-                'prestasi_id'=>1,
-                'tingkatPrestasi'=>'Nasional',
-                'juaraKe'=>3,
-                'namaLomba'=>'akojwbdbuwi',
+                'prestasi_id' => 1,
+                'lomba_id' => 1,
+                'tingkatPrestasi' => 'Nasional',
+                'juaraKe' => 3,
+                'namaLomba' => 'akojwbdbuwi',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

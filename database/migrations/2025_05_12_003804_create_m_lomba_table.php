@@ -15,7 +15,7 @@ return new class extends Migration
         // and their respective data types.
 
         Schema::create('lomba', function (Blueprint $table) {
-            $table->id();
+            $table->id('lomba_id'); // Primary key for the table
             //tingkat, tanggal, nama, detail, kategori
             $table->foreignId('kategori_id')->constrained('m_kategori_lomba')->onDelete('cascade');
             $table->string('lomba_tingkat');

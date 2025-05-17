@@ -15,10 +15,13 @@ class CreatePrestasiTable extends Migration
     {
         Schema::create('prestasi', function (Blueprint $table) {
             $table->id('prestasi_id');
+            $table->unsignedBigInteger('lomba_id');
             $table->string('tingkatPrestasi');
             $table->integer('juaraKe');
             $table->string('namaLomba');
             $table->timestamps();
+
+            $table->foreign('lomba_id')->references('lomba_id')->on('lomba');
         });
     }
 

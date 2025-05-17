@@ -21,6 +21,7 @@ class SertifikatSeeder extends Seeder
                 'kategoriSertif' => 'A',
                 'image'=>'',
                 'prestasi_id'=>1,
+                'nim'=>2341720143,
             ],
         ];
 
