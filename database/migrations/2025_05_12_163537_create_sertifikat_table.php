@@ -24,7 +24,7 @@ class CreateSertifikatTable extends Migration
             $table->timestamps();
 
             // Menambahkan foreign key constraint
-            $table->foreign('prestasi_id')->references('prestasi_id')->on('prestasi');
+            $table->foreign('prestasi_id')->references('prestasi_id')->on('t_prestasi');
             $table->foreign('nim')->references('nim')->on('m_mahasiswa');
         });
     }

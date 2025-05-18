@@ -13,7 +13,7 @@ class CreatePrestasiTable extends Migration
      */
     public function up()
     {
-        Schema::create('prestasi', function (Blueprint $table) {
+        Schema::create('t_prestasi', function (Blueprint $table) {
             $table->id('prestasi_id');
             $table->unsignedBigInteger('lomba_id');
             $table->string('tingkatPrestasi');
@@ -21,7 +21,7 @@ class CreatePrestasiTable extends Migration
             $table->string('namaLomba');
             $table->timestamps();
 
-            $table->foreign('lomba_id')->references('lomba_id')->on('lomba');
+            $table->foreign('lomba_id')->references('lomba_id')->on('m_lomba');
         });
     }
 
@@ -32,6 +32,6 @@ class CreatePrestasiTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('prestasi');
+        Schema::dropIfExists('t_prestasi');
     }
 }

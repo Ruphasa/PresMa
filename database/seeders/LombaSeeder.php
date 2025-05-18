@@ -13,7 +13,7 @@ class LombaSeeder extends Seeder
      */
     public function run(): void
     {
-        DB::table('lomba')->insert([
+        DB::table('m_lomba')->insert([
             [
                 'kategori_id' => 1,
                 'lomba_tingkat' => 'Nasional',

@@ -25,6 +25,6 @@ class PrestasiSeeder extends Seeder
             ],
         ];
 
-        DB::table('prestasi')->insert($prestasis);
+        DB::table('t_prestasi')->insert($prestasis);
     }
 }

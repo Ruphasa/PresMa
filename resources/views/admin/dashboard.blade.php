@@ -6,14 +6,6 @@
         <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <div class="collapse navbar-collapse justify-content-between px-lg-3" id="navbarCollapse">
-            <div class="navbar-nav mx-auto py-0">
-                <a href="index" class="nav-item nav-link active">Dashboard</a>
-                <a href="admin/user" class="nav-item nav-link">Users</a>
-                <a href="#competitions" class="nav-item nav-link">Competitions</a>
-                <a href="#achievements" class="nav-item nav-link">Achievements</a>
-            </div>
-        </div>
     </nav>
 </div>
 <!-- Navbar End -->
