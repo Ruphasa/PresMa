@@ -5,6 +5,7 @@
     <meta charset="utf-8">
     <title>PresMa</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Favicon -->
     <link href="{{asset('Edukate/img/favicon.ico')}}" rel="icon">
@@ -23,34 +24,62 @@
 
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{{asset('Edukate/css/style.css')}}" rel="stylesheet">
+    
+    <!-- Data Table -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
 </head>
 
-    <!-- Back to Top -->
-    <a href="#" class="btn btn-lg btn-primary rounded-0 btn-lg-square back-to-top"><i
-        class="fa fa-angle-double-up"></i></a>
+<!-- Back to Top -->
+<a href="#" class="btn btn-lg btn-primary rounded-0 btn-lg-square back-to-top"><i class="fa fa-angle-double-up"></i></a>
+
 <body>
-<!-- Navbar Start -->
+
+    <!-- Navbar Start -->
     @include('layouts.navbar')
-<!-- Navbar End -->
+    <!-- Navbar End -->
 
-<!-- Content Start -->
-@yield('content')
-<!-- Content End -->
+    <!-- breadcrumb Start -->
+    @include('layouts.breadcrumb')
+    <!-- breadcrumb End -->
 
-<!-- footer Start -->
+    @if (url()->current() == url('/Admin/')|| url()->current() == url('/Admin/Dashboard')|| url()->current() == url('/Admin/Users') || url()->current() == url('/Admin/Competition') || url()->current() == url('/Admin/Achievements'))
+        <!-- Navbar Admin Start -->
+        @include('layouts.adminNavbar')
+        <!-- Navbar Admin End -->
+    @endif
+
+    <!-- Content Start -->
+    @yield('content')
+    <!-- Content End -->
+
+    <!-- footer Start -->
     @include('layouts.footer')
-<!-- footer End -->
+    <!-- footer End -->
 
-<!-- JavaScript Libraries -->
-<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-<script src="{{asset('Edukate/lib/easing/easing.min.js')}}"></script>
-<script src="{{asset('Edukate/lib/waypoints/waypoints.min.js')}}"></script>
-<script src="{{asset('Edukate/lib/counterup/counterup.min.js')}}"></script>
-<script src="{{asset('Edukate/lib/owlcarousel/owl.carousel.min.js')}}"></script>
+    <!-- JavaScript Libraries -->
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+    <script src="{{asset('Edukate/lib/easing/easing.min.js')}}"></script>
+    <script src="{{asset('Edukate/lib/waypoints/waypoints.min.js')}}"></script>
+    <script src="{{asset('Edukate/lib/counterup/counterup.min.js')}}"></script>
+    <script src="{{asset('Edukate/lib/owlcarousel/owl.carousel.min.js')}}"></script>
 
-<!-- Template Javascript -->
-<script src="{{asset('Edukate/js/main.js')}}"></script>
+    <!-- Include jQuery -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- Include DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
+    <!-- Custom scripts -->
+
+    <!-- Template Javascript -->
+    <script src="{{asset('Edukate/js/main.js')}}"></script>
+    <script>
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        })
+    </script>
+    @stack('js')
 </body>
 
 </html>

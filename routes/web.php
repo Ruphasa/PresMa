@@ -1,5 +1,10 @@
 <?php
 
+use App\Http\Controllers\CompetitionController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\LandingPageController;
+use App\Http\Controllers\ListAchievementController;
+use App\Http\Controllers\ListCompetitionController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,37 +18,27 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
-Route::get('/home', function () {
-    return view('welcome');
-});
+Route::get('/', [LandingPageController::class, 'index']);
+Route::get('/home', [LandingPageController::class, 'index']);
 
-Route::get('/about', function () {
-    return view('about');
-});
+Route::get('/Acheivement', [ListAchievementController::class, 'index']);
 
-Route::get('/course', function () {
-    return view('course');
-});
+Route::get('/Competitions', [ListCompetitionController::class, 'index']);
 
 Route::get('/detail', function () {
     return view('detail');
 });
 
-Route::get('/admin', function () {
-    return view('dashboard');
-});
+Route::get('/Admin', [DashboardController::class, 'index']);
 
-Route::get('/admin/user', function () {
+Route::get('/Admin/user', function () {
     return view('user');
 });
 
-Route::get('/admin/competition', function () {
-    return view('competition');
-});
-Route::get('/admin/achievement', function () {
+Route::get('/Admin/Competition', [CompetitionController::class, 'index']);
+Route::post('/Admin/Competition/list', [CompetitionController::class, 'list']);
+
+Route::get('/Admin/Achievement', function () {
     return view('achievement');
 });
 

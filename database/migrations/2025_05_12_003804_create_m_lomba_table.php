@@ -14,15 +14,18 @@ return new class extends Migration
         // Create the 'lomba' table with the specified columns
         // and their respective data types.
 
-        Schema::create('lomba', function (Blueprint $table) {
+        Schema::create('m_lomba', function (Blueprint $table) {
             $table->id('lomba_id'); // Primary key for the table
             //tingkat, tanggal, nama, detail, kategori
-            $table->foreignId('kategori_id')->constrained('m_kategori_lomba')->onDelete('cascade');
+            $table->unsignedBigInteger('kategori_id');
             $table->string('lomba_tingkat');
             $table->date('lomba_tanggal');
             $table->string('lomba_nama');
             $table->text('lomba_detail');
             $table->timestamps();
+
+            // Foreign key constraint to ensure referential integrity
+            $table->foreign('kategori_id')->references('kategori_id')->on('m_kategori');
         });
     }
 
@@ -31,6 +34,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lomba');
+        Schema::dropIfExists('m_lomba');
     }
 };
