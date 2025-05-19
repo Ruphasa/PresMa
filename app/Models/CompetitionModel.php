@@ -11,6 +11,8 @@ class CompetitionModel extends Model
 
     protected $table = 'm_lomba';
 
+    protected $primaryKey = 'lomba_id';
+
     protected $fillable = [
         'kategori_id',
         'lomba_tingkat',
