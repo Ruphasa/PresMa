@@ -65,7 +65,7 @@
     @include('layouts.breadcrumb')
     <!-- breadcrumb End -->
 
-    @if (url()->current() == url('/Admin/') || url()->current() == url('/Admin/Dashboard') || url()->current() == url('/Admin/Users') || url()->current() == url('/Admin/Competition') || url()->current() == url('/Admin/Achievement'))
+    @if (url()->current() == url('/Admin/') || url()->current() == url('/Admin/Dashboard') || url()->current() == url('/Admin/User') || url()->current() == url('/Admin/Competition') || url()->current() == url('/Admin/Achievement'))
         <!-- Navbar Admin Start -->
         @include('layouts.adminNavbar')
         <!-- Navbar Admin End -->
