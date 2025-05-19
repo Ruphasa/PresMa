@@ -1,10 +1,15 @@
 <?php
 
+use App\Http\Controllers\AchievementController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DosenController;
 use App\Http\Controllers\LandingPageController;
 use App\Http\Controllers\ListAchievementController;
 use App\Http\Controllers\ListCompetitionController;
+use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -31,14 +36,16 @@ Route::get('/detail', function () {
 
 Route::get('/Admin', [DashboardController::class, 'index']);
 
-Route::get('/Admin/user', function () {
-    return view('user');
-});
+Route::get('/Admin/User', [UserController::class, 'index']);
+Route::post('/Admin/Mahasiswa/list', [MahasiswaController::class, 'list']);
+Route::post('/Admin/Dosen/list', [DosenController::class, 'list']);
+Route::post('/Admin/admin/list', [AdminController::class, 'list']);
+
+
 
 Route::get('/Admin/Competition', [CompetitionController::class, 'index']);
 Route::post('/Admin/Competition/list', [CompetitionController::class, 'list']);
 
-Route::get('/Admin/Achievement', function () {
-    return view('achievement');
-});
+Route::get('/Admin/Achievement', [AchievementController::class, 'index']);
+Route::post('/Admin/Achievement/list', [AchievementController::class, 'list']);
 

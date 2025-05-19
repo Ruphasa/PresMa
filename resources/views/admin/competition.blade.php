@@ -13,15 +13,15 @@
                     </div>
                 </div>
             </div>
-            <div class="row" id="table-competitions-container"> <!-- Changed ID to avoid conflict -->
+            <div class="row" id="table-competitions-container">
                 <div class="col-lg-12 mb-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Competition Table</h5>
-                            <table class="table" id="table-competitions"> <!-- Ensure this is the table -->
+                            <table class="table" id="table-competitions">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
+                                        <th>No.</th>
                                         <th>Category</th>
                                         <th>Level</th>
                                         <th>Name</th>
@@ -44,9 +44,10 @@
 @push('js')
 <script>
     $(document).ready(function () {
-        $('#table-competitions').DataTable({ // Initialize on the table element
+        $('#table-competitions').DataTable({
             processing: true,
             serverSide: true,
+            responsive: true,
             ajax: {
                 url: "{{ url('Admin/Competition/list') }}",
                 dataType: "json",

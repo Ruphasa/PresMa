@@ -2,24 +2,6 @@
 <!-- Content Start -->
 @section('content')
 
-    <!-- Navbar Start -->
-    <div class="container-fluid p-0">
-        <nav class="navbar navbar-expand-lg bg-white navbar-light py-3 py-lg-0 px-lg-5">
-            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse justify-content-between px-lg-3" id="navbarCollapse">
-                <div class="navbar-nav mx-auto py-0">
-                    <a href="../admin/dashboard" class="nav-item nav-link active">Dashboard</a>
-                    <a href="../admin/user" class="nav-item nav-link">Users</a>
-                    <a href="../admin/competition" class="nav-item nav-link">Competitions</a>
-                    <a href="../admin/achievement" class="nav-item nav-link">Achievements</a>
-                </div>
-            </div>
-        </nav>
-    </div>
-    <!-- Navbar End -->
-
     <!-- Admin Dashboard Start -->
     <div class="container-fluid py-5">
         <div class="container">
@@ -31,34 +13,22 @@
                     </div>
                 </div>
             </div>
-            <div class="row" id="achievements">
+            <div class="row" id="table-achievements-container">
                 <div class="col-lg-12 mb-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Achievement Table</h5>
-                            <table class="table">
+                            <table class="table" id="table-achievements">
                                 <thead>
                                     <tr>
-                                        <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Description</th>
-                                        <th>Action</th>
+                                        <th>No.</th>
+                                        <th>Lomba</th>
+                                        <th>Tingkat Prestasi</th>
+                                        <th>Juara Ke</th>
+                                        <th></th>
                                     </tr>
                                 </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>1</td>
-                                        <td>1st Place Coding</td>
-                                        <td>Won coding competition</td>
-                                        <td><a href="#" class="btn btn-sm btn-primary">Edit</a></td>
-                                    </tr>
-                                    <tr>
-                                        <td>2</td>
-                                        <td>Best Design</td>
-                                        <td>Best design award</td>
-                                        <td><a href="#" class="btn btn-sm btn-primary">Edit</a></td>
-                                    </tr>
-                                </tbody>
+                                <tbody></tbody>
                             </table>
                         </div>
                     </div>
@@ -66,6 +36,35 @@
             </div>
         </div>
     </div>
+    <div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false"></div>
     <!-- Admin Dashboard End -->
 @endsection
-<!-- Content End -->
+
+@push('js')
+<script>
+    $(document).ready(function () {
+        $('#table-achievements').DataTable({
+            processing: true,
+            serverSide: true,
+            responsive: true,
+            ajax: {
+                url: "{{ url('Admin/Achievement/list') }}",
+                dataType: "json",
+                type: "POST",
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            },
+            columns: [
+                { data: 'DT_RowIndex', orderable: false, searchable: false },
+                { data: 'lomba.lomba_nama', orderable: true, searchable: true },
+                { data: 'tingkat_prestasi', orderable: true, searchable: true },
+                { data: 'juara_ke', orderable: true, searchable: true },
+                { data: 'action', orderable: false, searchable: false }
+                
+            ],
+            order: [[1, 'asc']]
+        });
+    });
+</script>
+@endpush

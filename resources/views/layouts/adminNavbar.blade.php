@@ -7,9 +7,9 @@
             <div class="collapse navbar-collapse justify-content-between px-lg-3" id="navbarCollapse">
                 <div class="navbar-nav mx-auto py-0">
                     <a href="{{ url('/Admin/') }}" class="nav-item nav-link {{ ($activeMenu == 'dashboard') ? 'active' : '' }}">Dashboard</a>
-                    <a href="{{ url('/Admin/Users') }}" class="nav-item nav-link {{ ($activeMenu == 'users') ? 'active' : '' }}">Users</a>
+                    <a href="{{ url('/Admin/User') }}" class="nav-item nav-link {{ ($activeMenu == 'users') ? 'active' : '' }}">Users</a>
                     <a href="{{ url('/Admin/Competition') }}" class="nav-item nav-link {{ ($activeMenu == 'competitions') ? 'active' : '' }}">Competitions</a>
-                    <a href="{{ url('/Admin/Achievements') }}" class="nav-item nav-link {{ ($activeMenu == 'achievements') ? 'active' : '' }}">Achievements</a>
+                    <a href="{{ url('/Admin/Achievement') }}" class="nav-item nav-link {{ ($activeMenu == 'achievements') ? 'active' : '' }}">Achievements</a>
                 </div>
             </div>
         </nav>

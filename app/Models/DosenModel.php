@@ -24,6 +24,6 @@ class DosenModel extends Model
 
     public function mahasiswa()
     {
-        return $this->hasMany(MahasiswaModel::class, 'dosen_id');
+        return $this->hasMany(MahasiswaModel::class, 'dosen_id', 'nidn');
     }
 }

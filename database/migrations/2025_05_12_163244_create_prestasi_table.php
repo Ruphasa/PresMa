@@ -16,9 +16,8 @@ class CreatePrestasiTable extends Migration
         Schema::create('t_prestasi', function (Blueprint $table) {
             $table->id('prestasi_id');
             $table->unsignedBigInteger('lomba_id');
-            $table->string('tingkatPrestasi');
-            $table->integer('juaraKe');
-            $table->string('namaLomba');
+            $table->string('tingkat_prestasi');
+            $table->integer('juara_ke');
             $table->timestamps();
 
             $table->foreign('lomba_id')->references('lomba_id')->on('m_lomba');

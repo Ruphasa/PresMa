@@ -17,9 +17,8 @@ class PrestasiSeeder extends Seeder
             [
                 'prestasi_id' => 1,
                 'lomba_id' => 1,
-                'tingkatPrestasi' => 'Nasional',
-                'juaraKe' => 3,
-                'namaLomba' => 'akojwbdbuwi',
+                'tingkat_prestasi' => 'Nasional',
+                'juara_ke' => 3,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
