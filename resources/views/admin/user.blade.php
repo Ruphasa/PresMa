@@ -10,6 +10,7 @@
                     <div class="section-title text-center position-relative mb-5">
                         <h1 class="display-4">Admin Dashboard</h1>
                         <p class="lead">Manage your content and settings here.</p>
+                        <button onclick="modalAction('{{ url('Admin/User/create_ajax') }}')" class="btn btn-success">Tambah Ajax</button>
                     </div>
                 </div>
             </div>
@@ -118,10 +119,19 @@
     </div>
     <div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false"></div>
     <!-- Admin Dashboard End -->
+<div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" data
+backdrop="static" data-keyboard="false" data-width="75%" aria-hidden="true"></div>  
 @endsection
 
 @push('js')
+@push('js')     
 <script>
+
+function modalAction(url = ''){ 
+    $('#myModal').load(url,function(){ 
+        $('#myModal').modal('show'); 
+    }); 
+} 
     $(document).ready(function () {
         // Mahasiswa Table
         $('#table-mahasiswa').DataTable({

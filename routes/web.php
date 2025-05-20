@@ -47,7 +47,8 @@ Route::get('/Admin/User', [UserController::class, 'index']);
 Route::post('/Admin/Mahasiswa/list', [MahasiswaController::class, 'list']);
 Route::post('/Admin/Dosen/list', [DosenController::class, 'list']);
 Route::post('/Admin/admin/list', [AdminController::class, 'list']);
-
+Route::get('Admin/User/create_ajax', [UserController::class, 'create_ajax']);
+Route::post('Admin/User/ajax', [UserController::class, 'store_ajax']);
 
 
 Route::get('/Admin/Competition', [CompetitionController::class, 'index']);
@@ -55,4 +56,5 @@ Route::post('/Admin/Competition/list', [CompetitionController::class, 'list']);
 
 Route::get('/Admin/Achievement', [AchievementController::class, 'index']);
 Route::post('/Admin/Achievement/list', [AchievementController::class, 'list']);
+
 
