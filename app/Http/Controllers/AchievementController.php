@@ -97,15 +97,13 @@ class AchievementController extends Controller
 
     public function validate_ajax($id)
     {
-        
+
     }
 
     public function reject_ajax($id)
     {
-        
+
     }
-}
-=======
     public function listDosen(Request $request)
     {
         $prestasi = AchievementModel::select(
@@ -132,3 +130,4 @@ class AchievementController extends Controller
             ->make(true);
     }
 }
+
