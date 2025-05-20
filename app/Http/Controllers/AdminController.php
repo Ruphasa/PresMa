@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\AdminModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\JsonResponse;
+use App\Models\Mahasiswa;
 
 class AdminController extends Controller
 {
@@ -25,4 +28,44 @@ class AdminController extends Controller
         ->rawColumns(['img', 'action'])
         ->make(true);
 }
+
+  public function create_ajax() 
+    { 
+        $kategori = AdminModel::select('kategori_id', 'kategori_nama')->get(); 
+        return  view('admin.create_ajax')->with('admin', $admin); 
+    } 
+ 
+  public function storeAdminAjax(Request $request): JsonResponse
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'username' => 'required|string|unique:admin,username',
+                'nama'     => 'required|string|max:100',
+                'email'    => 'required|email|unique:admin,email',
+                'password' => 'required|string|min:6',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors(),
+                ]);
+            }
+
+            $data = $request->all();
+            $data['password'] = bcrypt($data['password']);
+
+            AdminModel::create($data);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Data admin berhasil disimpan'
+            ]);
+        }
+
+        return response()->json(['status' => false, 'message' => 'Invalid request']);
+    }
 }

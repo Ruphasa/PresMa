@@ -7,6 +7,7 @@ use App\Models\CompetitionModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
+
 class AchievementController extends Controller
 {
     public function index()

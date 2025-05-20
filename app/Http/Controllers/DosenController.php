@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\DosenModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Validator;
+use Illuminate\Http\JsonResponse;
+use App\Models\Mahasiswa;
+
+
 
 class DosenController extends Controller
 {
@@ -25,4 +30,39 @@ class DosenController extends Controller
         ->rawColumns(['img', 'action'])
         ->make(true);
 }
+ // ============================================
+    // DOSEN
+    // ============================================
+    public function storeDosenAjax(Request $request): JsonResponse
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'nidn'       => 'required|string|unique:dosen,nidn',
+                'nama'       => 'required|string|max:100',
+                'email'      => 'required|email|unique:dosen,email',
+                'image_path' => 'nullable|string',
+                'prodi'      => 'required|string',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors(),
+                ]);
+            }
+
+            DosenModel::create($request->all());
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Data dosen berhasil disimpan'
+            ]);
+        }
+
+        return response()->json(['status' => false, 'message' => 'Invalid request']);
+    }
+
 }
