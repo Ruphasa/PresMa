@@ -1,23 +1,23 @@
-<form action="{{ url('/mahasiswa/import_ajax') }}" method="POST" id="form-import" enctype="multipart/form-data">
+<form action="{{ url('/admin/import_excel_ajax') }}" method="POST" id="form-import" enctype="multipart/form-data">
     @csrf
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Import Data Mahasiswa</h5>
+                <h5 class="modal-title" id="exampleModalLabel">Import Data Admin</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
                 <div class="form-group">
                     <label>Download Template</label>
-                    <a href="{{ asset('template_mahasiswa.xlsx') }}" class="btn btn-info btn-sm" download><i
+                    <a href="{{ asset('template_admin.xlsx') }}" class="btn btn-info btn-sm" download><i
                             class="fa fa-file-excel"></i>Download</a>
-                    <small id="error-file_mahasiswa" class="error-text form-text text-danger"></small>
+                    <small id="error-file_admin" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group">
                     <label>Pilih File</label>
-                    <input type="file" name="file_User" id="file_User" class="form-control" required>
-                    <small id="error-file_User" class="error-text form-text text-danger"></small>
+                    <input type="file" name="file_admin" id="file_admin" class="form-control" required>
+                    <small id="error-file_admin" class="error-text form-text text-danger"></small>
                 </div>
             </div>
             <div class="modal-footer">
@@ -34,7 +34,7 @@
     $(document).ready(function () {
         $("#form-import").validate({
             rules: {
-                file_User: { required: true, extension: "xlsx,xls" }, // Perbaiki validasi extension
+                file_admin: { required: true, extension: "xlsx,xls" }, // Perbaiki validasi extension
             },
             submitHandler: function (form) {
                 var formData = new FormData(form);
@@ -52,9 +52,9 @@
                                 title: 'Berhasil',
                                 text: response.message
                             });
-                            // Asumsi ada tableMahasiswa, ganti jika nama tabelnya berbeda
-                            if (typeof tableMahasiswa !== 'undefined') {
-                                tableMahasiswa.ajax.reload();
+                            // Asumsi ada tableAdmin, ganti jika nama tabelnya berbeda
+                            if (typeof tableAdmin !== 'undefined') {
+                                tableAdmin.ajax.reload();
                             }
                         } else {
                             $('.error-text').text('');

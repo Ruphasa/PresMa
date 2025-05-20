@@ -1,42 +1,24 @@
-<form action="{{ url('/mahasiswa/ajax') }}" method="POST" id="form-tambah-mahasiswa">
+<form action="{{ url('/dosen/ajax') }}" method="POST" id="form-tambah-dosen">
     @csrf
-    <div id="modal-master" class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title">Tambah Data Mahasiswa</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
+                <h5 class="modal-title">Tambah Data Dosen</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                        aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
 
                 <div class="form-group">
-                    <label>NIM</label>
-                    <input type="text" name="nim" class="form-control" required>
-                    <small id="error-nim" class="error-text form-text text-danger"></small>
+                    <label>NIDN</label>
+                    <input type="text" name="nidn" class="form-control" required>
+                    <small id="error-nidn" class="error-text form-text text-danger"></small>
                 </div>
 
                 <div class="form-group">
                     <label>User ID</label>
                     <input type="text" name="user_id" class="form-control" required>
                     <small id="error-user_id" class="error-text form-text text-danger"></small>
-                </div>
-
-                <div class="form-group">
-                    <label>Prodi ID</label>
-                    <input type="text" name="prodi_id" class="form-control" required>
-                    <small id="error-prodi_id" class="error-text form-text text-danger"></small>
-                </div>
-
-                <div class="form-group">
-                    <label>Dosen ID (NIDN)</label>
-                    <select name="dosen_id" class="form-control" required>
-                        <option value="">Pilih Dosen</option>
-                        @foreach ($dosen as $d)
-                            <option value="{{ $d->nidn }}">{{ $d->nama }} - {{ $d->nidn }}</option>
-                        @endforeach
-                    </select>
-                    <small id="error-dosen_id" class="error-text form-text text-danger"></small>
                 </div>
 
             </div>
@@ -47,17 +29,17 @@
         </div>
     </div>
 </form>
+
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function () {
-        $("#form-tambah-mahasiswa").validate({
+        // Validasi dan submit form untuk Dosen
+        $("#form-tambah-dosen").validate({
             rules: {
-                nim: { required: true },
+                nidn: { required: true },
                 user_id: { required: true },
-                prodi_id: { required: true },
-                dosen_id: {required: true},
             },
             submitHandler: function (form) {
                 $.ajax({
@@ -66,10 +48,10 @@
                     data: $(form).serialize(),
                     success: function (response) {
                         if (response.status) {
-                            $('#myModal').modal('hide');
+                            $('#myModal').modal('hide'); // Pastikan modal dengan ID ini ada
                             Swal.fire('Berhasil', response.message, 'success');
-                            if (typeof dataMahasiswa !== 'undefined') {
-                                dataMahasiswa.ajax.reload(); // reload DataTable
+                            if (typeof dataDosen !== 'undefined') {
+                                dataDosen.ajax.reload(); // Reload DataTable Dosen jika ada
                             }
                         } else {
                             $('.error-text').text('');

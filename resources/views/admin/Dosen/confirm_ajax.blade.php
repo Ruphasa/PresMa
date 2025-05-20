@@ -1,4 +1,4 @@
-@empty($mahasiswa)
+@empty($dosen)
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -10,20 +10,20 @@
             <div class="modal-body">
                 <div class="alert alert-danger">
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
-                    Data Mahasiswa tidak ditemukan
+                    Data Dosen tidak ditemukan
                 </div>
-                <a href="{{ url('/mahasiswa') }}" class="btn btn-warning">Kembali</a>
+                <a href="{{ url('/dosen') }}" class="btn btn-warning">Kembali</a>
             </div>
         </div>
     </div>
 @else
-    <form action="{{ url('/mahasiswa/' . $user->user_id . '/delete_ajax') }}" method="POST" id="form-delete">
+    <form action="{{ url('/dosen/' . $dosen->nidn . '/delete_ajax') }}" method="POST" id="form-delete">
         @csrf
         @method('DELETE')
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Hapus Data Mahasiswa</h5>
+                    <h5 class="modal-title">Hapus Data Dosen</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span>&times;</span>
                     </button>
@@ -36,24 +36,24 @@
 
                     <table class="table table-sm table-bordered">
                         <tr>
-                            <th class="text-right col-4">Username:</th>
-                            <td>{{ $user->username }}</td>
+                            <th class="text-right col-4">NIDN:</th>
+                            <td>{{ $dosen->nidn }}</td>
                         </tr>
                         <tr>
-                            <th class="text-right">User ID:</th>
-                            <td>{{ $user->user_id }}</td>
+                            <th class="text-right">Nama Dosen:</th>
+                            <td>{{ $dosen->user->nama }}</td>
                         </tr>
                         <tr>
                             <th class="text-right">Jumlah Mahasiswa:</th>
-                            <td>{{ $mahasiswa->count() }}</td>
+                            <td>{{ $dosen->mahasiswa->count() }}</td>
                         </tr>
                     </table>
 
                     <div class="mt-3">
-                        <h6>Daftar Mahasiswa:</h6>
+                        <h6>Daftar Mahasiswa yang diajar:</h6>
                         <ul>
-                            @foreach($mahasiswa as $mhs)
-                                <li>{{ $mhs->nim }} - {{ $mhs->user->username ?? 'Tidak ditemukan' }}</li>
+                            @foreach($dosen->mahasiswa as $mahasiswa)
+                                <li>{{ $mahasiswa->nim }} - {{ $mahasiswa->user->username ?? 'Tidak ditemukan' }}</li>
                             @endforeach
                         </ul>
                     </div>
@@ -80,7 +80,7 @@
                         if (response.status) {
                             $('#myModal').modal('hide');
                             Swal.fire('Berhasil', response.message, 'success');
-                            dataMahasiswa.ajax.reload();
+                            dataDosen.ajax.reload(); // Pastikan ini sesuai dengan ID DataTable Anda
                         } else {
                             Swal.fire('Gagal', response.message, 'error');
                         }
