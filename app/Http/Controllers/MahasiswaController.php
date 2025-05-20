@@ -14,21 +14,12 @@ class MahasiswaController extends Controller
 {
     public function list(Request $request)
     {
-        $mahasiswa = MahasiswaModel::select(
-            'nim',
-            'user_id',
-            'prodi_id',
-            'dosen_id',
-        )
-            ->with(['user', 'prodi', 'dosen'])
-            ->get();
+        $mahasiswa = MahasiswaModel::with(['user', 'prodi', 'dosen'])->get();
 
         return DataTables::of($mahasiswa)
             ->addIndexColumn()
             ->addColumn('dosen', function ($mahasiswa) {
-                return $mahasiswa->dosen && $mahasiswa->dosen->user
-                    ? $mahasiswa->dosen->user->nama
-                    : '-';
+                return $mahasiswa->dosen ? $mahasiswa->dosen->user->nama : '-';
             })
             ->addColumn('action', function ($mahasiswa) {
                 $btn = '<button onclick="modalAction(\'' . url('/mahasiswa/' . $mahasiswa->user_id .
@@ -46,20 +37,19 @@ class MahasiswaController extends Controller
     public function create_ajax()
     {
         $user = UserModel::all();
-        return view('admin.Mahasiswa.create_ajax', ['user' => $user]);
+        return view(view: 'admin.Mahasiswa.create_ajax', ['user' => $user]);
     }
 
     public function store_ajax(Request $request)
     {
-        if ($request->ajax() || $request->wantsJson()) {
+        
+       if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'user_id' => 'required|integer|exists:m_user,user_id',
-                'user_kode' => 'required|string|min:3|unique:t_user,user_kode',
-                'user_tanggal' => 'required|date',
-                'stok_id' => 'required|array',
-                'stok_id.*' => 'required|integer|exists:t_stok,stok_id',
-                'jumlah' => 'required|array',
-                'jumlah.*' => 'required|integer|min:1'
+                'nama'=> 'required||exists:m_user,user_id' , 
+                'password',
+                'level_id',
+                'email',
+                'img'
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -74,22 +64,65 @@ class MahasiswaController extends Controller
 
             \DB::beginTransaction();
             try {
-                // Simpan data user utama
+                // Simpan data mahasiswa
                 $user = UserModel::create([
-                    'user_id' => $request->user_id,
-                    'user_kode' => $request->user_kode,
-                    'user_tanggal' => $request->user_tanggal,
+                    'nama' => $request->nama,
+                    'password' => $request->password,
+                    'level_id'=> $request->level_id,
+                    'email'=> $request->email,
+                    'img' => $request->img
                 ]);
-            
-            $mahasiswa = [];
-                // Simpan semua mahasiswa user
-                MahasiswaModel::insert($mahasiswa);
+
 
                 \DB::commit();
 
                 return response()->json([
                     'status' => true,
-                    'message' => 'Data User dan Detail berhasil disimpan'
+                    'message' => 'Data Mahasiswa berhasil disimpan'
+                ]);
+            } catch (\Exception $e) {
+                \DB::rollback();
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Gagal menyimpan data: ' . $e->getMessage()
+                ]);
+            }
+        }
+
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'user_id' => 'required|integer|exists:m_user,user_id',
+                'nim' => 'required|string|min:3|unique:m_mahasiswa,nim', // Tambah validasi untuk NIM
+                'prodi_id' => 'required|integer|exists:m_prodi,prodi_id', // Tambah validasi prodi_id
+                'dosen_id' => 'nullable|string|exists:m_dosen,nidn',
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors()
+                ]);
+            }
+
+            \DB::beginTransaction();
+            try {
+                // Simpan data mahasiswa
+                $mahasiswa = MahasiswaModel::create([
+                    'nim' => $request->nim, // Gunakan NIM dari request
+                    'user_id' => $request->user_id,
+                    'prodi_id' => $request->prodi_id, // Simpan prodi_id
+                    'dosen_id' => $request->dosen_id,
+                ]);
+
+
+                \DB::commit();
+
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data Mahasiswa berhasil disimpan'
                 ]);
             } catch (\Exception $e) {
                 \DB::rollback();
@@ -102,40 +135,50 @@ class MahasiswaController extends Controller
         return redirect('/');
     }
 
-    // Menampilkan mahasiswa User
+    // Menampilkan detail mahasiswa
     public function show_ajax(string $id)
     {
-        $User = UserModel::find($id);
+        $mahasiswa = MahasiswaModel::where('user_id', $id)
+            ->with(['user', 'prodi', 'dosen']) // Eager load relasi
+            ->first();
+
+        if (!$mahasiswa) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Data tidak ditemukan'
+            ]);
+        }
         $breadcrumb = (object) [
-            'title' => 'Detail User',
-            'list' => ['Home', 'User', 'Detail']
+            'title' => 'Detail Mahasiswa',
+            'list' => ['Home', 'Mahasiswa', 'Detail']
         ];
         $page =
             (object) [
-                'title' => 'Detail User'
+                'title' => 'Detail Mahasiswa'
             ];
-        $mahasiswa = MahasiswaModel::where('user_id', $id)
-            ->with('user')
-            ->get();
-        $activeMenu = 'user'; // set menu yang sedang aktif
-        return view('admin.Mahasiswa.show_ajax', ['breadcrumb' => $breadcrumb, 'page' => $page, 'User' => $User, 'mahasiswa' => $mahasiswa, 'activeMenu' => $activeMenu]);
+        $activeMenu = 'mahasiswa';
+        return view('admin.Mahasiswa.show_ajax', ['breadcrumb' => $breadcrumb, 'page' => $page, 'mahasiswa' => $mahasiswa, 'activeMenu' => $activeMenu]);
     }
 
     public function confirm_ajax(string $id)
     {
-        $User = UserModel::find($id);
-        $mahasiswa = MahasiswaModel::where('user_id', $id)
-            ->with('user')
-            ->get();
-        return view('admin.Mahasiswa.confirm_ajax', ['user' => $User, 'mahasiswa' => $mahasiswa]);
+        $mahasiswa = MahasiswaModel::where('user_id', $id)->with('user')->first();
+
+        if (!$mahasiswa) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Data tidak ditemukan'
+            ]);
+        }
+        return view('admin.Mahasiswa.confirm_ajax', ['mahasiswa' => $mahasiswa]);
     }
 
     public function delete_ajax(Request $request, $id)
     {
         if ($request->ajax() || $request->wantsJson()) {
-            $user = UserModel::find($id);
+            $mahasiswa = MahasiswaModel::where('user_id', $id)->first();
 
-            if (!$user) {
+            if (!$mahasiswa) {
                 return response()->json([
                     'status' => false,
                     'message' => 'Data tidak ditemukan'
@@ -144,18 +187,14 @@ class MahasiswaController extends Controller
 
             \DB::beginTransaction();
             try {
-                // Hapus semua mahasiswa user terkait
-                $mahasiswa = MahasiswaModel::where('user_id', $id)->get();
+                // Hapus mahasiswa
                 $mahasiswa->delete();
-
-                // Hapus user utama
-                $user->delete();
 
                 \DB::commit();
 
                 return response()->json([
                     'status' => true,
-                    'message' => 'Data user dan mahasiswanya berhasil dihapus'
+                    'message' => 'Data mahasiswa berhasil dihapus'
                 ]);
             } catch (\Exception $e) {
                 \DB::rollback();
@@ -272,17 +311,13 @@ class MahasiswaController extends Controller
 
     public function export_pdf()
     {
-        $user = MahasiswaModel::select('nim', 'user_id', 'prodi_id', 'dosen_id')
-            ->orderBy('user_id')
-            ->orderBy('user_kode')
-            ->with('user')
-            ->get();
+        $mahasiswa = MahasiswaModel::with(['user', 'prodi', 'dosen'])->get();
 
         // use Barryvdh\DomPDF \Facade\Pdf;
-        $pdf = Pdf::loadView('admin.Mahasiswa.export_pdf', ['user' => $user]);
+        $pdf = Pdf::loadView('admin.Mahasiswa.export_pdf', ['mahasiswa' => $mahasiswa]);
         $pdf->setPaper('a4', 'portrait'); // set ukuran kertas dan orientasi
         $pdf->setOption("isRemoteEnabled", true); // set true jika ada gambar dari url
         $pdf->render();
-        return $pdf->stream('Data User' . date('Y-m-d H:i:s') . '.pdf');
+        return $pdf->stream('Data Mahasiswa' . date('Y-m-d H:i:s') . '.pdf');
     }
 }

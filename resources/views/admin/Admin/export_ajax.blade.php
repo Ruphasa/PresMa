@@ -95,27 +95,25 @@
         </tr>
     </table>
 
-    <h3 class="text-center">LAPORAN DATA MAHASISWA</h3>
-
+    <h3 class="text-center">LAPORAN DATA ADMIN</h3>
     <table class="border-all">
         <thead>
             <tr>
                 <th class="text-center">No</th>
-                <th>NIM</th>
+                <th>NIP</th>
                 <th>Nama</th>
                 <th>Email</th>
-                <th>Jurusan</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($mahasiswa as $m)
-            <tr>
-                <td class="text-center">{{ $loop->iteration }}</td>
-                <td>{{ $m->nim }}</td>
-                <td>{{ $m->user->username }}</td>
-                <td>{{ $m->user->email }}</td>
-                <td>{{ $m->prodi->nama_prodi }}</td>
-            </tr>
+            @php $no = 1; @endphp
+            @foreach ($admin as $item)
+                <tr>
+                    <td class="text-center">{{ $no++ }}</td>
+                    <td>{{ $item->nip }}</td>
+                    <td>{{ $item->user->nama }}</td>
+                    <td>{{ $item->user->email }}</td>
+                </tr>
             @endforeach
         </tbody>
     </table>

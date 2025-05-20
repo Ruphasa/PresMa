@@ -11,10 +11,11 @@
             <div class="navbar-nav mx-auto py-0">
                 <a href="{{ url('/') }}"class="nav-item nav-link {{ ($activeMenu == 'home') ? 'active' : '' }}">Home</a>
                 <a href="{{ url('/Achievement') }}" class="nav-item nav-link {{ ($activeMenu == 'acheivement') ? 'active' : '' }}">My Achievement</a>
+                <a href="{{ url('Dosen/achievement') }}" class="nav-item nav-link {{ ($activeMenu == 'acheivement') ? 'active' : '' }}">My Achievement</a>
                 <a href="{{ url('/Competition') }}" class="nav-item nav-link {{ ($activeMenu == 'competition') ? 'active' : '' }}">Competition</a>
                 <a href="{{ url('/Admin') }}" class="nav-item nav-link {{ ($activeMenu == 'admin') ? 'active' : '' }}">Admin 🤫</a>
             </div>
-            <a href="" class="btn btn-primary py-2 px-4 d-none d-lg-block">Login</a>
+            <a href="./login" class="btn btn-primary py-2 px-4 d-none d-lg-block">Login</a>
         </div>
     </nav>
 </div>

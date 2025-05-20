@@ -95,27 +95,19 @@
         </tr>
     </table>
 
-    <h3 class="text-center">LAPORAN DATA MAHASISWA</h3>
-
-    <table class="border-all">
+    <h3 class="text-center">LAPORAN DATA DOSEN</h3> <table class="border-all">
         <thead>
             <tr>
                 <th class="text-center">No</th>
-                <th>NIM</th>
-                <th>Nama</th>
-                <th>Email</th>
-                <th>Jurusan</th>
+                <th>NIDN</th> <th>Nama Dosen</th> <th>Email</th>
+                <th>Jumlah Mahasiswa</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($mahasiswa as $m)
-            <tr>
+            @foreach($dosen as $d)  <tr>
                 <td class="text-center">{{ $loop->iteration }}</td>
-                <td>{{ $m->nim }}</td>
-                <td>{{ $m->user->username }}</td>
-                <td>{{ $m->user->email }}</td>
-                <td>{{ $m->prodi->nama_prodi }}</td>
-            </tr>
+                <td>{{ $d->nidn }}</td> <td>{{ $d->user->nama }}</td> <td>{{ $d->user->email }}</td>
+                <td>{{ $d->mahasiswa->count() }}</td> </tr>
             @endforeach
         </tbody>
     </table>

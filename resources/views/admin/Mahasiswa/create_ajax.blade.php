@@ -1,63 +1,202 @@
-<form action="{{ url('/penjualan/ajax') }}" method="POST" id="form-tambah">
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <style>
+        body {
+            font-family: "Times New Roman", Times, serif;
+            margin: 6px 20px 5px 20px;
+            line-height: 15px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        td,
+        th {
+            padding: 4px 3px;
+        }
+
+        th {
+            text-align: left;
+        }
+
+        .d-block {
+            display: block;
+        }
+
+        img.image {
+            width: auto;
+            height: 80px;
+            max-width: 150px;
+            max-height: 150px;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .p-1 {
+            padding: 5px 1px 5px 1px;
+        }
+
+        .font-10 {
+            font-size: 10pt;
+        }
+
+        .font-11 {
+            font-size: 11pt;
+        }
+
+        .font-12 {
+            font-size: 12pt;
+        }
+
+        .font-13 {
+            font-size: 13pt;
+        }
+
+        .border-bottom-header {
+            border-bottom: 1px solid;
+        }
+
+        .border-all,
+        .border-all th,
+        .border-all td {
+            border: 1px solid;
+        }
+    </style>
+</head>
+
+<body>
+    <table class="border-bottom-header">
+        <tr>
+            <td width="15%" class="text-center">
+                <img src="{{ asset('polinema-bw.png') }}">
+            </td>
+            <td width="85%">
+                <span class="text-center d-block font-11 font-bold mb-1">KEMENTERIAN
+                    PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI</span>
+                <span class="text-center d-block font-13 font-bold mb-1">POLITEKNIK NEGERI
+                    MALANG</span>
+                <span class="text-center d-block font-10">Jl. Soekarno-Hatta No. 9 Malang
+                    65141</span>
+                <span class="text-center d-block font-10">Telepon (0341) 404424 Pes. 101-
+                    105, 0341-404420, Fax. (0341) 404420</span>
+                <span class="text-center d-block font-10">Laman: www.polinema.ac.id</span>
+            </td>
+        </tr>
+    </table>
+
+    <h3 class="text-center">LAPORAN DATA ADMIN</h3>
+    <table class="border-all">
+        <thead>
+            <tr>
+                <th class="text-center">No</th>
+                <th>NIP</th>
+                <th>Nama</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @php $no = 1; @endphp
+            @foreach ($admin as $item)
+                <tr>
+                    <td class="text-center">{{ $no++ }}</td>
+                    <td>{{ $item->nip }}</td>
+                    <td>{{ $item->user->nama }}</td>
+                    <td>{{ $item->user->email }}</td>
+                </tr>
+            @endforeach
+        </tbody>
+    </table>
+</body>
+
+</html>
+
+<form action="{{ url('/mahasiswa/ajax') }}" method="POST" id="form-tambah-mahasiswa" enctype="multipart/form-data">
     @csrf
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Tambah Data Penjualan</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
+                <h5 class="modal-title">Tambah Data Mahasiswa</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
             <div class="modal-body">
+
                 <div class="form-group">
-                    <label>Nama Pembeli</label>
-                    <select name="user_id" id="user_id" class="form-control" required>
-                        <option value="">- Pilih Pembeli -</option>
-                        @foreach($user as $u)
-                            <option value="{{ $u->user_id }}">{{ $u->username }}</option>
+                    <label>NIM</label>
+                    <input type="text" name="nim" class="form-control" required>
+                    <small id="error-nim" class="error-text form-text text-danger"></small>
+                </div>
+
+                <div class="form-group">
+                    <label>User ID</label>
+                    <input type="text" name="user_id" class="form-control" required>
+                    <small id="error-user_id" class="error-text form-text text-danger"></small>
+                </div>
+
+                <div class="form-group">
+                    <label>Nama</label>
+                    <input type="text" name="nama" class="form-control" required>
+                    <small id="error-nama" class="error-text form-text text-danger"></small>
+                </div>
+
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="text" name="password" class="form-control" required>
+                    <small id="error-password" class="error-text form-text text-danger"></small>
+                </div>
+
+                <div class="form-group">
+                    <label>Level</label>
+                    <select name="level_id" class="form-control" required>
+                        <option value="">Pilih Level</option>
+                        @foreach ($level as $lvl)
+                            <option value="{{ $lvl->level_id }}">{{ $lvl->nama_level }}</option>
                         @endforeach
                     </select>
                     <small id="error-level_id" class="error-text form-text text-danger"></small>
                 </div>
+
                 <div class="form-group">
-                    <label>Penjualan Kode</label>
-                    <input value="" type="text" name="penjualan_kode" id="penjualan_kode" class="form-control" required>
-                    <small id="error-penjualan_kode" class="error-text form-text text-danger"></small>
-                </div>
-                <div class="form-group">
-                    <label>Tanggal Penjualan</label>
-                    <input value="" type="date" name="penjualan_tanggal" id="penjualan_tanggal" class="form-control" required>
-                    <small id="error-penjualan_tanggal" class="error-text form-text text-danger"></small>
+                    <label>Email</label>
+                    <input type="text" name="email" class="form-control" required>
+                    <small id="error-email" class="error-text form-text text-danger"></small>
                 </div>
 
-                <!-- Penjualan Detail -->
-                <table class="table" id="penjualan-detail">
-                    <thead>
-                        <tr>
-                            <th>Stok</th>
-                            <th>Jumlah</th>
-                            <th>Aksi</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <select name="stok_id[]" class="form-control" required>
-                                    <option value="">- Pilih Stok -</option>
-                                    @foreach($stok as $s)
-                                        <option value="{{ $s->stok_id }}">{{ $s->barang->barang_nama }} (Stok: {{ $s->stok_jumlah }})</option>
-                                    @endforeach
-                                </select>
-                            </td>
-                            <td>
-                                <input type="number" name="jumlah[]" class="form-control" required min="1">
-                            </td>
-                            <td>
-                                <button type="button" class="btn btn-danger btn-sm remove-row">Hapus</button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <button type="button" id="add-row" class="btn btn-success btn-sm">Tambah Detail</button>
+                <div class="form-group">
+                    <label>Image</label>
+                    <input type="file" name="image" class="form-control" required>
+                    <small id="error-image" class="error-text form-text text-danger"></small>
+                </div>
+
+                <div class="form-group">
+                    <label>Prodi ID</label>
+                    <input type="text" name="prodi_id" class="form-control" required>
+                    <small id="error-prodi_id" class="error-text form-text text-danger"></small>
+                </div>
+
+                <div class="form-group">
+                    <label>Dosen ID (NIDN)</label>
+                    <select name="dosen_id" class="form-control" required>
+                        <option value="">Pilih Dosen</option>
+                        @foreach ($dosen as $d)
+                            <option value="{{ $d->nidn }}">{{ $d->nama }} - {{ $d->nidn }}</option>
+                        @endforeach
+                    </select>
+                    <small id="error-dosen_id" class="error-text form-text text-danger"></small>
+                </div>
+
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button>
@@ -66,81 +205,48 @@
         </div>
     </div>
 </form>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
     $(document).ready(function () {
-        // Fungsi untuk menambahkan baris baru
-        $("#add-row").click(function () {
-            const newRow = `
-                <tr>
-                    <td>
-                        <select name="stok_id[]" class="form-control" required>
-                            <option value="">- Pilih Stok -</option>
-                            @foreach($stok as $s)
-                                <option value="{{ $s->stok_id }}">{{ $s->barang->barang_nama }} (Stok: {{ $s->stok_jumlah }})</option>
-                            @endforeach
-                        </select>
-                    </td>
-                    <td>
-                        <input type="number" name="jumlah[]" class="form-control" required min="1">
-                    </td>
-                    <td>
-                        <button type="button" class="btn btn-danger btn-sm remove-row">Hapus</button>
-                    </td>
-                </tr>
-            `;
-            $("#penjualan-detail tbody").append(newRow);
-        });
-
-        // Fungsi untuk menghapus baris
-        $("#penjualan-detail").on("click", ".remove-row", function () {
-            $(this).closest("tr").remove();
-        });
-
-        // Validasi form
-        $("#form-tambah").validate({
+        $("#form-tambah-mahasiswa").validate({
             rules: {
-                "user_id": {
-                    required: true
-                },
-                "penjualan_kode": {
-                    required: true
-                },
-                "penjualan_tanggal": {
-                    required: true
-                },
-                "stok_id[]": {
-                    required: true
-                },
-                "jumlah[]": {
-                    required: true,
-                    min: 1
-                }
+                nim: { required: true },
+                user_id: { required: true },
+                prodi_id: { required: true },
+                dosen_id: { required: true },
+                level_id: {required: true},
+                nama: {required: true},
+                password: {required: true},
+                email: {required: true },
+                image: { required: true, accept: "image/*" }, // Perubahan disini
             },
             submitHandler: function (form) {
+                var formData = new FormData(form); // Tambahkan ini
                 $.ajax({
                     url: form.action,
                     type: form.method,
-                    data: $(form).serialize(),
+                    data: formData, // Dan ubah ini
+                    processData: false,  // Tambahkan ini
+                    contentType: false,  // Tambahkan ini
                     success: function (response) {
                         if (response.status) {
                             $('#myModal').modal('hide');
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil',
-                                text: response.message
-                            });
-                            dataPenjualan.ajax.reload();
+                            Swal.fire('Berhasil', response.message, 'success');
+                            if (typeof dataMahasiswa !== 'undefined') {
+                                dataMahasiswa.ajax.reload(); // reload DataTable
+                            }
                         } else {
                             $('.error-text').text('');
                             $.each(response.msgField, function (prefix, val) {
                                 $('#error-' + prefix).text(val[0]);
                             });
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Terjadi Kesalahan',
-                                text: response.message
-                            });
+                            Swal.fire('Gagal', response.message, 'error');
                         }
+                    },
+                    error: function () {
+                        Swal.fire('Error', 'Terjadi kesalahan pada server', 'error');
                     }
                 });
                 return false;
@@ -150,12 +256,12 @@
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function (element, errorClass, validClass) {
+            highlight: function (element) {
                 $(element).addClass('is-invalid');
             },
-            unhighlight: function (element, errorClass, validClass) {
+            unhighlight: function (element) {
                 $(element).removeClass('is-invalid');
             }
         });
-    }); 
+    });
 </script>
