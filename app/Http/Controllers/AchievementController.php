@@ -23,15 +23,43 @@ class AchievementController extends Controller
         return view('admin.achievement', ['breadcrumb' => $breadcrumb, 'page' => $page, 'lomba' => $lomba, 'activeMenu' => $activeMenu]);
     }
 
-    public function list(Request $request)
+    public function listPending(Request $request)
     {
         $prestasi = AchievementModel::select(
             'prestasi_id',
             'lomba_id',
             'tingkat_prestasi',
-            'juara_ke'
+            'juara_ke',
+            'status'
         )
             ->with('lomba')
+            ->where('status', 'pending')
+            ->get();
+
+        return DataTables::of($prestasi)
+            ->addIndexColumn()
+            ->addColumn('validate', function ($prestasi) {
+                $btn = '<button onclick="modalAction(\'' . url('/prestasi/' . $prestasi->prestasi_id .
+                    '/validate_ajax') . '\')" class="btn btn-success btn-sm">Validasi</button> ';
+                $btn .= '<button onclick="modalAction(\'' . url('/prestasi/' . $prestasi->prestasi_id .
+                    '/reject_ajax') . '\')" class="btn btn-danger btn-sm">Reject</button> ';
+                return $btn;
+            })
+            ->rawColumns(['validate'])
+            ->make(true);
+    }
+
+    public function listValid(Request $request)
+    {
+        $prestasi = AchievementModel::select(
+            'prestasi_id',
+            'lomba_id',
+            'tingkat_prestasi',
+            'juara_ke',
+            'status'
+        )
+            ->with('lomba')
+            ->where('status', 'valid')
             ->get();
 
         return DataTables::of($prestasi)
@@ -42,10 +70,20 @@ class AchievementController extends Controller
                 $btn .= '<button onclick="modalAction(\'' . url('/prestasi/' . $prestasi->prestasi_id .
                     '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
                 $btn .= '<button onclick="modalAction(\'' . url('/prestasi/' . $prestasi->prestasi_id .
-                    '/delete_ajax') . '\')"  class="btn btn-danger btn-sm">Hapus</button> ';
+                    '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
                 return $btn;
             })
             ->rawColumns(['action'])
             ->make(true);
+    }
+
+    public function validate_ajax($id)
+    {
+        
+    }
+
+    public function reject_ajax($id)
+    {
+        
     }
 }

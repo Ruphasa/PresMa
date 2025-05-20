@@ -43,7 +43,6 @@ Route::get('/detail', function () {
 });
 
 Route::get('/Admin', [DashboardController::class, 'index']);
-
 Route::get('/Admin/User', [UserController::class, 'index']);
 Route::post('/Admin/Mahasiswa/list', [MahasiswaController::class, 'list']);
 Route::post('/Admin/Dosen/list', [DosenController::class, 'list']);
@@ -52,8 +51,10 @@ Route::post('/Admin/admin/list', [AdminController::class, 'list']);
 
 
 Route::get('/Admin/Competition', [CompetitionController::class, 'index']);
-Route::post('/Admin/Competition/list', [CompetitionController::class, 'list']);
+Route::post('/Admin/competition/listPending', [CompetitionController::class, 'listPending'])->name('competition.listPending');
+Route::post('/Admin/competition/listValid', [CompetitionController::class, 'listValid'])->name('competition.listValid');
 
 Route::get('/Admin/Achievement', [AchievementController::class, 'index']);
-Route::post('/Admin/Achievement/list', [AchievementController::class, 'list']);
+Route::post('/Admin/achievement/listPending', [AchievementController::class, 'listPending'])->name('achievement.listPending');
+Route::post('/Admin/achievement/listValid', [AchievementController::class, 'listValid'])->name('achievement.listValid');
 
