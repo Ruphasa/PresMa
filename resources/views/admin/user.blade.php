@@ -139,7 +139,7 @@ function modalAction(url = ''){
             serverSide: true,
             responsive: true,
             ajax: {
-                url: "{{ url('Admin/Mahasiswa/list') }}",
+                url: "{{ url('Admin/mahasiswa/list') }}",
                 dataType: "json",
                 type: "POST",
                 headers: {
@@ -165,7 +165,7 @@ function modalAction(url = ''){
             serverSide: true,
             responsive: true,
             ajax: {
-                url: "{{ url('Admin/Dosen/list') }}",
+                url: "{{ url('Admin/dosen/list') }}",
                 dataType: "json",
                 type: "POST",
                 headers: {

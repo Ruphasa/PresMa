@@ -41,6 +41,53 @@ class DosenController extends Controller
 
     public function store_ajax(Request $request)
     {
+         if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'nama'=> 'required||exists:m_user,user_id' , 
+                'password',
+                'level_id',
+                'email',
+                'img'
+            ];
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors()
+                ]);
+            }
+
+            \DB::beginTransaction();
+            try {
+                // Simpan data mahasiswa
+                $user = UserModel::create([
+                    'nama' => $request->nama,
+                    'password' => $request->password,
+                    'level_id'=> $request->level_id,
+                    'email'=> $request->email,
+                    'img' => $request->img
+                ]);
+
+
+                \DB::commit();
+
+                return response()->json([
+                    'status' => true,
+                    'message' => 'Data Mahasiswa berhasil disimpan'
+                ]);
+            } catch (\Exception $e) {
+                \DB::rollback();
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Gagal menyimpan data: ' . $e->getMessage()
+                ]);
+            }
+        }
+
+
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
                 'nidn' => 'required|string|unique:m_dosen,nidn',
