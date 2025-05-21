@@ -14,7 +14,7 @@
                 <a href="{{ url('/Competition') }}" class="nav-item nav-link {{ ($activeMenu == 'competition') ? 'active' : '' }}">Competition</a>
                 <a href="{{ url('/Admin') }}" class="nav-item nav-link {{ ($activeMenu == 'admin') ? 'active' : '' }}">Admin 🤫</a>
             </div>
-            <a href="" class="btn btn-primary py-2 px-4 d-none d-lg-block">Login</a>
+            <a href="./login" class="btn btn-primary py-2 px-4 d-none d-lg-block">Login</a>
         </div>
     </nav>
 </div>

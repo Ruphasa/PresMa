@@ -23,7 +23,8 @@
                                 </div>
                             </div>
                         </div>
-                        <form action="#!">
+                        <form action="{{ url('./login') }}" method="POST">
+                            @csrf
                             <div class="row gy-3 gy-md-4 overflow-hidden">
                                 <div class="col-12">
                                     <label for="email" class="form-label">Email <span
