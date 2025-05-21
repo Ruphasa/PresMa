@@ -30,6 +30,9 @@
     <!-- DataTables Responsive CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
 
+    <!-- SweetAlert -->
+        <link rel="stylesheet" href="{{ asset('adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
+
 
     <style>
         /* Ensure table container allows horizontal scrolling on small screens */
@@ -97,6 +100,11 @@
 
     <!-- Template Javascript -->
     <script src="{{asset('Edukate/js/main.js')}}"></script>
+    
+    <!-- Validation -->
+    <script src="{{ asset('adminlte/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('adminlte/plugins/jquery-validation/additional-methods.min.js') }}"></script>
+    <script src="{{ asset('adminlte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     <script>
         $.ajaxSetup({
             headers: {
