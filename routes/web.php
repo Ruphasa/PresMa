@@ -12,8 +12,6 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\MahasiswaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -109,9 +107,8 @@ Route::post('/Admin/Competition/list', [CompetitionController::class, 'list']);
 Route::get('/Admin/Achievement', [AchievementController::class, 'index']);
 Route::post('/Admin/Achievement/list', [AchievementController::class, 'list']);
 
-<<<<<<< HEAD
 Route::get('/Dosen/achievement', [AchievementController::class, 'dosen']);
 Route::post('/Dosen/achievement/list', [AchievementController::class, 'listDosen']);
-=======
 
->>>>>>> 5b612abc74f7a09f28117198471f59b0e1e8b1d7
+
+
