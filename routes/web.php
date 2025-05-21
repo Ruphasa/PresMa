@@ -57,3 +57,5 @@ Route::post('/Admin/Competition/list', [CompetitionController::class, 'list']);
 Route::get('/Admin/Achievement', [AchievementController::class, 'index']);
 Route::post('/Admin/Achievement/list', [AchievementController::class, 'list']);
 
+Route::get('/Dosen/achievement', [AchievementController::class, 'dosen']);
+Route::post('/Dosen/achievement/list', [AchievementController::class, 'listDosen']);
