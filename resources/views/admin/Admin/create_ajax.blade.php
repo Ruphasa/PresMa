@@ -28,17 +28,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Level</label>
-                    <select name="level_id" class="form-control" required>
-                        <option value="">Pilih Level</option>
-                        @foreach ($level as $lvl)
-                            <option value="{{ $lvl->level_id }}">{{ $lvl->nama_level }}</option>
-                        @endforeach
-                    </select>
-                    <small id="error-level_id" class="error-text form-text text-danger"></small>
-                </div>
-
-                <div class="form-group">
                     <label>Email</label>
                     <input type="text" name="email" class="form-control" required>
                     <small id="error-email" class="error-text form-text text-danger"></small>

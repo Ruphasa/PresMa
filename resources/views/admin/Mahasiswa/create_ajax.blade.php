@@ -17,12 +17,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label>User ID</label>
-                    <input type="text" name="user_id" class="form-control" required>
-                    <small id="error-user_id" class="error-text form-text text-danger"></small>
-                </div>
-
-                <div class="form-group">
                     <label>Nama</label>
                     <input type="text" name="nama" class="form-control" required>
                     <small id="error-nama" class="error-text form-text text-danger"></small>
@@ -32,17 +26,6 @@
                     <label>Password</label>
                     <input type="text" name="password" class="form-control" required>
                     <small id="error-password" class="error-text form-text text-danger"></small>
-                </div>
-
-                <div class="form-group">
-                    <label>Level</label>
-                    <select name="level_id" class="form-control" required>
-                        <option value="">Pilih Level</option>
-                        @foreach ($level as $lvl)
-                            <option value="{{ $lvl->level_id }}">{{ $lvl->nama_level }}</option>
-                        @endforeach
-                    </select>
-                    <small id="error-level_id" class="error-text form-text text-danger"></small>
                 </div>
 
                 <div class="form-group">
@@ -57,14 +40,19 @@
                     <small id="error-image" class="error-text form-text text-danger"></small>
                 </div>
 
-                <div class="form-group">
-                    <label>Prodi ID</label>
-                    <input type="text" name="prodi_id" class="form-control" required>
+                    <div class="form-group">
+                    <label>Program Studi(prodi_id)</label>
+                    <select name="prodi_id" class="form-control" required>
+                        <option value="">Pilih Prodi</option>
+                        @foreach ($prodi as $d)
+                            <option value="{{ $d->prodi_id }}">{{ $d->nama_prodi }} - {{ $d->nidn }}</option>
+                        @endforeach
+                    </select>
                     <small id="error-prodi_id" class="error-text form-text text-danger"></small>
                 </div>
 
                 <div class="form-group">
-                    <label>Dosen ID (NIDN)</label>
+                    <label>Dosen(NIDN)</label>
                     <select name="dosen_id" class="form-control" required>
                         <option value="">Pilih Dosen</option>
                         @foreach ($dosen as $d)

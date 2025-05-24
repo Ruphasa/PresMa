@@ -8,29 +8,76 @@
             <div class="row">
                 <div class="col-lg-12">
                     <div class="section-title text-center position-relative mb-5">
-                        <h1 class="display-4">Admin Dashboard</h1>
-                        <p class="lead">Manage your content and settings here.</p>
+                        <h1 class="display-4">Admin Dashboard - Competitions</h1>
+                        <p class="lead">Kelola daftar lomba yang terdaftar dalam sistem.</p>
                     </div>
                 </div>
             </div>
-            <div class="row" id="table-competitions-container">
-                <div class="col-lg-12 mb-4">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Competition Table</h5>
-                            <table class="table" id="table-competitions">
-                                <thead>
-                                    <tr>
-                                        <th>No.</th>
-                                        <th>Category</th>
-                                        <th>Level</th>
-                                        <th>Name</th>
-                                        <th>Details</th>
-                                        <th>Action</th>
-                                    </tr>
-                                </thead>
-                                <tbody></tbody>
-                            </table>
+
+            <!-- Accordion Container -->
+            <div id="accordion">
+                <!-- Pending Competitions Table (Collapsible) -->
+                <div class="row mb-4">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header" id="headingPending">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapsePending" aria-expanded="true" aria-controls="collapsePending">
+                                        Pending Competitions
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapsePending" class="collapse show" aria-labelledby="headingPending" data-parent="#accordion">
+                                <div class="card-body">
+                                    <table class="table" id="table-pending-competitions">
+                                        <thead>
+                                            <tr>
+                                                <th>No.</th>
+                                                <th>Kategori ID</th>
+                                                <th>Tingkat</th>
+                                                <th>Tanggal</th>
+                                                <th>Nama</th>
+                                                <th>Detail</th>
+                                                <th>Validate</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Valid Competitions Table (Collapsible) -->
+                <div class="row mb-4">
+                    <div class="col-lg-12">
+                        <div class="card">
+                            <div class="card-header" id="headingValid">
+                                <h5 class="mb-0">
+                                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseValid" aria-expanded="false" aria-controls="collapseValid">
+                                        Valid Competitions
+                                    </button>
+                                </h5>
+                            </div>
+                            <div id="collapseValid" class="collapse" aria-labelledby="headingValid" data-parent="#accordion">
+                                <div class="card-body">
+                                    <table class="table" id="table-valid-competitions">
+                                        <thead>
+                                            <tr>
+                                                <th>No.</th>
+                                                <th>Kategori ID</th>
+                                                <th>Tingkat</th>
+                                                <th>Tanggal</th>
+                                                <th>Nama</th>
+                                                <th>Detail</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody></tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -41,15 +88,39 @@
     <!-- Admin Dashboard End -->
 @endsection
 
+@push('css')
+<style>
+    .card-body {
+        padding: 1.25rem !important;
+        width: 100% !important;
+    }
+    .card-body .table {
+        width: 100% !important;
+        table-layout: auto !important;
+        min-width: 100% !important;
+    }
+    .dataTables_wrapper {
+        width: 100% !important;
+        min-width: 100% !important;
+    }
+    .collapse.show {
+        display: block !important;
+    }
+</style>
+@endpush
+
 @push('js')
 <script>
     $(document).ready(function () {
-        $('#table-competitions').DataTable({
+        // Pending Competitions Table
+        var tablePending = $('#table-pending-competitions').DataTable({
             processing: true,
             serverSide: true,
             responsive: true,
+            scrollX: true,
+            autoWidth: false,
             ajax: {
-                url: "{{ url('Admin/Competition/list') }}",
+                url: "{{ url('Admin/competition/listPending') }}",
                 dataType: "json",
                 type: "POST",
                 headers: {
@@ -57,14 +128,62 @@
                 }
             },
             columns: [
-                { data: 'DT_RowIndex', orderable: false, searchable: false },
-                { data: 'kategori.kategori_nama', orderable: true, searchable: true },
-                { data: 'lomba_tingkat', orderable: true, searchable: true },
-                { data: 'lomba_nama', orderable: true, searchable: true },
-                { data: 'lomba_detail', orderable: false, searchable: true },
-                { data: 'action', orderable: false, searchable: false }
+                { data: 'DT_RowIndex', orderable: false, searchable: false, width: '5%' },
+                { data: 'kategori_id', orderable: true, searchable: true, width: '10%' },
+                { data: 'lomba_tingkat', orderable: true, searchable: true, width: '15%' },
+                { data: 'lomba_tanggal', orderable: true, searchable: true, width: '15%' },
+                { data: 'lomba_nama', orderable: true, searchable: true, width: '20%' },
+                { data: 'lomba_detail', orderable: true, searchable: true, width: '20%' },
+                { data: 'validate', orderable: false, searchable: false, width: '15%' }
             ],
-            order: [[1, 'asc']]
+            order: [[3, 'asc']] // Order by lomba_tanggal
+        });
+
+        // Valid Competitions Table
+        var tableValid;
+        var validInitialized = false;
+        $('#collapseValid').on('shown.bs.collapse', function () {
+            if (!validInitialized) {
+                tableValid = $('#table-valid-competitions').DataTable({
+                    processing: true,
+                    serverSide: true,
+                    responsive: true,
+                    scrollX: true,
+                    autoWidth: false,
+                    ajax: {
+                        url: "{{ url('Admin/competition/listValid') }}",
+                        dataType: "json",
+                        type: "POST",
+                        headers: {
+                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                        }
+                    },
+                    columns: [
+                        { data: 'DT_RowIndex', orderable: false, searchable: false, width: '5%' },
+                        { data: 'kategori_id', orderable: true, searchable: true, width: '10%' },
+                        { data: 'lomba_tingkat', orderable: true, searchable: true, width: '15%' },
+                        { data: 'lomba_tanggal', orderable: true, searchable: true, width: '15%' },
+                        { data: 'lomba_nama', orderable: true, searchable: true, width: '20%' },
+                        { data: 'lomba_detail', orderable: true, searchable: true, width: '20%' },
+                        { data: 'action', orderable: false, searchable: false, width: '15%' }
+                    ],
+                    order: [[3, 'asc']] // Order by lomba_tanggal
+                });
+                validInitialized = true;
+            } else {
+                tableValid.columns.adjust().responsive.recalc();
+            }
+        });
+
+        $('#collapseValid').on('hidden.bs.collapse', function () {
+            if (validInitialized) {
+                tableValid.columns.adjust().responsive.recalc();
+            }
+        });
+
+        $(window).on('resize', function () {
+            tablePending.columns.adjust().responsive.recalc();
+            if (validInitialized) tableValid.columns.adjust().responsive.recalc();
         });
     });
 </script>

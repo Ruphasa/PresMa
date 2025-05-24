@@ -10,6 +10,7 @@ use App\Http\Controllers\ListAchievementController;
 use App\Http\Controllers\ListCompetitionController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,7 @@ Route::get('/login', [LoginController::class, 'index']);
 Route::post('/login', [LoginController::class, 'store']);
 Route::get('/register', [RegisterController::class, 'index']);
 Route::post('/register', [RegisterController::class, 'store']);
+Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
 Route::get('/', [LandingPageController::class, 'index']);
 Route::get('/home', [LandingPageController::class, 'index']);
@@ -42,12 +44,15 @@ Route::get('/detail', function () {
 });
 
 Route::get('/Admin', [DashboardController::class, 'index']);
-
 Route::get('/Admin/User', [UserController::class, 'index']);
 Route::post('/Admin/mahasiswa/list', [MahasiswaController::class, 'list']);
 Route::post('/Admin/dosen/list', [DosenController::class, 'list']);
 Route::post('/Admin/admin/list', [AdminController::class, 'list']);
 
+// Profile Edits
+Route::get('/profile', [ProfileController::class, 'show'])->name('profile.show');
+Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::put('/profile/update', [ProfileController::class, 'update'])->name('profile.update');
 
         Route::group(['prefix' => 'Admin/mahasiswa'], function () {
             Route::get('/', [MahasiswaController::class, 'index'])->name('user.index'); // menampilkan halaman awal user
@@ -98,9 +103,15 @@ Route::post('/Admin/admin/list', [AdminController::class, 'list']);
 
 
 Route::get('/Admin/Competition', [CompetitionController::class, 'index']);
-Route::post('/Admin/Competition/list', [CompetitionController::class, 'list']);
+Route::post('/Admin/competition/listPending', [CompetitionController::class, 'listPending'])->name('competition.listPending');
+Route::post('/Admin/competition/listValid', [CompetitionController::class, 'listValid'])->name('competition.listValid');
 
 Route::get('/Admin/Achievement', [AchievementController::class, 'index']);
-Route::post('/Admin/Achievement/list', [AchievementController::class, 'list']);
+Route::post('/Admin/achievement/listPending', [AchievementController::class, 'listPending'])->name('achievement.listPending');
+Route::post('/Admin/achievement/listValid', [AchievementController::class, 'listValid'])->name('achievement.listValid');
+
+Route::get('/Dosen/achievement', [AchievementController::class, 'dosen']);
+Route::post('/Dosen/achievement/list', [AchievementController::class, 'listDosen']);
+
 
 

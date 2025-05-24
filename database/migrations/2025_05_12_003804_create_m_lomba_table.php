@@ -22,6 +22,7 @@ return new class extends Migration
             $table->date('lomba_tanggal');
             $table->string('lomba_nama');
             $table->text('lomba_detail');
+            $table->enum('status', ['pending', 'valid', 'rejected','outdated'])->default('pending');
             $table->timestamps();
 
             // Foreign key constraint to ensure referential integrity
