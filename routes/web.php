@@ -12,8 +12,6 @@ use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MahasiswaController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\RegisterController;
-use App\Http\Controllers\MahasiswaController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -46,17 +44,15 @@ Route::get('/detail', function () {
 Route::get('/Admin', [DashboardController::class, 'index']);
 
 Route::get('/Admin/User', [UserController::class, 'index']);
-Route::post('/Admin/Mahasiswa/list', [MahasiswaController::class, 'list']);
-Route::post('/Admin/Dosen/list', [DosenController::class, 'list']);
+Route::post('/Admin/mahasiswa/list', [MahasiswaController::class, 'list']);
+Route::post('/Admin/dosen/list', [DosenController::class, 'list']);
 Route::post('/Admin/admin/list', [AdminController::class, 'list']);
 
 
         Route::group(['prefix' => 'Admin/mahasiswa'], function () {
             Route::get('/', [MahasiswaController::class, 'index'])->name('user.index'); // menampilkan halaman awal user
-            Route::post('/list', action: [MahasiswaController::class, 'list']); // menampilkan data user dalam bentuk json untuk datatable
             Route::get('/create_ajax', [MahasiswaController::class, 'create_ajax']); // menampilkan halaman form tambah user ajax
             Route::post('/ajax', [MahasiswaController::class, 'store_ajax']); // menyimpan data user baru ajax
-            Route::get('/{id}', [MahasiswaController::class, 'show']); // menampilkan detail user
             Route::get('/{id}/show_ajax', [MahasiswaController::class, 'show_ajax']); // menampilkan detail user ajax
             Route::get('/{id}/edit_ajax', [MahasiswaController::class, 'edit_ajax']); // menampilkan halaman form edit user ajax
             Route::put('/{id}/update_ajax', [MahasiswaController::class, 'update_ajax']); // menyimpan perubahan data user ajax
@@ -70,7 +66,6 @@ Route::post('/Admin/admin/list', [AdminController::class, 'list']);
 
         Route::group(['prefix' => 'Admin/dosen'], function () {
             Route::get('/', [DosenController::class, 'index'])->name('user.index'); // menampilkan halaman awal user
-            Route::post('/list', action: [DosenController::class, 'list']); // menampilkan data user dalam bentuk json untuk datatable
             Route::get('/create_ajax', [DosenController::class, 'create_ajax']); // menampilkan halaman form tambah user ajax
             Route::post('/ajax', [DosenController::class, 'store_ajax']); // menyimpan data user baru ajax
             Route::get('/{id}', [DosenController::class, 'show']); // menampilkan detail user
@@ -87,7 +82,6 @@ Route::post('/Admin/admin/list', [AdminController::class, 'list']);
 
         Route::group(['prefix' => 'Admin/admin'], function () {
             Route::get('/', [AdminController::class, 'index'])->name('user.index'); // menampilkan halaman awal user
-            Route::post('/list', action: [AdminController::class, 'list']); // menampilkan data user dalam bentuk json untuk datatable
             Route::get('/create_ajax', [AdminController::class, 'create_ajax']); // menampilkan halaman form tambah user ajax
             Route::post('/ajax', [AdminController::class, 'store_ajax']); // menyimpan data user baru ajax
             Route::get('/{id}', [AdminController::class, 'show']); // menampilkan detail user

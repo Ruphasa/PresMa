@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\DosenModel;
+use App\Models\LevelModel;
 use App\Models\MahasiswaModel;
 use App\Models\UserModel;
 use Barryvdh\DomPDF\Facade\Pdf;
@@ -36,8 +38,9 @@ class MahasiswaController extends Controller
 
     public function create_ajax()
     {
-        $user = UserModel::all();
-        return view(view: 'admin.Mahasiswa.create_ajax', ['user' => $user]);
+        $level = LevelModel::all();
+        $dosen = DosenModel::all();
+        return view('admin.Mahasiswa.create_ajax', ['level' => $level, 'dosen'=> $dosen]);
     }
 
     public function store_ajax(Request $request)
@@ -45,11 +48,11 @@ class MahasiswaController extends Controller
         
        if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'nama'=> 'required||exists:m_user,user_id' , 
-                'password',
-                'level_id',
-                'email',
-                'img'
+                 'nama'=> 'required' , 
+                'password' => 'required',
+                'level_id'=> 'required',
+                'email'=> 'required',
+                'img'=> 'required'
             ];
 
             $validator = Validator::make($request->all(), $rules);
@@ -210,6 +213,7 @@ class MahasiswaController extends Controller
     {
         return view('User.import');
     }
+
     public function import_ajax(Request $request)
     {
         if ($request->ajax() || $request->wantsJson()) {
@@ -310,14 +314,17 @@ class MahasiswaController extends Controller
     }
 
     public function export_pdf()
-    {
-        $mahasiswa = MahasiswaModel::with(['user', 'prodi', 'dosen'])->get();
+{
+    $mahasiswa = MahasiswaModel::with(['user', 'prodi', 'dosen'])->get();
 
-        // use Barryvdh\DomPDF \Facade\Pdf;
-        $pdf = Pdf::loadView('admin.Mahasiswa.export_pdf', ['mahasiswa' => $mahasiswa]);
-        $pdf->setPaper('a4', 'portrait'); // set ukuran kertas dan orientasi
-        $pdf->setOption("isRemoteEnabled", true); // set true jika ada gambar dari url
-        $pdf->render();
-        return $pdf->stream('Data Mahasiswa' . date('Y-m-d H:i:s') . '.pdf');
-    }
+    $pdf = Pdf::loadView('admin.Mahasiswa.export_pdf', ['mahasiswa' => $mahasiswa]);
+    $pdf->setPaper('a4', 'portrait');
+
+    // Enable remote assets safely
+    $pdf->getDomPDF()->getOptions()->setIsRemoteEnabled(true);
+
+    return response($pdf->output(), 200)
+        ->header('Content-Type', 'application/pdf')
+        ->header('Content-Disposition', 'inline; filename="Data Mahasiswa.pdf"');
+}
 }

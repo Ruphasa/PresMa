@@ -43,11 +43,11 @@ class DosenController extends Controller
     {
          if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'nama'=> 'required||exists:m_user,user_id' , 
-                'password',
-                'level_id',
-                'email',
-                'img'
+                'nama'=> 'required' , 
+                'password' => 'required',
+                'level_id'=> 'required',
+                'email'=> 'required',
+                'img'=> 'required'
             ];
 
             $validator = Validator::make($request->all(), $rules);

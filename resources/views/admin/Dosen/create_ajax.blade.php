@@ -16,12 +16,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label>User ID</label>
-                    <input type="text" name="user_id" class="form-control" required>
-                    <small id="error-user_id" class="error-text form-text text-danger"></small>
-                </div>
-
-                <div class="form-group">
                     <label>Nama</label>
                     <input type="text" name="nama" class="form-control" required>
                     <small id="error-nama" class="error-text form-text text-danger"></small>
