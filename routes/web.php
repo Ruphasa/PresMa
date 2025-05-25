@@ -112,6 +112,10 @@ Route::post('/Admin/achievement/listValid', [AchievementController::class, 'list
 
 Route::get('/Dosen/achievement', [AchievementController::class, 'dosen']);
 Route::post('/Dosen/achievement/list', [AchievementController::class, 'listDosen']);
+Route::get('/competition', [CompetitionController::class, 'index']);
+Route::get('/competition/listPending', [CompetitionController::class, 'listPending']);
+Route::get('/competition/listValid', [CompetitionController::class, 'listValid']);
+Route::post('/competition/{id}/validate_ajax', [CompetitionController::class, 'validation']);
 
 
 
