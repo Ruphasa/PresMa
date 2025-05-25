@@ -16,7 +16,15 @@
                 <a href="{{ url('/Admin') }}" class="nav-item nav-link {{ ($activeMenu == 'admin') ? 'active' : '' }}">Admin 🤫</a>
             </div>
             <a href="./login" class="btn btn-primary py-2 px-4 d-none d-lg-block">Login</a>
+            @auth
+    <a href="{{ route('logout') }}" class="btn btn-danger py-2 px-4 d-none d-lg-block">Logout</a>
+@else
+    <a href="{{ route('login') }}" class="btn btn-primary py-2 px-4 d-none d-lg-block">Login</a>
+@endauth
+
+
         </div>
     </nav>
 </div>
+
 <!-- Navbar End -->
