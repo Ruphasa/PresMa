@@ -16,7 +16,9 @@
                 <a href="{{ url('/Admin') }}" class="nav-item nav-link {{ ($activeMenu == 'admin') ? 'active' : '' }}">Admin 🤫</a>
             </div>
             <a href="{{ url('/login')}}" class="btn btn-primary py-2 px-4 d-none d-lg-block">Login</a>
+            <a href="{{ url('/logout') }}" class="btn btn-danger py-2 px-4 d-none d-lg-block">Logout</a>
         </div>
     </nav>
 </div>
+
 <!-- Navbar End -->

@@ -1,127 +1,4 @@
-<!DOCTYPE html>
-<html>
-
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <style>
-        body {
-            font-family: "Times New Roman", Times, serif;
-            margin: 6px 20px 5px 20px;
-            line-height: 15px;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-        }
-
-        td,
-        th {
-            padding: 4px 3px;
-        }
-
-        th {
-            text-align: left;
-        }
-
-        .d-block {
-            display: block;
-        }
-
-        img.image {
-            width: auto;
-            height: 80px;
-            max-width: 150px;
-            max-height: 150px;
-        }
-
-        .text-right {
-            text-align: right;
-        }
-
-        .text-center {
-            text-align: center;
-        }
-
-        .p-1 {
-            padding: 5px 1px 5px 1px;
-        }
-
-        .font-10 {
-            font-size: 10pt;
-        }
-
-        .font-11 {
-            font-size: 11pt;
-        }
-
-        .font-12 {
-            font-size: 12pt;
-        }
-
-        .font-13 {
-            font-size: 13pt;
-        }
-
-        .border-bottom-header {
-            border-bottom: 1px solid;
-        }
-
-        .border-all,
-        .border-all th,
-        .border-all td {
-            border: 1px solid;
-        }
-    </style>
-</head>
-
-<body>
-    <table class="border-bottom-header">
-        <tr>
-            <td width="15%" class="text-center">
-                <img src="{{ asset('polinema-bw.png') }}">
-            </td>
-            <td width="85%">
-                <span class="text-center d-block font-11 font-bold mb-1">KEMENTERIAN
-                    PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI</span>
-                <span class="text-center d-block font-13 font-bold mb-1">POLITEKNIK NEGERI
-                    MALANG</span>
-                <span class="text-center d-block font-10">Jl. Soekarno-Hatta No. 9 Malang
-                    65141</span>
-                <span class="text-center d-block font-10">Telepon (0341) 404424 Pes. 101-
-                    105, 0341-404420, Fax. (0341) 404420</span>
-                <span class="text-center d-block font-10">Laman: www.polinema.ac.id</span>
-            </td>
-        </tr>
-    </table>
-
-    <h3 class="text-center">LAPORAN DATA ADMIN</h3>
-    <table class="border-all">
-        <thead>
-            <tr>
-                <th class="text-center">No</th>
-                <th>NIP</th>
-                <th>Nama</th>
-                <th>Email</th>
-            </tr>
-        </thead>
-        <tbody>
-            @php $no = 1; @endphp
-            @foreach ($admin as $item)
-                <tr>
-                    <td class="text-center">{{ $no++ }}</td>
-                    <td>{{ $item->nip }}</td>
-                    <td>{{ $item->user->nama }}</td>
-                    <td>{{ $item->user->email }}</td>
-                </tr>
-            @endforeach
-        </tbody>
-    </table>
-</body>
-
-</html>
-
-<form action="{{ url('/mahasiswa/ajax') }}" method="POST" id="form-tambah-mahasiswa" enctype="multipart/form-data">
+<form action="{{ url('Admin/mahasiswa/ajax') }}" method="POST" id="form-tambah-mahasiswa" enctype="multipart/form-data">
     @csrf
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -140,12 +17,6 @@
                 </div>
 
                 <div class="form-group">
-                    <label>User ID</label>
-                    <input type="text" name="user_id" class="form-control" required>
-                    <small id="error-user_id" class="error-text form-text text-danger"></small>
-                </div>
-
-                <div class="form-group">
                     <label>Nama</label>
                     <input type="text" name="nama" class="form-control" required>
                     <small id="error-nama" class="error-text form-text text-danger"></small>
@@ -157,16 +28,16 @@
                     <small id="error-password" class="error-text form-text text-danger"></small>
                 </div>
 
-                <div class="form-group">
-                    <label>Level</label>
-                    <select name="level_id" class="form-control" required>
-                        <option value="">Pilih Level</option>
-                        @foreach ($level as $lvl)
-                            <option value="{{ $lvl->level_id }}">{{ $lvl->nama_level }}</option>
-                        @endforeach
-                    </select>
-                    <small id="error-level_id" class="error-text form-text text-danger"></small>
-                </div>
+               <div class="form-group">
+    <label>Level</label>
+    <select name="level_id" class="form-control" required>
+        <option value="">Pilih Level</option>
+        @foreach ($level as $lvl)
+            <option value="{{ $lvl->level_id }}">{{ $lvl->level_nama }}</option>
+        @endforeach
+    </select>
+    <small id="error-level_id" class="error-text form-text text-danger"></small>
+</div>
 
                 <div class="form-group">
                     <label>Email</label>
@@ -181,11 +52,15 @@
                 </div>
 
                 <div class="form-group">
-                    <label>Prodi ID</label>
-                    <input type="text" name="prodi_id" class="form-control" required>
-                    <small id="error-prodi_id" class="error-text form-text text-danger"></small>
-                </div>
-
+    <label>Program Studi</label>
+    <select name="prodi_id" class="form-control" required>
+        <option value="">Pilih Program Studi</option>
+        @foreach ($prodi as $pr)
+            <option value="{{ $pr->prodi_id }}">{{ $pr->nama_prodi }}</option>
+        @endforeach
+    </select>
+    <small id="error-prodi_id" class="error-text form-text text-danger"></small>
+</div>
                 <div class="form-group">
                     <label>Dosen ID (NIDN)</label>
                     <select name="dosen_id" class="form-control" required>
@@ -205,48 +80,67 @@
         </div>
     </div>
 </form>
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
+<script src="{{ asset('js/vendor/jquery-3.6.0.min.js') }}"></script>
+<script src="{{ asset('js/vendor/jquery.validate.min.js') }}"></script>
+<script src="{{ asset('js/vendor/additional-methods.min.js') }}"></script>
+<script src="{{ asset('js/vendor/sweetalert2.min.js') }}"></script>
     $(document).ready(function () {
         $("#form-tambah-mahasiswa").validate({
             rules: {
                 nim: { required: true },
-                user_id: { required: true },
+                // user_id tidak perlu divalidasi di frontend karena dibuat di backend
                 prodi_id: { required: true },
                 dosen_id: { required: true },
                 level_id: {required: true},
                 nama: {required: true},
                 password: {required: true},
-                email: {required: true },
-                image: { required: true, accept: "image/*" }, // Perubahan disini
+                email: {required: true, email: true}, // Tambahkan validasi format email
+                image: { required: true, accept: "image/*" },
+            },
+            messages: { // Tambahkan custom messages untuk validasi
+                nim: { required: "NIM wajib diisi." },
+                prodi_id: { required: "Program Studi wajib dipilih." },
+                dosen_id: { required: "Dosen wajib dipilih." },
+                level_id: { required: "Level wajib dipilih." },
+                nama: { required: "Nama wajib diisi." },
+                password: { required: "Password wajib diisi." },
+                email: { 
+                    required: "Email wajib diisi.",
+                    email: "Format email tidak valid."
+                },
+                image: { 
+                    required: "Gambar wajib diunggah.",
+                    accept: "Hanya file gambar (jpeg, png, jpg, gif) yang diizinkan."
+                },
             },
             submitHandler: function (form) {
-                var formData = new FormData(form); // Tambahkan ini
+                var formData = new FormData(form);
                 $.ajax({
                     url: form.action,
                     type: form.method,
-                    data: formData, // Dan ubah ini
-                    processData: false,  // Tambahkan ini
-                    contentType: false,  // Tambahkan ini
+                    data: formData,
+                    processData: false,
+                    contentType: false,
                     success: function (response) {
                         if (response.status) {
-                            $('#myModal').modal('hide');
+                            $('#myModal').modal('hide'); // Pastikan ID modal Anda benar, misal 'myModal'
                             Swal.fire('Berhasil', response.message, 'success');
                             if (typeof dataMahasiswa !== 'undefined') {
                                 dataMahasiswa.ajax.reload(); // reload DataTable
                             }
                         } else {
+                            // Clear all previous errors
                             $('.error-text').text('');
+                            // Display new errors
                             $.each(response.msgField, function (prefix, val) {
                                 $('#error-' + prefix).text(val[0]);
                             });
                             Swal.fire('Gagal', response.message, 'error');
                         }
                     },
-                    error: function () {
-                        Swal.fire('Error', 'Terjadi kesalahan pada server', 'error');
+                    error: function (xhr, status, error) {
+                        Swal.fire('Error', 'Terjadi kesalahan pada server: ' + xhr.responseText, 'error');
+                        console.error("AJAX Error:", status, error, xhr.responseText); // Untuk debug lebih lanjut
                     }
                 });
                 return false;

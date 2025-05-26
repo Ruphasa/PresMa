@@ -26,19 +26,4 @@ class UserController extends Controller
         $activeMenu = 'user';
         return view('admin.user', compact('breadcrumb', 'page', 'activeMenu'));
     }
-
-      public function create_ajax(Request $request): JsonResponse
-    {
-        if (! $request->ajax()) {
-            abort(404);
-        }
-
-        // Kita gunakan view partial: resources/views/admin/user_create_modal.blade.php
-        $html = view('admin.user_create_modal')->render();
-
-        return response()->json([
-            'status' => true,
-            'html'   => $html,
-        ]);
-    }
 }
