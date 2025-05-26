@@ -11,7 +11,9 @@ class MahasiswaModel extends Model
 
     protected $table = 'm_mahasiswa';
 
-    protected $primaryKey = 'nim';
+protected $primaryKey = 'nim';
+public $incrementing = false; // Memberitahu Laravel bahwa primary key tidak auto-incrementing
+// protected $keyType = 'int'; // Tidak perlu jika default int sudah benar
 
     protected $fillable = [
         'nim',
