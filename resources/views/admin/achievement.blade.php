@@ -81,6 +81,7 @@
         </div>
     </div>
 
+    <!-- Modal Container -->
     <div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false"></div>
     <!-- Admin Dashboard End -->
 @endsection
@@ -93,7 +94,7 @@
     }
     .card-body .table {
         width: 100% !important;
-        table-layout: auto !important;
+        table-layout: auto- !important;
         min-width: 100% !important;
     }
     .dataTables_wrapper {
@@ -109,6 +110,16 @@
 @push('js')
 <script>
     $(document).ready(function () {
+        // Modal Action Function
+        window.modalAction = function(url) {
+            $('#myModal').modal('show').find('.modal-content').remove(); // Clear previous content
+            $('#myModal').append('<div class="modal-content"></div>'); // Add new modal-content div
+            $('#myModal .modal-content').load(url, function() {
+                // Store the URL for the POST request in the modal's data attribute
+                $('#myModal').data('url', url);
+            });
+        };
+
         // Pending Achievements Table
         var tablePending = $('#table-pending-achievements').DataTable({
             processing: true,
@@ -178,60 +189,6 @@
             tablePending.columns.adjust().responsive.recalc();
             if (validInitialized) tableValid.columns.adjust().responsive.recalc();
         });
-
-        // Validation Modal Logic
-        window.showValidationModal = function(prestasiId) {
-            $('#validationModal').modal('show');
-            $('#confirmValidate').off('click').on('click', function() {
-                $.ajax({
-                    url: '{{ url("prestasi") }}/' + prestasiId + '/validate_ajax',
-                    type: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        if (response.status === 'success') {
-                            $('#validationModal').modal('hide');
-                            tablePending.ajax.reload();
-                            if (validInitialized) tableValid.ajax.reload();
-                            alert(response.message);
-                        } else {
-                            alert(response.message);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        alert('Terjadi kesalahan saat memvalidasi prestasi.');
-                    }
-                });
-            });
-        };
-
-        // Reject Modal Logic
-        window.showRejectModal = function(prestasiId) {
-            $('#rejectModal').modal('show');
-            $('#confirmReject').off('click').on('click', function() {
-                $.ajax({
-                    url: '{{ url("prestasi") }}/' + prestasiId + '/reject_ajax',
-                    type: 'POST',
-                    headers: {
-                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                    },
-                    success: function(response) {
-                        if (response.status === 'success') {
-                            $('#rejectModal').modal('hide');
-                            tablePending.ajax.reload();
-                            if (validInitialized) tableValid.ajax.reload();
-                            alert(response.message);
-                        } else {
-                            alert(response.message);
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        alert('Terjadi kesalahan saat menolak prestasi.');
-                    }
-                });
-            });
-        };
     });
 </script>
 @endpush

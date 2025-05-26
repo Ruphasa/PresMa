@@ -112,6 +112,15 @@
 @push('js')
 <script>
     $(document).ready(function () {
+        // Modal Action Function
+        window.modalAction = function(url) {
+            $('#myModal').modal('show').find('.modal-content').remove();
+            $('#myModal').append('<div class="modal-content"></div>');
+            $('#myModal .modal-content').load(url, function() {
+                $('#myModal').data('url', url);
+            });
+        };
+
         // Pending Competitions Table
         var tablePending = $('#table-pending-competitions').DataTable({
             processing: true,
@@ -136,7 +145,7 @@
                 { data: 'lomba_detail', orderable: true, searchable: true, width: '20%' },
                 { data: 'validate', orderable: false, searchable: false, width: '15%' }
             ],
-            order: [[3, 'asc']] // Order by lomba_tanggal
+            order: [[3, 'asc']]
         });
 
         // Valid Competitions Table
@@ -167,7 +176,7 @@
                         { data: 'lomba_detail', orderable: true, searchable: true, width: '20%' },
                         { data: 'action', orderable: false, searchable: false, width: '15%' }
                     ],
-                    order: [[3, 'asc']] // Order by lomba_tanggal
+                    order: [[3, 'asc']]
                 });
                 validInitialized = true;
             } else {

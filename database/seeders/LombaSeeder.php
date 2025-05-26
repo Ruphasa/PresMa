@@ -20,7 +20,7 @@ class LombaSeeder extends Seeder
                 'lomba_tanggal' => '2025-06-15',
                 'lomba_nama' => 'Lomba Robotika Nasional',
                 'lomba_detail' => 'Lomba robotika tingkat nasional untuk siswa SMA.',
-                'status' => 'valid'
+                'status' => 'validated'
             ],
             [
                 'kategori_id' => 2,

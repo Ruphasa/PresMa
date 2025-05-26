@@ -18,7 +18,8 @@ class CreatePrestasiTable extends Migration
             $table->unsignedBigInteger('lomba_id');
             $table->string('tingkat_prestasi');
             $table->integer('juara_ke');
-            $table->enum('status', ['pending', 'valid', 'rejected','outdated'])->default('pending');
+            $table->enum('status', ['pending', 'validated', 'rejected','outdated'])->default('pending');
+            $table->string('keterangan')->nullable();
             $table->timestamps();
 
             $table->foreign('lomba_id')->references('lomba_id')->on('m_lomba');

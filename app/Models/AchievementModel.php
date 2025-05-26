@@ -15,7 +15,8 @@ class AchievementModel extends Model
     protected $fillable = [
         'lomba_id',
         'tingkat_prestasi',
-        'juara_ke'
+        'juara_ke',
+        'status'
     ];
     public function lomba()
     {

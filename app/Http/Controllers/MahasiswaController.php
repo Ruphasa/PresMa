@@ -37,15 +37,15 @@ class MahasiswaController extends Controller
     public function create_ajax()
     {
         $user = UserModel::all();
-        return view(view: 'admin.Mahasiswa.create_ajax', ['user' => $user]);
+        return view('admin.Mahasiswa.create_ajax', ['user' => $user]);
     }
 
     public function store_ajax(Request $request)
     {
-        
+
        if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'nama'=> 'required||exists:m_user,user_id' , 
+                'nama'=> 'required||exists:m_user,user_id' ,
                 'password',
                 'level_id',
                 'email',

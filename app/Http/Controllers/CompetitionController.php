@@ -41,9 +41,9 @@ class CompetitionController extends Controller
         return DataTables::of($competitions)
             ->addIndexColumn()
             ->addColumn('validate', function ($competition) {
-                $btn = '<button onclick="modalAction(\'' . url('/competition/' . $competition->lomba_id .
-                    '/validate_ajax') . '\')" class="btn btn-success btn-sm">Validasi</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/competition/' . $competition->lomba_id .
+                $btn = '<button onclick="modalAction(\'' . url('Admin/competition/' . $competition->lomba_id .
+                    '/validate_ajax') . '\')" class="btn btn-success btn-sm">Validate</button> ';
+                $btn .= '<button onclick="modalAction(\'' . url('Admin/competition/' . $competition->lomba_id .
                     '/reject_ajax') . '\')" class="btn btn-danger btn-sm">Reject</button> ';
                 return $btn;
             })
@@ -66,14 +66,11 @@ class CompetitionController extends Controller
             'status'
         )
             ->with('kategori')
-            ->where('status', 'valid')
+            ->where('status', 'validated')
             ->get();
 
         return DataTables::of($competitions)
             ->addIndexColumn()
-            ->addColumn('validate', function ($competition) {
-                return ''; // No validate buttons for valid
-            })
             ->addColumn('action', function ($competition) {
                 $btn = '<button onclick="modalAction(\'' . url('/competition/' . $competition->lomba_id .
                     '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
@@ -87,14 +84,32 @@ class CompetitionController extends Controller
             ->make(true);
     }
 
-    public function validation($id)
+    public function confirmValidate($id)
     {
-        $competition = CompetitionModel::find($id);
-        if ($competition) {
-            $competition->status = 'valid';
-            $competition->save();
-            return response()->json(['status' => 'success', 'message' => 'Lomba berhasil divalidasi']);
-        }
-        return response()->json(['status' => 'error', 'message' => 'Lomba tidak ditemukan']);
+        $competition = CompetitionModel::findOrFail($id);
+        return view('admin.competition.validate_ajax', ['competition' => $competition]);
+    }
+
+    public function validate_ajax($id)
+    {
+        $competition = CompetitionModel::findOrFail($id);
+        $competition->status = 'validated';
+        $competition->save();
+        return redirect('/Admin/competition');
+    }
+
+    public function confirmReject($id)
+    {
+        $competition = CompetitionModel::findOrFail($id);
+        return view('admin.competition.reject_ajax', ['competition' => $competition]);
+    }
+
+    public function reject_ajax($id)
+    {
+        $competition = CompetitionModel::findOrFail($id);
+        $competition->status = 'rejected';
+        $competition->keterangan = request()->input('keterangan');
+        $competition->save();
+        return redirect('/Admin/competition');
     }
 }
