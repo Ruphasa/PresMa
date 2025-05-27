@@ -10,7 +10,7 @@ class ListAchievementController extends Controller
     {
         $breadcrumb = (object) [
             'title' => 'Achievement List',
-            'list' => ['achievement', 'Achievement List'],
+            'list' => ['Our', 'Achievement List'],
         ];
         $page = (object) [
             'title' => 'Prestasi yang telah diraih oleh peserta',

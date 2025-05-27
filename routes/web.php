@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DosenController;
@@ -26,18 +27,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/login', [LoginController::class, 'index']);
-Route::post('/login', [LoginController::class, 'store']);
-Route::get('/register', [RegisterController::class, 'index']);
-Route::post('/register', [RegisterController::class, 'store']);
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route:: pattern('id', '[0-9]+');
 
-Route::get('/', [LandingPageController::class, 'index']);
+Route::get('login', [AuthController::class,'login'])->name('login');
+Route::post('login', [AuthController::class,'postlogin']);
+Route::get('logout', [AuthController::class,'logout'])->middleware('auth');
+
+Route::get('register', [RegisterController::class, 'index']);
+Route::post('register', [RegisterController::class, 'store']);
+
+Route::middleware(['auth'])->group(function() {
+    Route::get('/', [LandingPageController::class, 'index']);
+
 Route::get('/home', [LandingPageController::class, 'index']);
 
-Route::get('/Acheivement', [ListAchievementController::class, 'index']);
+Route::get('/Achievement', [ListAchievementController::class, 'index']);
 
-Route::get('/Competitions', [ListCompetitionController::class, 'index']);
+Route::get('/Competition    ', [ListCompetitionController::class, 'index']);
 
 Route::get('/detail', function () {
     return view('detail');
@@ -109,6 +115,7 @@ Route::get('/Admin/competition/{id}/validate_ajax', [CompetitionController::clas
 Route::post('/Admin/competition/{id}/validate_ajax', [CompetitionController::class,'validate_ajax']);
 Route::get('/Admin/competition/{id}/reject_ajax', [CompetitionController::class,'confirmReject']);
 Route::post('/Admin/competition/{id}/reject_ajax', [CompetitionController::class,'reject_ajax']);
+Route::get('/competition/{lomba_id}', [ListCompetitionController::class, 'show'])->name('competition.detail');
 
 Route::get('/Admin/Achievement', [AchievementController::class, 'index']);
 Route::post('/Admin/achievement/listPending', [AchievementController::class, 'listPending'])->name('achievement.listPending');
@@ -119,10 +126,6 @@ Route::get('/Admin/achievement/{id}/reject_ajax', [AchievementController::class,
 Route::post('/Admin/achievement/{id}/reject_ajax', [AchievementController::class,'reject_ajax']);
 Route::get('/Dosen/achievement', [AchievementController::class, 'dosen']);
 Route::post('/Dosen/achievement/list', [AchievementController::class, 'listDosen']);
-Route::get('/competition', [CompetitionController::class, 'index']);
-Route::get('/competition/listPending', [CompetitionController::class, 'listPending']);
-Route::get('/competition/listValid', [CompetitionController::class, 'listValid']);
-Route::post('/competition/{id}/validate_ajax', [CompetitionController::class, 'validation']);
 
 
-
+});

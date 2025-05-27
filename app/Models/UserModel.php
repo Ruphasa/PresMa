@@ -19,6 +19,9 @@ class UserModel extends Authenticatable
         'img'
     ];
 
+    protected $hidden = ['password'];
+    protected $casts = ['password' => 'hashed'];
+
     public function level()
     {
         return $this->belongsTo(LevelModel::class, 'level_id');
