@@ -35,7 +35,7 @@ Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 Route::get('/', [LandingPageController::class, 'index']);
 Route::get('/home', [LandingPageController::class, 'index']);
 
-Route::get('/Acheivement', [ListAchievementController::class, 'index']);
+Route::get('/Achievement', [ListAchievementController::class, 'index']);
 
 Route::get('/Competition    ', [ListCompetitionController::class, 'index']);
 
