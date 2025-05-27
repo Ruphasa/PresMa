@@ -18,7 +18,8 @@ class CompetitionModel extends Model
         'lomba_tingkat',
         'lomba_tanggal',
         'lomba_nama',
-        'lomba_detail'
+        'lomba_detail',
+        'status'
     ];
     public function kategori()
     {

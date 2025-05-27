@@ -105,11 +105,18 @@ Route::put('/profile/update', [ProfileController::class, 'update'])->name('profi
 Route::get('/Admin/Competition', [CompetitionController::class, 'index']);
 Route::post('/Admin/competition/listPending', [CompetitionController::class, 'listPending'])->name('competition.listPending');
 Route::post('/Admin/competition/listValid', [CompetitionController::class, 'listValid'])->name('competition.listValid');
+Route::get('/Admin/competition/{id}/validate_ajax', [CompetitionController::class,'confirmValidate']);
+Route::post('/Admin/competition/{id}/validate_ajax', [CompetitionController::class,'validate_ajax']);
+Route::get('/Admin/competition/{id}/reject_ajax', [CompetitionController::class,'confirmReject']);
+Route::post('/Admin/competition/{id}/reject_ajax', [CompetitionController::class,'reject_ajax']);
 
 Route::get('/Admin/Achievement', [AchievementController::class, 'index']);
 Route::post('/Admin/achievement/listPending', [AchievementController::class, 'listPending'])->name('achievement.listPending');
 Route::post('/Admin/achievement/listValid', [AchievementController::class, 'listValid'])->name('achievement.listValid');
-
+Route::get('/Admin/achievement/{id}/validate_ajax', [AchievementController::class,'confirmValidate']);
+Route::post('/Admin/achievement/{id}/validate_ajax', [AchievementController::class,'validate_ajax']);
+Route::get('/Admin/achievement/{id}/reject_ajax', [AchievementController::class,'confirmReject']);
+Route::post('/Admin/achievement/{id}/reject_ajax', [AchievementController::class,'reject_ajax']);
 Route::get('/Dosen/achievement', [AchievementController::class, 'dosen']);
 Route::post('/Dosen/achievement/list', [AchievementController::class, 'listDosen']);
 

@@ -6,11 +6,13 @@ use App\Models\DosenModel;
 use App\Models\LevelModel;
 use App\Models\MahasiswaModel;
 use App\Models\UserModel;
+use App\Models\ProdiModel;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Hash;
 
 class MahasiswaController extends Controller
 {
@@ -36,106 +38,95 @@ class MahasiswaController extends Controller
             ->make(true);
     }
 
+
+
     public function create_ajax()
     {
         $level = LevelModel::all();
         $dosen = DosenModel::all();
-        return view('admin.Mahasiswa.create_ajax', ['level' => $level, 'dosen'=> $dosen]);
+        $prodi = ProdiModel::all();
+        return view('admin.Mahasiswa.create_ajax', ['level' => $level, 'dosen'=> $dosen  , 'prodi' => $prodi ]);
     }
 
     public function store_ajax(Request $request)
     {
-        
-       if ($request->ajax() || $request->wantsJson()) {
-            $rules = [
-                 'nama'=> 'required' , 
-                'password' => 'required',
-                'level_id'=> 'required',
-                'email'=> 'required',
-                'img'=> 'required'
-            ];
-
-            $validator = Validator::make($request->all(), $rules);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Validasi Gagal',
-                    'msgField' => $validator->errors()
-                ]);
-            }
-
-            \DB::beginTransaction();
-            try {
-                // Simpan data mahasiswa
-                $user = UserModel::create([
-                    'nama' => $request->nama,
-                    'password' => $request->password,
-                    'level_id'=> $request->level_id,
-                    'email'=> $request->email,
-                    'img' => $request->img
-                ]);
-
-
-                \DB::commit();
-
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data Mahasiswa berhasil disimpan'
-                ]);
-            } catch (\Exception $e) {
-                \DB::rollback();
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Gagal menyimpan data: ' . $e->getMessage()
-                ]);
-            }
+        // Pastikan ini adalah request AJAX
+        if (!$request->ajax() && !$request->wantsJson()) {
+            // Ini seharusnya tidak tercapai jika ini dipanggil via AJAX
+            return redirect('/');
         }
 
-        if ($request->ajax() || $request->wantsJson()) {
-            $rules = [
-                'user_id' => 'required|integer|exists:m_user,user_id',
-                'nim' => 'required|string|min:3|unique:m_mahasiswa,nim', // Tambah validasi untuk NIM
-                'prodi_id' => 'required|integer|exists:m_prodi,prodi_id', // Tambah validasi prodi_id
-                'dosen_id' => 'nullable|string|exists:m_dosen,nidn',
-            ];
+        // 1. Definisikan semua aturan validasi untuk User dan Mahasiswa sekaligus
+        // Perhatikan nama field harus sesuai dengan name di form blade
+        $rules = [
+            'nim' => 'required|string|max:20|unique:m_mahasiswa,nim',
+            // 'user_id' tidak diperlukan di sini karena akan dibuat otomatis
+            'nama' => 'required|string|max:255',
+            'password' => 'required|string|min:6',
+            'level_id' => 'required|integer|exists:m_level,level_id',
+            'email' => 'required|email|max:255|unique:m_user,email',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // name="image" di blade
+            'prodi_id' => 'required|integer|exists:m_prodi,prodi_id', // Pastikan m_prodi adalah tabel yang benar
+            'dosen_id' => 'required|string|exists:m_dosen,nidn', // Validasi untuk NIDN
+        ];
 
-            $validator = Validator::make($request->all(), $rules);
+        $validator = Validator::make($request->all(), $rules);
 
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Validasi Gagal',
-                    'msgField' => $validator->errors()
-                ]);
-            }
-
-            \DB::beginTransaction();
-            try {
-                // Simpan data mahasiswa
-                $mahasiswa = MahasiswaModel::create([
-                    'nim' => $request->nim, // Gunakan NIM dari request
-                    'user_id' => $request->user_id,
-                    'prodi_id' => $request->prodi_id, // Simpan prodi_id
-                    'dosen_id' => $request->dosen_id,
-                ]);
-
-
-                \DB::commit();
-
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data Mahasiswa berhasil disimpan'
-                ]);
-            } catch (\Exception $e) {
-                \DB::rollback();
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Gagal menyimpan data: ' . $e->getMessage()
-                ]);
-            }
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validasi Gagal.',
+                'msgField' => $validator->errors()->toArray() // Mengubah ke array untuk ditampilkan di frontend
+            ], 422); // Status code 422 Unprocessable Entity cocok untuk validasi gagal
         }
-        return redirect('/');
+
+        DB::beginTransaction(); // Mulai transaksi database
+        try {
+            // 2. Tangani Upload Gambar Terlebih Dahulu
+            $imagePath = null;
+            if ($request->hasFile('image')) {
+                $image = $request->file('image');
+                $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+                $imagePath = $image->storeAs('public/mahasiswa_images', $imageName);
+                $imagePath = Storage::url($imagePath); // Dapatkan URL publik
+            }
+
+            // 3. Simpan data ke tabel User (m_user)
+            $user = UserModel::create([
+                'nama' => $request->nama,
+                'password' => Hash::make($request->password), // WAJIB HASH PASSWORD!
+                'level_id' => $request->level_id,
+                'email' => $request->email,
+                'img' => $imagePath, // Simpan path gambar yang sudah di-upload
+            ]);
+
+            // 4. Simpan data ke tabel Mahasiswa (m_mahasiswa) menggunakan user_id yang baru dibuat
+            MahasiswaModel::create([
+                'nim' => $request->nim,
+                'user_id' => $user->user_id, // Gunakan ID dari user yang baru dibuat
+                'prodi_id' => $request->prodi_id,
+                'dosen_id' => $request->dosen_id,
+            ]);
+
+            DB::commit(); // Komit transaksi jika semua berhasil
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Data Mahasiswa berhasil disimpan.'
+            ], 200); // Status code 200 OK untuk sukses
+
+        } catch (\Exception $e) {
+            DB::rollback(); // Rollback transaksi jika ada error
+            // Hapus gambar yang sudah diupload jika terjadi error saat menyimpan ke DB
+            if ($imagePath && Storage::exists(str_replace('/storage/', 'public/', $imagePath))) {
+                Storage::delete(str_replace('/storage/', 'public/', $imagePath));
+            }
+
+            return response()->json([
+                'status' => false,
+                'message' => 'Gagal menyimpan data Mahasiswa. Error: ' . $e->getMessage()
+            ], 500); // Status code 500 Internal Server Error untuk error server
+        }
     }
 
     // Menampilkan detail mahasiswa
