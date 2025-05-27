@@ -14,8 +14,7 @@
                                 <thead>
                                     <tr>
                                         <th>No.</th>
-                                        <th>Nama</th>
-                                        <th>Lomba</th>
+                                        <th>Nama Lomba</th>
                                         <th>Tingkat Prestasi</th>
                                         <th>Juara Ke</th>
                                         <th></th>
@@ -54,8 +53,6 @@
                 { data: 'lomba.lomba_nama', orderable: true, searchable: true },
                 { data: 'tingkat_prestasi', orderable: true, searchable: true },
                 { data: 'juara_ke', orderable: true, searchable: true },
-                { data: 'action', orderable: false, searchable: false }
-                
             ],
             order: [[1, 'asc']]
         });

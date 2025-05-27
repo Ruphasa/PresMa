@@ -9,14 +9,10 @@
                         <div class="section-title position-relative mb-5">
                                 <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Competition Detail
                             </h6>
-                            <h1 class="display-4">Web design & development courses for beginners</h1>
+                            <h1 class="display-4">{{ $competition->lomba_nama }}</h1>
                         </div>
                         <img class="img-fluid rounded w-100 mb-4" src="{{asset('Edukate/img/header.jpg')}}" alt="Image">
-                        <p>Tempor erat elitr at rebum at at clita aliquyam consetetur. Diam dolor diam ipsum et, tempor
-                            voluptua sit consetetur sit. Aliquyam diam amet diam et eos sadipscing labore. Clita erat ipsum
-                            et lorem et sit, sed stet no labore lorem sit. Sanctus clita duo justo et tempor consetetur
-                            takimata eirmod, dolores takimata consetetur invidunt magna dolores aliquyam dolores dolore.
-                            Amet erat amet et magna</p>
+                        <p>{{$competition->lomba_detail}}</p>
 
                         <p>Sadipscing labore amet rebum est et justo gubergren. Et eirmod ipsum sit diam ut magna lorem.
                             Nonumy vero labore lorem sanctus rebum et lorem magna kasd, stet amet magna accusam
@@ -50,7 +46,7 @@
                     <div class="bg-primary mb-5 py-3">
                         <h3 class="text-white py-3 px-4 m-0">Course Features</h3>
                         <div class="d-flex justify-content-between border-bottom px-4">
-                            <h6 class="text-white my-3">Instructor</h6>
+                            <h6 class="text-white my-3">Penyelenggara</h6>
                             <h6 class="text-white my-3">John Doe</h6>
                         </div>
                         <div class="d-flex justify-content-between border-bottom px-4">
@@ -62,11 +58,11 @@
                             <h6 class="text-white my-3">15</h6>
                         </div>
                         <div class="d-flex justify-content-between border-bottom px-4">
-                            <h6 class="text-white my-3">Duration</h6>
+                            <h6 class="text-white my-3">Batas Waktu Pendaftaran</h6>
                             <h6 class="text-white my-3">10.00 Hrs</h6>
                         </div>
                         <div class="d-flex justify-content-between border-bottom px-4">
-                            <h6 class="text-white my-3">Skill level</h6>
+                            <h6 class="text-white my-3">Tingkat</h6>
                             <h6 class="text-white my-3">All Level</h6>
                         </div>
                         <div class="d-flex justify-content-between px-4">
@@ -75,7 +71,7 @@
                         </div>
                         <h5 class="text-white py-3 px-4 m-0">Course Price: $199</h5>
                         <div class="py-3 px-4">
-                            <a class="btn btn-block btn-secondary py-3 px-5" href="">Enroll Now</a>
+                            <a class="btn btn-block btn-secondary py-3 px-5" href="">Daftar Sekarang</a>
                         </div>
                     </div>
 
