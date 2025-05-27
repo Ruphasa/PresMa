@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AchievementController;
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CompetitionController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DosenController;
@@ -26,13 +27,18 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/login', [LoginController::class, 'index']);
-Route::post('/login', [LoginController::class, 'store']);
-Route::get('/register', [RegisterController::class, 'index']);
-Route::post('/register', [RegisterController::class, 'store']);
-Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
+Route:: pattern('id', '[0-9]+');
 
-Route::get('/', [LandingPageController::class, 'index']);
+Route::get('login', [AuthController::class,'login'])->name('login');
+Route::post('login', [AuthController::class,'postlogin']);
+Route::get('logout', [AuthController::class,'logout'])->middleware('auth');
+
+Route::get('register', [RegisterController::class, 'index']);
+Route::post('register', [RegisterController::class, 'store']);
+
+Route::middleware(['auth'])->group(function() {
+    Route::get('/', [LandingPageController::class, 'index']);
+    
 Route::get('/home', [LandingPageController::class, 'index']);
 
 Route::get('/Achievement', [ListAchievementController::class, 'index']);
@@ -121,3 +127,4 @@ Route::get('/Dosen/achievement', [AchievementController::class, 'dosen']);
 Route::post('/Dosen/achievement/list', [AchievementController::class, 'listDosen']);
 
 
+});
