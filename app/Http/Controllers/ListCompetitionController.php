@@ -9,13 +9,13 @@ class ListCompetitionController extends Controller
     public function index()
     {
         $breadcrumb = (object) [
-            'title' => 'Landing Page',
-            'list' => ['Home', 'Landing Page'],
+            'title' => 'Competitions List',
+            'list' => ['Competitions'],
         ];
         $page = (object) [
-            'title' => 'Selamat datang di PresMa',
+            'title' => 'Daftar Lomba yang terdaftar dalam sistem'
         ];
-        $activeMenu = 'home'; // set menu yang sedang aktif
-        return view('home', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu]);
+        $activeMenu = 'competition'; // set menu yang sedang aktif
+        return view('competition', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu]);
     }
 }
