@@ -38,7 +38,7 @@ Route::post('register', [RegisterController::class, 'store']);
 
 Route::middleware(['auth'])->group(function() {
     Route::get('/', [LandingPageController::class, 'index']);
-    
+
 Route::get('/home', [LandingPageController::class, 'index']);
 
 Route::get('/Achievement', [ListAchievementController::class, 'index']);
@@ -115,6 +115,7 @@ Route::get('/Admin/competition/{id}/validate_ajax', [CompetitionController::clas
 Route::post('/Admin/competition/{id}/validate_ajax', [CompetitionController::class,'validate_ajax']);
 Route::get('/Admin/competition/{id}/reject_ajax', [CompetitionController::class,'confirmReject']);
 Route::post('/Admin/competition/{id}/reject_ajax', [CompetitionController::class,'reject_ajax']);
+Route::get('/competition/{lomba_id}', [ListCompetitionController::class, 'show'])->name('competition.detail');
 
 Route::get('/Admin/Achievement', [AchievementController::class, 'index']);
 Route::post('/Admin/achievement/listPending', [AchievementController::class, 'listPending'])->name('achievement.listPending');
