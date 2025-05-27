@@ -1,4 +1,4 @@
-<form action="{{ url('/dosen/ajax') }}" method="POST" id="form-tambah-dosen">
+<form action="{{ url('Admin/dosen/ajax') }}" method="POST" id="form-tambah-dosen">
     @csrf
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -8,38 +8,31 @@
                         aria-hidden="true">&times;</span></button>
             </div>
             <div class="modal-body">
-
                 <div class="form-group">
                     <label>NIDN</label>
                     <input type="text" name="nidn" class="form-control" required>
                     <small id="error-nidn" class="error-text form-text text-danger"></small>
                 </div>
-
                 <div class="form-group">
                     <label>Nama</label>
                     <input type="text" name="nama" class="form-control" required>
                     <small id="error-nama" class="error-text form-text text-danger"></small>
                 </div>
-
                 <div class="form-group">
                     <label>Password</label>
                     <input type="text" name="password" class="form-control" required>
                     <small id="error-password" class="error-text form-text text-danger"></small>
                 </div>
-
                 <div class="form-group">
                     <label>Email</label>
                     <input type="text" name="email" class="form-control" required>
                     <small id="error-email" class="error-text form-text text-danger"></small>
                 </div>
-
                 <div class="form-group">
                     <label>Image</label>
-                    <input type="file" name="image" class="form-control" required>
-                    <small id="error-image" class="error-text form-text text-danger"></small>
+                    <input type="file" name="img" class="form-control" required>
+                    <small id="error-img" class="error-text form-text text-danger"></small>
                 </div>
-
-
             </div>
             <div class="modal-footer">
                 <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button>
@@ -59,6 +52,10 @@
             rules: {
                 nidn: { required: true },
                 user_id: { required: true },
+                nama: { required: true },
+                password: { required: true },
+                email: { required: true, email: true },
+                img: { required: true, extension: "jpg,jpeg,png,gif" }
             },
             submitHandler: function (form) {
                 $.ajax({

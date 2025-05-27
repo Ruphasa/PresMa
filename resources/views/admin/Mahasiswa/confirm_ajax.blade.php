@@ -48,16 +48,14 @@
                             <td>{{ $mahasiswa->count() }}</td>
                         </tr>
                     </table>
-
                     <div class="mt-3">
                         <h6>Daftar Mahasiswa:</h6>
                         <ul>
-                            @foreach($mahasiswa as $mhs)
+                            @foreach ($mahasiswa as $mhs)
                                 <li>{{ $mhs->nim }} - {{ $mhs->user->username ?? 'Tidak ditemukan' }}</li>
                             @endforeach
                         </ul>
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" data-dismiss="modal" class="btn btn-secondary">Batal</button>
@@ -66,17 +64,16 @@
             </div>
         </div>
     </form>
-
     <script>
-        $(document).ready(function () {
-            $("#form-delete").on('submit', function (e) {
+        $(document).ready(function() {
+            $("#form-delete").on('submit', function(e) {
                 e.preventDefault();
                 let form = this;
                 $.ajax({
                     url: form.action,
                     method: form.method,
                     data: $(form).serialize(),
-                    success: function (response) {
+                    success: function(response) {
                         if (response.status) {
                             $('#myModal').modal('hide');
                             Swal.fire('Berhasil', response.message, 'success');
@@ -85,7 +82,7 @@
                             Swal.fire('Gagal', response.message, 'error');
                         }
                     },
-                    error: function () {
+                    error: function() {
                         Swal.fire('Error', 'Terjadi kesalahan pada server', 'error');
                     }
                 });
