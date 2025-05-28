@@ -45,6 +45,8 @@ Route::get('/home', [LandingPageController::class, 'index']);
 Route::get('/Achievement', [ListAchievementController::class, 'index']);
 
 Route::get('/Competition', [ListCompetitionController::class, 'index']);
+Route::get('/competition/{id}', [ListCompetitionController::class, 'show']);
+
 
 Route::get('/detail', function () {
     return view('detail');
