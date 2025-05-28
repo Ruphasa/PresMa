@@ -11,6 +11,7 @@ use App\Http\Controllers\ListAchievementController;
 use App\Http\Controllers\ListCompetitionController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
@@ -108,6 +109,15 @@ Route::put('/profile/update', [ProfileController::class, 'update'])->name('profi
         });
 
 
+Route::prefix('prodi')->group(function () {
+    Route::post('/list', [ProdiController::class, 'list']); // datatables ajax
+    Route::get('/create_ajax', [ProdiController::class, 'create_ajax']); // form create
+    Route::post('/ajax', [ProdiController::class, 'store_ajax']); // store via ajax
+    Route::get('/{id}/show_ajax', [ProdiController::class, 'show_ajax']); // detail prodi
+    Route::delete('/{id}/delete_ajax', [ProdiController::class, 'delete_ajax']); // hapus via ajax
+});
+
+        
 Route::get('/Admin/Competition', [CompetitionController::class, 'index']);
 Route::post('/Admin/competition/listPending', [CompetitionController::class, 'listPending'])->name('competition.listPending');
 Route::post('/Admin/competition/listValid', [CompetitionController::class, 'listValid'])->name('competition.listValid');
