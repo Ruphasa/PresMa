@@ -16,6 +16,6 @@ class DashboardController extends Controller
             'title' => 'Daftar Lomba yang terdaftar dalam sistem'
         ];
         $activeMenu = 'dashboard'; // set menu yang sedang aktif
-        return view('admin.dashboard', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu]);
+        return view('Admin.dashboard', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu]);
     }
 }

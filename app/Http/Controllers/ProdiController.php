@@ -27,7 +27,7 @@ class ProdiController extends Controller
 
     public function create_ajax()
     {
-        return view('admin.Prodi.create_ajax');
+        return view('Admin.Prodi.create_ajax');
     }
 
     public function store_ajax(Request $request)
@@ -70,7 +70,7 @@ class ProdiController extends Controller
             ]);
         }
 
-        return view('admin.Prodi.show_ajax', [
+        return view('Admin.Prodi.show_ajax', [
             'prodi' => $prodi
         ]);
     }

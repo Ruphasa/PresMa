@@ -30,10 +30,6 @@
     <!-- DataTables Responsive CSS -->
     <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
 
-    <!-- SweetAlert -->
-        <link rel="stylesheet" href="{{ asset('adminlte/plugins/sweetalert2-theme-bootstrap-4/bootstrap-4.min.css') }}">
-
-
     <style>
         /* Ensure table container allows horizontal scrolling on small screens */
         .dataTables_wrapper {
@@ -68,7 +64,7 @@
     @include('layouts.breadcrumb')
     <!-- breadcrumb End -->
 
-    @if (url()->current() == url('/Admin/') || url()->current() == url('/Admin/Dashboard') || url()->current() == url('/Admin/User') || url()->current() == url('/Admin/Competition') || url()->current() == url('/Admin/Achievement'))
+    @if (url()->current() == url('/Admin/') || url()->current() == url('/Admin/dashboard') || url()->current() == url('/Admin/user') || url()->current() == url('/Admin/competition') || url()->current() == url('/Admin/achievement')|| url()->current() == url('/Admin/prodi'))
         <!-- Navbar Admin Start -->
         @include('layouts.adminNavbar')
         <!-- Navbar Admin End -->
@@ -100,11 +96,6 @@
 
     <!-- Template Javascript -->
     <script src="{{asset('Edukate/js/main.js')}}"></script>
-    
-    <!-- Validation -->
-    <script src="{{ asset('adminlte/plugins/jquery-validation/jquery.validate.min.js') }}"></script>
-    <script src="{{ asset('adminlte/plugins/jquery-validation/additional-methods.min.js') }}"></script>
-    <script src="{{ asset('adminlte/plugins/sweetalert2/sweetalert2.min.js') }}"></script>
     <script>
         $.ajaxSetup({
             headers: {

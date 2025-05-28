@@ -14,7 +14,7 @@ def recommend():
     try:
         # Ambil data dari request
         data = request.get_json()
-        mahasiswa_data = pd.DataFrame(data['mahasiswa'], columns=['ipk', 'jumlah_prestasi', 'kategori_prestasi', 'tingkat_prestasi', 'pengalaman_organisasi'])
+        mahasiswa_data = pd.DataFrame(data['mahasiswa'], columns=['ipk', 'jumlah_prestasi', 'angkatan', 'point', 'pengalaman_organisasi'])
 
         # Normalisasi data
         mahasiswa_scaled = scaler.transform(mahasiswa_data)

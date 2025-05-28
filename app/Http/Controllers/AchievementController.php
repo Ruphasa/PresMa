@@ -21,7 +21,7 @@ class AchievementController extends Controller
         ];
         $lomba = CompetitionModel::all();
         $activeMenu = 'achievements'; // set menu yang sedang aktif
-        return view('admin.achievement', ['breadcrumb' => $breadcrumb, 'page' => $page, 'lomba' => $lomba, 'activeMenu' => $activeMenu]);
+        return view('Admin.achievement', ['breadcrumb' => $breadcrumb, 'page' => $page, 'lomba' => $lomba, 'activeMenu' => $activeMenu]);
     }
 
     public function dosen()
@@ -124,7 +124,7 @@ class AchievementController extends Controller
     public function confirmValidate($id)
     {
         $prestasi = AchievementModel::findOrFail($id);
-        return view('admin.achievement.validate_ajax', ['achievement' => $prestasi]);
+        return view('Admin.achievement.validate_ajax', ['achievement' => $prestasi]);
     }
 
     public function validate_ajax($id)
@@ -146,7 +146,7 @@ class AchievementController extends Controller
     public function confirmReject($id)
     {
         $achievement = AchievementModel::findOrFail($id);
-        return view('admin.achievement.reject_ajax', ['achievement' => $achievement]);
+        return view('Admin.achievement.reject_ajax', ['achievement' => $achievement]);
     }
 
     public function reject_ajax($id)

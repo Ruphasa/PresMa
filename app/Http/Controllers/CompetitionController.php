@@ -23,7 +23,7 @@ class CompetitionController extends Controller
         ];
         $kategori = KategoriModel::all();
         $activeMenu = 'competitions'; // set menu yang sedang aktif
-        return view('admin.competition', ['breadcrumb' => $breadcrumb, 'page' => $page, 'kategori' => $kategori, 'activeMenu' => $activeMenu]);
+        return view('Admin.competition', ['breadcrumb' => $breadcrumb, 'page' => $page, 'kategori' => $kategori, 'activeMenu' => $activeMenu]);
     }
 
     public function listPending(Request $request)
@@ -90,7 +90,7 @@ class CompetitionController extends Controller
     public function confirmValidate($id)
     {
         $competition = CompetitionModel::findOrFail($id);
-        return view('admin.competition.validate_ajax', ['competition' => $competition]);
+        return view('Admin.competition.validate_ajax', ['competition' => $competition]);
     }
 
     public function validate_ajax($id)
@@ -104,7 +104,7 @@ class CompetitionController extends Controller
     public function confirmReject($id)
     {
         $competition = CompetitionModel::findOrFail($id);
-        return view('admin.competition.reject_ajax', ['competition' => $competition]);
+        return view('Admin.competition.reject_ajax', ['competition' => $competition]);
     }
 
     public function reject_ajax($id)
@@ -124,13 +124,13 @@ class CompetitionController extends Controller
         $rekomendasi = RekomendasiModel::where('lomba_id', $id)
             ->with('mahasiswa')
             ->get();
-        return view('admin.competition.show_ajax', ['competition' => $competition, 'rekomendasi' => $rekomendasi]);
+        return view('Admin.competition.show_ajax', ['competition' => $competition, 'rekomendasi' => $rekomendasi]);
     }
 
     public function rekomendasi($id)
     {
         // Ambil semua data mahasiswa
-        $mahasiswa = MahasiswaModel::all(['nim', 'ipk', 'jumlah_prestasi', 'kategori_prestasi', 'tingkat_prestasi', 'pengalaman_organisasi'])->toArray();
+        $mahasiswa = MahasiswaModel::all(['nim', 'ipk', 'jumlah_prestasi', 'angkatan', 'point', 'pengalaman_organisasi'])->toArray();
 
         // Kirim data ke API SPK
         $response = Http::post('http://localhost:5001/recommend', [
@@ -139,9 +139,9 @@ class CompetitionController extends Controller
 
         if ($response->successful()) {
             $rekomendasi = $response->json()['rekomendasi'];
-            return view('admin.competition.show_ajax', ['rekomendasi' => $rekomendasi]);
+            return view('Admin.competition.show_ajax', ['rekomendasi' => $rekomendasi]);
         } else {
-            return view('admin.competition.error_ajax', ['message' => 'Gagal mendapatkan rekomendasi']);
+            return view('Admin.competition.error_ajax', ['message' => 'Gagal mendapatkan rekomendasi']);
         }
     }
 }

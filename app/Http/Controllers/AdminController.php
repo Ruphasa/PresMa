@@ -36,14 +36,14 @@ class AdminController extends Controller
     public function create_ajax()
     {
         $user = UserModel::all();
-        return view('admin.Admin.create_ajax', ['user' => $user]);
+        return view('Admin.admin.create_ajax', ['user' => $user]);
     }
 
     public function store_ajax(Request $request)
     {
       if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                 'nama'=> 'required' , 
+                 'nama'=> 'required' ,
                 'password' => 'required',
                 'level_id'=> 'required',
                 'email'=> 'required',
@@ -124,7 +124,7 @@ class AdminController extends Controller
         $user = UserModel::find($id);
         $admin = AdminModel::where('user_id', $id)->with('user')->get();
 
-        return view('admin.Admin.show_ajax', [
+        return view('Admin.Admin.show_ajax', [
             'breadcrumb' => (object)[
                 'title' => 'Detail Admin',
                 'list' => ['Home', 'Admin', 'Detail']
@@ -172,7 +172,7 @@ class AdminController extends Controller
             ->orderBy('user_id')
             ->get();
 
-        $pdf = Pdf::loadView('admin.Admin.export_pdf', ['admin' => $admin]);
+        $pdf = Pdf::loadView('Admin.Admin.export_pdf', ['admin' => $admin]);
         $pdf->setPaper('a4', 'portrait');
         $pdf->setOption("isRemoteEnabled", true);
         return $pdf->stream('Data Admin ' . date('Y-m-d H:i:s') . '.pdf');

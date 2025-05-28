@@ -36,7 +36,7 @@ class DosenController extends Controller
     public function create_ajax()
     {
         $user = UserModel::all();
-        return view('admin.Dosen.create_ajax', ['user' => $user]);
+        return view('Admin.Dosen.create_ajax', ['user' => $user]);
     }
 
     public function store_ajax(Request $request)
@@ -82,7 +82,7 @@ class DosenController extends Controller
             ]);
         }
 
-        return view('admin.Dosen.show_ajax', [
+        return view('Admin.Dosen.show_ajax', [
             'breadcrumb' => (object) [
                 'title' => 'Detail Dosen',
                 'list' => ['Home', 'Dosen', 'Detail']
@@ -124,7 +124,7 @@ class DosenController extends Controller
     {
         $dosen = DosenModel::with('user')->get();
 
-        $pdf = Pdf::loadView('admin.Dosen.export_pdf', ['dosen' => $dosen]);
+        $pdf = Pdf::loadView('Admin.Dosen.export_pdf', ['dosen' => $dosen]);
         $pdf->setPaper('a4', 'portrait');
         $pdf->setOption("isRemoteEnabled", true);
         return $pdf->stream('Data Dosen ' . date('Y-m-d H:i:s') . '.pdf');

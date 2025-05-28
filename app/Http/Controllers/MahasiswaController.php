@@ -45,7 +45,7 @@ class MahasiswaController extends Controller
         $level = LevelModel::all();
         $dosen = DosenModel::all();
         $prodi = ProdiModel::all();
-        return view('admin.Mahasiswa.create_ajax', ['level' => $level, 'dosen'=> $dosen  , 'prodi' => $prodi ]);
+        return view('Admin.mahasiswa.create_ajax', ['level' => $level, 'dosen'=> $dosen  , 'prodi' => $prodi ]);
     }
 
     public function store_ajax(Request $request)
@@ -124,7 +124,7 @@ class MahasiswaController extends Controller
 
             return response()->json([
                 'status' => false,
-                'message' => 'Gagal menyimpan data Mahasiswa. Error: ' . $e->getMessage()
+                'message' => 'Gagal menyimpan data mahasiswa. Error: ' . $e->getMessage()
             ], 500); // Status code 500 Internal Server Error untuk error server
         }
     }
@@ -151,7 +151,7 @@ class MahasiswaController extends Controller
                 'title' => 'Detail Mahasiswa'
             ];
         $activeMenu = 'mahasiswa';
-        return view('admin.Mahasiswa.show_ajax', ['breadcrumb' => $breadcrumb, 'page' => $page, 'mahasiswa' => $mahasiswa, 'activeMenu' => $activeMenu]);
+        return view('Admin.mahasiswa.show_ajax', ['breadcrumb' => $breadcrumb, 'page' => $page, 'mahasiswa' => $mahasiswa, 'activeMenu' => $activeMenu]);
     }
 
     public function confirm_ajax(string $id)
@@ -164,7 +164,7 @@ class MahasiswaController extends Controller
                 'message' => 'Data tidak ditemukan'
             ]);
         }
-        return view('admin.Mahasiswa.confirm_ajax', ['mahasiswa' => $mahasiswa]);
+        return view('Admin.mahasiswa.confirm_ajax', ['mahasiswa' => $mahasiswa]);
     }
 
     public function delete_ajax(Request $request, $id)
@@ -308,7 +308,7 @@ class MahasiswaController extends Controller
 {
     $mahasiswa = MahasiswaModel::with(['user', 'prodi', 'dosen'])->get();
 
-    $pdf = Pdf::loadView('admin.Mahasiswa.export_pdf', ['mahasiswa' => $mahasiswa]);
+    $pdf = Pdf::loadView('Admin.mahasiswa.export_pdf', ['mahasiswa' => $mahasiswa]);
     $pdf->setPaper('a4', 'portrait');
 
     // Enable remote assets safely
@@ -316,6 +316,6 @@ class MahasiswaController extends Controller
 
     return response($pdf->output(), 200)
         ->header('Content-Type', 'application/pdf')
-        ->header('Content-Disposition', 'inline; filename="Data Mahasiswa.pdf"');
+        ->header('Content-Disposition', 'inline; filename="Data mahasiswa.pdf"');
 }
 }

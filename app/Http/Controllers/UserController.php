@@ -24,6 +24,6 @@ class UserController extends Controller
             'title' => 'Daftar Mahasiswa yang terdaftar dalam sistem'
         ];
         $activeMenu = 'user';
-        return view('admin.user', compact('breadcrumb', 'page', 'activeMenu'));
+        return view('Admin.user', compact('breadcrumb', 'page', 'activeMenu'));
     }
 }
