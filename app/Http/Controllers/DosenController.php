@@ -41,83 +41,35 @@ class DosenController extends Controller
 
     public function store_ajax(Request $request)
     {
-         if ($request->ajax() || $request->wantsJson()) {
-            $rules = [
-                'nama'=> 'required' , 
-                'password' => 'required',
-                'level_id'=> 'required',
-                'email'=> 'required',
-                'img'=> 'required'
-            ];
 
-            $validator = Validator::make($request->all(), $rules);
+        \DB::beginTransaction();
+        try {
+            // Simpan data mahasiswa
+            $user = UserModel::create([
+                'nama' => $request->nama,
+                'password' => $request->password,
+                'level_id' => '2',
+                'email' => $request->email,
+                'img' => $request->img
+            ]);
 
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Validasi Gagal',
-                    'msgField' => $validator->errors()
-                ]);
-            }
+            DosenModel::create([
+                'nidn' => $request->nidn,
+                'user_id' => $user->user_id
+            ]);
+            \DB::commit();
+            return response()->json([
+                'status' => true,
+                'message' => 'Data Dosen berhasil disimpan'
+            ]);
 
-            \DB::beginTransaction();
-            try {
-                // Simpan data mahasiswa
-                $user = UserModel::create([
-                    'nama' => $request->nama,
-                    'password' => $request->password,
-                    'level_id'=> $request->level_id,
-                    'email'=> $request->email,
-                    'img' => $request->img
-                ]);
-
-
-                \DB::commit();
-
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data Mahasiswa berhasil disimpan'
-                ]);
-            } catch (\Exception $e) {
-                \DB::rollback();
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Gagal menyimpan data: ' . $e->getMessage()
-                ]);
-            }
+        } catch (\Exception $e) {
+            \DB::rollback();
+            return response()->json([
+                'status' => false,
+                'message' => 'Gagal menyimpan data: ' . $e->getMessage()
+            ]);
         }
-
-
-        if ($request->ajax() || $request->wantsJson()) {
-            $rules = [
-                'nidn' => 'required|string|unique:m_dosen,nidn',
-                'user_id' => 'required|integer|exists:m_user,user_id',
-            ];
-
-            $validator = Validator::make($request->all(), $rules);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Validasi Gagal',
-                    'msgField' => $validator->errors()
-                ]);
-            }
-
-            try {
-                DosenModel::create($request->only(['nidn', 'user_id']));
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data Dosen berhasil disimpan'
-                ]);
-            } catch (\Exception $e) {
-                return response()->json([
-                    'status' => false,
-                    'message' => 'Gagal menyimpan data: ' . $e->getMessage()
-                ]);
-            }
-        }
-        return redirect('/');
     }
 
     public function show_ajax(string $id)
@@ -131,11 +83,11 @@ class DosenController extends Controller
         }
 
         return view('admin.Dosen.show_ajax', [
-            'breadcrumb' => (object)[
+            'breadcrumb' => (object) [
                 'title' => 'Detail Dosen',
                 'list' => ['Home', 'Dosen', 'Detail']
             ],
-            'page' => (object)['title' => 'Detail Dosen'],
+            'page' => (object) ['title' => 'Detail Dosen'],
             'dosen' => $dosen,
             'activeMenu' => 'dosen'
         ]);

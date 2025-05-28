@@ -44,7 +44,7 @@ Route::get('/home', [LandingPageController::class, 'index']);
 
 Route::get('/Achievement', [ListAchievementController::class, 'index']);
 
-Route::get('/Competition    ', [ListCompetitionController::class, 'index']);
+Route::get('/Competition', [ListCompetitionController::class, 'index']);
 
 Route::get('/detail', function () {
     return view('detail');
@@ -125,7 +125,9 @@ Route::get('/Admin/competition/{id}/validate_ajax', [CompetitionController::clas
 Route::post('/Admin/competition/{id}/validate_ajax', [CompetitionController::class,'validate_ajax']);
 Route::get('/Admin/competition/{id}/reject_ajax', [CompetitionController::class,'confirmReject']);
 Route::post('/Admin/competition/{id}/reject_ajax', [CompetitionController::class,'reject_ajax']);
-Route::get('/competition/{lomba_id}', [ListCompetitionController::class, 'show'])->name('competition.detail');
+Route::get('Admin/competition/{id}', [CompetitionController::class, 'show_ajax']);
+Route::get('Admin/competition/{id}/rekomendasi', [CompetitionController::class, 'rekomendasi']);
+
 
 Route::get('/Admin/Achievement', [AchievementController::class, 'index']);
 Route::post('/Admin/achievement/listPending', [AchievementController::class, 'listPending'])->name('achievement.listPending');

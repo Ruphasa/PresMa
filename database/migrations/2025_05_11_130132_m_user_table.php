@@ -14,7 +14,7 @@ return new class extends Migration
         $table = 'm_user';
         if (!Schema::hasTable($table)) {
             Schema::create($table, function (Blueprint $table) {
-                $table->id('user_id');
+                $table->id('user_id')->autoIncrement();
                 $table->unsignedBigInteger('level_id');
                 $table->string('nama');
                 $table->string('email')->unique();
