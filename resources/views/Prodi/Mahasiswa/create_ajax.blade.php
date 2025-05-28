@@ -28,16 +28,16 @@
                     <small id="error-password" class="error-text form-text text-danger"></small>
                 </div>
 
-               <div class="form-group">
-    <label>Level</label>
-    <select name="level_id" class="form-control" required>
-        <option value="">Pilih Level</option>
-        @foreach ($level as $lvl)
-            <option value="{{ $lvl->level_id }}">{{ $lvl->level_nama }}</option>
-        @endforeach
-    </select>
-    <small id="error-level_id" class="error-text form-text text-danger"></small>
-</div>
+                <div class="form-group">
+                    <label>Level</label>
+                    <select name="level_id" class="form-control" required>
+                        <option value="">Pilih Level</option>
+                        @foreach ($level as $lvl)
+                            <option value="{{ $lvl->level_id }}">{{ $lvl->level_nama }}</option>
+                        @endforeach
+                    </select>
+                    <small id="error-level_id" class="error-text form-text text-danger"></small>
+                </div>
 
                 <div class="form-group">
                     <label>Email</label>
@@ -52,15 +52,15 @@
                 </div>
 
                 <div class="form-group">
-    <label>Program Studi</label>
-    <select name="prodi_id" class="form-control" required>
-        <option value="">Pilih Program Studi</option>
-        @foreach ($prodi as $pr)
-            <option value="{{ $pr->prodi_id }}">{{ $pr->nama_prodi }}</option>
-        @endforeach
-    </select>
-    <small id="error-prodi_id" class="error-text form-text text-danger"></small>
-</div>
+                    <label>Program Studi</label>
+                    <select name="prodi_id" class="form-control" required>
+                        <option value="">Pilih Program Studi</option>
+                        @foreach ($prodi as $pr)
+                            <option value="{{ $pr->prodi_id }}">{{ $pr->nama_prodi }}</option>
+                        @endforeach
+                    </select>
+                    <small id="error-prodi_id" class="error-text form-text text-danger"></small>
+                </div>
                 <div class="form-group">
                     <label>Dosen ID (NIDN)</label>
                     <select name="dosen_id" class="form-control" required>
@@ -84,36 +84,67 @@
 <script src="{{ asset('js/vendor/jquery.validate.min.js') }}"></script>
 <script src="{{ asset('js/vendor/additional-methods.min.js') }}"></script>
 <script src="{{ asset('js/vendor/sweetalert2.min.js') }}"></script>
-    $(document).ready(function () {
+<script>
+    $(document).ready(function() {
         $("#form-tambah-mahasiswa").validate({
             rules: {
-                nim: { required: true },
+                nim: {
+                    required: true
+                },
                 // user_id tidak perlu divalidasi di frontend karena dibuat di backend
-                prodi_id: { required: true },
-                dosen_id: { required: true },
-                level_id: {required: true},
-                nama: {required: true},
-                password: {required: true},
-                email: {required: true, email: true}, // Tambahkan validasi format email
-                image: { required: true, accept: "image/*" },
+                prodi_id: {
+                    required: true
+                },
+                dosen_id: {
+                    required: true
+                },
+                level_id: {
+                    required: true
+                },
+                nama: {
+                    required: true
+                },
+                password: {
+                    required: true
+                },
+                email: {
+                    required: true,
+                    email: true
+                }, // Tambahkan validasi format email
+                image: {
+                    required: true,
+                    accept: "image/*"
+                },
             },
             messages: { // Tambahkan custom messages untuk validasi
-                nim: { required: "NIM wajib diisi." },
-                prodi_id: { required: "Program Studi wajib dipilih." },
-                dosen_id: { required: "Dosen wajib dipilih." },
-                level_id: { required: "Level wajib dipilih." },
-                nama: { required: "Nama wajib diisi." },
-                password: { required: "Password wajib diisi." },
-                email: { 
+                nim: {
+                    required: "NIM wajib diisi."
+                },
+                prodi_id: {
+                    required: "Program Studi wajib dipilih."
+                },
+                dosen_id: {
+                    required: "Dosen wajib dipilih."
+                },
+                level_id: {
+                    required: "Level wajib dipilih."
+                },
+                nama: {
+                    required: "Nama wajib diisi."
+                },
+                password: {
+                    required: "Password wajib diisi."
+                },
+                email: {
                     required: "Email wajib diisi.",
                     email: "Format email tidak valid."
                 },
-                image: { 
+                image: {
                     required: "Gambar wajib diunggah.",
                     accept: "Hanya file gambar (jpeg, png, jpg, gif) yang diizinkan."
                 },
             },
-            submitHandler: function (form) {
+            submitHandler: function(form) {
                 var formData = new FormData(form);
                 $.ajax({
                     url: form.action,
@@ -121,9 +152,10 @@
                     data: formData,
                     processData: false,
                     contentType: false,
-                    success: function (response) {
+                    success: function(response) {
                         if (response.status) {
-                            $('#myModal').modal('hide'); // Pastikan ID modal Anda benar, misal 'myModal'
+                            $('#myModal').modal(
+                            'hide'); // Pastikan ID modal Anda benar, misal 'myModal'
                             Swal.fire('Berhasil', response.message, 'success');
                             if (typeof dataMahasiswa !== 'undefined') {
                                 dataMahasiswa.ajax.reload(); // reload DataTable
@@ -132,28 +164,30 @@
                             // Clear all previous errors
                             $('.error-text').text('');
                             // Display new errors
-                            $.each(response.msgField, function (prefix, val) {
+                            $.each(response.msgField, function(prefix, val) {
                                 $('#error-' + prefix).text(val[0]);
                             });
                             Swal.fire('Gagal', response.message, 'error');
                         }
                     },
-                    error: function (xhr, status, error) {
-                        Swal.fire('Error', 'Terjadi kesalahan pada server: ' + xhr.responseText, 'error');
-                        console.error("AJAX Error:", status, error, xhr.responseText); // Untuk debug lebih lanjut
+                    error: function(xhr, status, error) {
+                        Swal.fire('Error', 'Terjadi kesalahan pada server: ' + xhr
+                            .responseText, 'error');
+                        console.error("AJAX Error:", status, error, xhr
+                        .responseText); // Untuk debug lebih lanjut
                     }
                 });
                 return false;
             },
             errorElement: 'span',
-            errorPlacement: function (error, element) {
+            errorPlacement: function(error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function (element) {
+            highlight: function(element) {
                 $(element).addClass('is-invalid');
             },
-            unhighlight: function (element) {
+            unhighlight: function(element) {
                 $(element).removeClass('is-invalid');
             }
         });

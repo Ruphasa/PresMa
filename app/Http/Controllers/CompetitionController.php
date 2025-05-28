@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\CompetitionModel;
 use App\Models\KategoriModel;
+use App\Models\MahasiswaModel;
+use App\Models\RekomendasiModel;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Yajra\DataTables\DataTables;
 
 class CompetitionController extends Controller
@@ -72,11 +75,11 @@ class CompetitionController extends Controller
         return DataTables::of($competitions)
             ->addIndexColumn()
             ->addColumn('action', function ($competition) {
-                $btn = '<button onclick="modalAction(\'' . url('/competition/' . $competition->lomba_id .
-                    '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/competition/' . $competition->lomba_id .
+                $btn = '<button onclick="modalAction(\'' . url('Admin/competition/' . $competition->lomba_id .
+                    '/') . '\')" class="btn btn-info btn-sm">Detail</button> ';
+                $btn .= '<button onclick="modalAction(\'' . url('Admin/competition/' . $competition->lomba_id .
                     '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/competition/' . $competition->lomba_id .
+                $btn .= '<button onclick="modalAction(\'' . url('Admin/competition/' . $competition->lomba_id .
                     '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
                 return $btn;
             })
@@ -111,5 +114,34 @@ class CompetitionController extends Controller
         $competition->keterangan = request()->input('keterangan');
         $competition->save();
         return redirect('/Admin/competition');
+    }
+
+    public function show_ajax($id)
+    {
+        $competition = CompetitionModel::where('lomba_id', $id)
+            ->with('kategori')
+            ->firstOrFail();
+        $rekomendasi = RekomendasiModel::where('lomba_id', $id)
+            ->with('mahasiswa')
+            ->get();
+        return view('admin.competition.show_ajax', ['competition' => $competition, 'rekomendasi' => $rekomendasi]);
+    }
+
+    public function rekomendasi($id)
+    {
+        // Ambil semua data mahasiswa
+        $mahasiswa = MahasiswaModel::all(['nim', 'ipk', 'jumlah_prestasi', 'kategori_prestasi', 'tingkat_prestasi', 'pengalaman_organisasi'])->toArray();
+
+        // Kirim data ke API SPK
+        $response = Http::post('http://localhost:5001/recommend', [
+            'mahasiswa' => $mahasiswa
+        ]);
+
+        if ($response->successful()) {
+            $rekomendasi = $response->json()['rekomendasi'];
+            return view('admin.competition.show_ajax', ['rekomendasi' => $rekomendasi]);
+        } else {
+            return view('admin.competition.error_ajax', ['message' => 'Gagal mendapatkan rekomendasi']);
+        }
     }
 }

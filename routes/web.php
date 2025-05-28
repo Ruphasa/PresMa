@@ -11,6 +11,7 @@ use App\Http\Controllers\ListAchievementController;
 use App\Http\Controllers\ListCompetitionController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\UserController;
@@ -44,7 +45,9 @@ Route::get('/home', [LandingPageController::class, 'index']);
 Route::get('/Achievement', [ListAchievementController::class, 'index']);
 Route::get('student/Achievement/', [ListAchievementController::class, 'studentIndex']);
 
-Route::get('/Competition    ', [ListCompetitionController::class, 'index']);
+Route::get('/Competition', [ListCompetitionController::class, 'index']);
+Route::get('/competition/{id}', [ListCompetitionController::class, 'show']);
+
 
 Route::get('/detail', function () {
     return view('detail');
@@ -109,6 +112,15 @@ Route::put('/profile/update', [ProfileController::class, 'update'])->name('profi
         });
 
 
+Route::prefix('prodi')->group(function () {
+    Route::post('/list', [ProdiController::class, 'list']); // datatables ajax
+    Route::get('/create_ajax', [ProdiController::class, 'create_ajax']); // form create
+    Route::post('/ajax', [ProdiController::class, 'store_ajax']); // store via ajax
+    Route::get('/{id}/show_ajax', [ProdiController::class, 'show_ajax']); // detail prodi
+    Route::delete('/{id}/delete_ajax', [ProdiController::class, 'delete_ajax']); // hapus via ajax
+});
+
+        
 Route::get('/Admin/Competition', [CompetitionController::class, 'index']);
 Route::post('/Admin/competition/listPending', [CompetitionController::class, 'listPending'])->name('competition.listPending');
 Route::post('/Admin/competition/listValid', [CompetitionController::class, 'listValid'])->name('competition.listValid');
@@ -116,7 +128,9 @@ Route::get('/Admin/competition/{id}/validate_ajax', [CompetitionController::clas
 Route::post('/Admin/competition/{id}/validate_ajax', [CompetitionController::class,'validate_ajax']);
 Route::get('/Admin/competition/{id}/reject_ajax', [CompetitionController::class,'confirmReject']);
 Route::post('/Admin/competition/{id}/reject_ajax', [CompetitionController::class,'reject_ajax']);
-Route::get('/competition/{lomba_id}', [ListCompetitionController::class, 'show'])->name('competition.detail');
+Route::get('Admin/competition/{id}', [CompetitionController::class, 'show_ajax']);
+Route::get('Admin/competition/{id}/rekomendasi', [CompetitionController::class, 'rekomendasi']);
+
 
 Route::get('/Admin/Achievement', [AchievementController::class, 'index']);
 Route::post('/Admin/achievement/listPending', [AchievementController::class, 'listPending'])->name('achievement.listPending');
