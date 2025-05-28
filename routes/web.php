@@ -37,11 +37,12 @@ Route::get('register', [RegisterController::class, 'index']);
 Route::post('register', [RegisterController::class, 'store']);
 
 Route::middleware(['auth'])->group(function() {
-    Route::get('/', [LandingPageController::class, 'index']);
+Route::get('/', [LandingPageController::class, 'index']);
 
 Route::get('/home', [LandingPageController::class, 'index']);
 
 Route::get('/Achievement', [ListAchievementController::class, 'index']);
+Route::get('student/Achievement/', [ListAchievementController::class, 'studentIndex']);
 
 Route::get('/Competition    ', [ListCompetitionController::class, 'index']);
 
@@ -127,5 +128,7 @@ Route::post('/Admin/achievement/{id}/reject_ajax', [AchievementController::class
 Route::get('/Dosen/achievement', [AchievementController::class, 'dosen']);
 Route::post('/Dosen/achievement/list', [AchievementController::class, 'listDosen']);
 
-
+Route::post('/student/achievement/listPending', [ListAchievementController::class, 'listPending'])->name('achievement.listPending');
+Route::post('/student/achievement/listValid', [ListAchievementController::class, 'listValid'])->name('achievement.listValid');
+Route::post('/student/achievement/listReject', [ListAchievementController::class, 'listRejected'])->name('achievement.listRejected');
 });
