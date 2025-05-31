@@ -139,6 +139,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/Admin/achievement', [AchievementController::class, 'index']);
     Route::post('/Admin/achievement/listPending', [AchievementController::class, 'listPending'])->name('achievement.listPending');
     Route::post('/Admin/achievement/listValid', [AchievementController::class, 'listValid'])->name('achievement.listValid');
+    Route::get('/Admin/achievement/{id}/show_ajax', [AchievementController::class, 'show_ajax']);
     Route::get('/Admin/achievement/{id}/validate_ajax', [AchievementController::class, 'confirmValidate']);
     Route::post('/Admin/achievement/{id}/validate_ajax', [AchievementController::class, 'validate_ajax']);
     Route::get('/Admin/achievement/{id}/reject_ajax', [AchievementController::class, 'confirmReject']);
