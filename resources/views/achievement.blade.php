@@ -1,7 +1,6 @@
 @extends('layouts.template')
 <!-- Content Start -->
 @section('content')
-
     <!-- Admin Dashboard Start -->
     <div class="container-fluid py-5">
         <div class="container">
@@ -17,7 +16,7 @@
                                         <th>Nama Lomba</th>
                                         <th>Tingkat Prestasi</th>
                                         <th>Juara Ke</th>
-                                        <th></th>
+                                        <th>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody></tbody>
@@ -33,29 +32,51 @@
 @endsection
 
 @push('js')
-<script>
-    $(document).ready(function () {
-        $('#table-achievements').DataTable({
-            processing: true,
-            serverSide: true,
-            responsive: true,
-            ajax: {
-                url: "{{ url('Dosen/achievement/list') }}",
-                dataType: "json",
-                type: "POST",
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            },
-            columns: [
-                { data: 'DT_RowIndex', orderable: false, searchable: false },
+    <script>
+        $(document).ready(function() {
+            $('#table-achievements').DataTable({
+                processing: true,
+                serverSide: true,
+                responsive: true,
+                ajax: {
+                    url: "{{ url('Dosen/achievement/list') }}",
+                    dataType: "json",
+                    type: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                },
+                columns: [{
+                        data: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
 
-                { data: 'lomba.lomba_nama', orderable: true, searchable: true },
-                { data: 'tingkat_prestasi', orderable: true, searchable: true },
-                { data: 'juara_ke', orderable: true, searchable: true },
-            ],
-            order: [[1, 'asc']]
+                    {
+                        data: 'lomba.lomba_nama',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'tingkat_prestasi',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'juara_ke',
+                        orderable: true,
+                        searchable: true
+                    },
+                    {
+                        data: 'action',
+                        orderable: false,
+                        searchable: false
+                    }
+                ],
+                order: [
+                    [1, 'asc']
+                ]
+            });
         });
-    });
-</script>
+    </script>
 @endpush

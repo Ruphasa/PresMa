@@ -1,7 +1,6 @@
 @extends('layouts.template')
 <!-- Content Start -->
 @section('content')
-
     <!-- Admin Dashboard Start -->
     <div class="container-fluid py-5">
         <div class="container">
@@ -22,12 +21,14 @@
                         <div class="card">
                             <div class="card-header" id="headingPending">
                                 <h5 class="mb-0">
-                                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapsePending" aria-expanded="true" aria-controls="collapsePending">
+                                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapsePending"
+                                        aria-expanded="true" aria-controls="collapsePending">
                                         Pending Competitions
                                     </button>
                                 </h5>
                             </div>
-                            <div id="collapsePending" class="collapse show" aria-labelledby="headingPending" data-parent="#accordion">
+                            <div id="collapsePending" class="collapse show" aria-labelledby="headingPending"
+                                data-parent="#accordion">
                                 <div class="card-body">
                                     <table class="table" id="table-pending-competitions">
                                         <thead>
@@ -55,12 +56,14 @@
                         <div class="card">
                             <div class="card-header" id="headingValid">
                                 <h5 class="mb-0">
-                                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseValid" aria-expanded="false" aria-controls="collapseValid">
+                                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseValid"
+                                        aria-expanded="false" aria-controls="collapseValid">
                                         Valid Competitions
                                     </button>
                                 </h5>
                             </div>
-                            <div id="collapseValid" class="collapse" aria-labelledby="headingValid" data-parent="#accordion">
+                            <div id="collapseValid" class="collapse" aria-labelledby="headingValid"
+                                data-parent="#accordion">
                                 <div class="card-body">
                                     <table class="table" id="table-valid-competitions">
                                         <thead>
@@ -84,116 +87,190 @@
             </div>
         </div>
     </div>
-    <div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false"></div>
-    <!-- Admin Dashboard End -->
+    <div id="myModal" class="modal fade animate shake" tabindex="-1" role="dialog" data-backdrop="static"
+        data-keyboard="false" data-width="75%" aria-hidden="true"></div> <!-- Admin Dashboard End -->
 @endsection
 
 @push('css')
-<style>
-    .card-body {
-        padding: 1.25rem !important;
-        width: 100% !important;
-    }
-    .card-body .table {
-        width: 100% !important;
-        table-layout: auto !important;
-        min-width: 100% !important;
-    }
-    .dataTables_wrapper {
-        width: 100% !important;
-        min-width: 100% !important;
-    }
-    .collapse.show {
-        display: block !important;
-    }
-</style>
+    <style>
+        .card-body {
+            padding: 1.25rem !important;
+            width: 100% !important;
+        }
+
+        .card-body .table {
+            width: 100% !important;
+            table-layout: auto !important;
+            min-width: 100% !important;
+        }
+
+        .dataTables_wrapper {
+            width: 100% !important;
+            min-width: 100% !important;
+        }
+
+        .collapse.show {
+            display: block !important;
+        }
+    </style>
 @endpush
 
 @push('js')
-<script>
-    $(document).ready(function () {
-        // Modal Action Function
-        window.modalAction = function(url) {
-            $('#myModal').modal('show').find('.modal-content').remove();
-            $('#myModal').append('<div class="modal-content"></div>');
-            $('#myModal .modal-content').load(url, function() {
-                $('#myModal').data('url', url);
-            });
-        };
-
-        // Pending Competitions Table
-        var tablePending = $('#table-pending-competitions').DataTable({
-            processing: true,
-            serverSide: true,
-            responsive: true,
-            scrollX: true,
-            autoWidth: false,
-            ajax: {
-                url: "{{ url('Admin/competition/listPending') }}",
-                dataType: "json",
-                type: "POST",
-                headers: {
-                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                }
-            },
-            columns: [
-                { data: 'DT_RowIndex', orderable: false, searchable: false, width: '5%' },
-                { data: 'kategori_id', orderable: true, searchable: true, width: '10%' },
-                { data: 'lomba_tingkat', orderable: true, searchable: true, width: '15%' },
-                { data: 'lomba_tanggal', orderable: true, searchable: true, width: '15%' },
-                { data: 'lomba_nama', orderable: true, searchable: true, width: '20%' },
-                { data: 'lomba_detail', orderable: true, searchable: true, width: '20%' },
-                { data: 'validate', orderable: false, searchable: false, width: '15%' }
-            ],
-            order: [[3, 'asc']]
-        });
-
-        // Valid Competitions Table
-        var tableValid;
-        var validInitialized = false;
-        $('#collapseValid').on('shown.bs.collapse', function () {
-            if (!validInitialized) {
-                tableValid = $('#table-valid-competitions').DataTable({
-                    processing: true,
-                    serverSide: true,
-                    responsive: true,
-                    scrollX: true,
-                    autoWidth: false,
-                    ajax: {
-                        url: "{{ url('Admin/competition/listValid') }}",
-                        dataType: "json",
-                        type: "POST",
-                        headers: {
-                            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-                        }
-                    },
-                    columns: [
-                        { data: 'DT_RowIndex', orderable: false, searchable: false, width: '5%' },
-                        { data: 'kategori_id', orderable: true, searchable: true, width: '10%' },
-                        { data: 'lomba_tingkat', orderable: true, searchable: true, width: '15%' },
-                        { data: 'lomba_tanggal', orderable: true, searchable: true, width: '15%' },
-                        { data: 'lomba_nama', orderable: true, searchable: true, width: '20%' },
-                        { data: 'lomba_detail', orderable: true, searchable: true, width: '20%' },
-                        { data: 'action', orderable: false, searchable: false, width: '15%' }
-                    ],
-                    order: [[3, 'asc']]
+    <script>
+        $(document).ready(function() {
+            // Modal Action Function
+            function modalAction(url = '') {
+                $('#myModal').load(url, function() {
+                    $('#myModal').modal('show');
                 });
-                validInitialized = true;
-            } else {
-                tableValid.columns.adjust().responsive.recalc();
             }
-        });
 
-        $('#collapseValid').on('hidden.bs.collapse', function () {
-            if (validInitialized) {
-                tableValid.columns.adjust().responsive.recalc();
-            }
-        });
+            // Pending Competitions Table
+            var tablePending;
+            tablePending = $('#table-pending-competitions').DataTable({
+                processing: true,
+                serverSide: true,
+                responsive: true,
+                scrollX: true,
+                autoWidth: false,
+                ajax: {
+                    url: "{{ url('Admin/competition/listPending') }}",
+                    dataType: "json",
+                    type: "POST",
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                },
+                columns: [{
+                        data: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false,
+                        width: '5%'
+                    },
+                    {
+                        data: 'kategori_id',
+                        orderable: true,
+                        searchable: true,
+                        width: '10%'
+                    },
+                    {
+                        data: 'lomba_tingkat',
+                        orderable: true,
+                        searchable: true,
+                        width: '15%'
+                    },
+                    {
+                        data: 'lomba_tanggal',
+                        orderable: true,
+                        searchable: true,
+                        width: '15%'
+                    },
+                    {
+                        data: 'lomba_nama',
+                        orderable: true,
+                        searchable: true,
+                        width: '20%'
+                    },
+                    {
+                        data: 'lomba_detail',
+                        orderable: true,
+                        searchable: true,
+                        width: '20%'
+                    },
+                    {
+                        data: 'validate',
+                        orderable: false,
+                        searchable: false,
+                        width: '15%'
+                    }
+                ],
+                order: [
+                    [3, 'asc']
+                ]
+            });
 
-        $(window).on('resize', function () {
-            tablePending.columns.adjust().responsive.recalc();
-            if (validInitialized) tableValid.columns.adjust().responsive.recalc();
+            // Valid Competitions Table
+            var tableValid;
+            var validInitialized = false;
+            $('#collapseValid').on('shown.bs.collapse', function() {
+                if (!validInitialized) {
+                    tableValid = $('#table-valid-competitions').DataTable({
+                        processing: true,
+                        serverSide: true,
+                        responsive: true,
+                        scrollX: true,
+                        autoWidth: false,
+                        ajax: {
+                            url: "{{ url('Admin/competition/listValid') }}",
+                            dataType: "json",
+                            type: "POST",
+                            headers: {
+                                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                            }
+                        },
+                        columns: [{
+                                data: 'DT_RowIndex',
+                                orderable: false,
+                                searchable: false,
+                                width: '5%'
+                            },
+                            {
+                                data: 'kategori_id',
+                                orderable: true,
+                                searchable: true,
+                                width: '10%'
+                            },
+                            {
+                                data: 'lomba_tingkat',
+                                orderable: true,
+                                searchable: true,
+                                width: '15%'
+                            },
+                            {
+                                data: 'lomba_tanggal',
+                                orderable: true,
+                                searchable: true,
+                                width: '15%'
+                            },
+                            {
+                                data: 'lomba_nama',
+                                orderable: true,
+                                searchable: true,
+                                width: '20%'
+                            },
+                            {
+                                data: 'lomba_detail',
+                                orderable: true,
+                                searchable: true,
+                                width: '20%'
+                            },
+                            {
+                                data: 'action',
+                                orderable: false,
+                                searchable: false,
+                                width: '15%'
+                            }
+                        ],
+                        order: [
+                            [3, 'asc']
+                        ]
+                    });
+                    validInitialized = true;
+                } else {
+                    tableValid.columns.adjust().responsive.recalc();
+                }
+            });
+
+            $('#collapseValid').on('hidden.bs.collapse', function() {
+                if (validInitialized) {
+                    tableValid.columns.adjust().responsive.recalc();
+                }
+            });
+
+            $(window).on('resize', function() {
+                tablePending.columns.adjust().responsive.recalc();
+                if (validInitialized) tableValid.columns.adjust().responsive.recalc();
+            });
         });
-    });
-</script>
+    </script>
 @endpush

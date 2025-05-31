@@ -54,6 +54,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
     Route::get('/Admin', [DashboardController::class, 'index']);
+    Route::get('/Admin/dashboard/stats', [DashboardController::class, 'getDashboardStats'])->name('dashboard.stats');
     Route::get('/Admin/user', [UserController::class, 'index']);
     Route::post('/Admin/mahasiswa/list', [MahasiswaController::class, 'list']);
     Route::post('/Admin/dosen/list', [DosenController::class, 'list']);

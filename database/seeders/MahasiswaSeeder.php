@@ -12,9 +12,10 @@ class MahasiswaSeeder extends Seeder
         $mahasiswas = [
             [
                 'nim' => 2341720143,
-                'user_id' => 1, // Merujuk ke Budi Santoso
-                'prodi_id' => 1, // Teknik Informatika
-                'dosen_id' => 1, // Merujuk ke Prof. Andi Wijaya
+                'user_id' => 1,
+                'prodi_id' => 1,
+                'dosen_id' => 1,
+                'angkatan' => 2023,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],

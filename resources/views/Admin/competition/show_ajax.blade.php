@@ -38,7 +38,8 @@
                     @if ($rekomendasi->isEmpty())
                         <div class="alert alert-warning">
                             <h5><i class="icon fas fa-exclamation-triangle"></i> Cari Rekomndasi Mahasiswa ?</h5>
-                            <a type="button" class="btn btn-primary" id="btn-cari-rekomendasi" href="{{ url('/Admin/competition/' . $competition->lomba_id . '/rekomendasi') }}">
+                            <a type="button" class="btn btn-primary" id="btn-cari-rekomendasi"
+                                href="{{ url('/Admin/competition/' . $competition->lomba_id . '/rekomendasi') }}">
                                 Carikan doong~
                             </a>
                         </div>
@@ -60,8 +61,8 @@
                             @endforeach
                         </tbody>
                         <a type="button" class="btn btn-success" id="btn-kirim-notif" href="{{ url('') }}">
-                                Kirim Notif
-                            </a>
+                            Kirim Notif
+                        </a>
                     @endif
                 </table>
             @endisset

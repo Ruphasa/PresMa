@@ -18,6 +18,12 @@ return new class extends Migration
                 $table->unsignedBigInteger('user_id');
                 $table->unsignedBigInteger('prodi_id');
                 $table->unsignedBigInteger('dosen_id');
+                $table->float('ipk', 3, 2)->default(0.00);
+                $table->integer('jumlah_lomba')->default(0);
+                $table->string('prefrensi_lomba')->nullable();
+                $table->integer('angkatan')->nullable();
+                $table->integer('point')->default(0);
+
                 $table->timestamps();
 
                 $table->foreign('user_id')->references('user_id')->on('m_user');

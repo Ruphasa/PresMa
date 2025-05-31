@@ -8,7 +8,7 @@ import joblib
 
 # Load dataset (contoh: mahasiswa_data.csv)
 data = pd.read_csv('mahasiswa_data.csv')  # Pastikan dataset ini ada
-X = data[['ipk', 'jumlah_prestasi', 'kategori_prestasi', 'tingkat_prestasi', 'pengalaman_organisasi']]  # Fitur
+X = data[['ipk','prefrensi_lomba', 'jumlah_prestasi', 'angkatan', 'point']]  # Fitur
 y = data['target']  # Label (1: berpotensi, 0: tidak)
 
 # Normalisasi data

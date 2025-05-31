@@ -44,21 +44,29 @@ class AchievementController extends Controller
             'prestasi_id',
             'lomba_id',
             'tingkat_prestasi',
-            'juara_ke'
+            'juara_ke',
+            'status'
         )
             ->with('lomba')
+            ->where('status', '!=','rejected') // Exclude rejected achievements
+            ->orderBy('status', 'asc')
             ->get();
 
         return DataTables::of($prestasi)
             ->addIndexColumn()
             ->addColumn('action', function ($prestasi) {
-                $btn = '<button onclick="modalAction(\'' . url('/prestasi/' . $prestasi->prestasi_id .
-                    '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/prestasi/' . $prestasi->prestasi_id .
-                    '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/prestasi/' . $prestasi->prestasi_id .
-                    '/delete_ajax') . '\')"  class="btn btn-danger btn-sm">Hapus</button> ';
-                return $btn;
+                if ($prestasi->status === 'pending') {
+                    $btn = '<button onclick="modalAction(\'' . url('Admin/achievement/' . $prestasi->prestasi_id .
+                        '/validate_ajax') . '\')" class="btn btn-success btn-sm">Validasi</button> ';
+                    $btn .= '<button onclick="modalAction(\'' . url('Admin/achievement/' . $prestasi->prestasi_id .
+                        '/reject_ajax') . '\')" class="btn btn-danger btn-sm">Reject</button> ';
+                    return $btn;
+                }
+                if ($prestasi->status === 'validated') {
+                    $btn = '<button onclick="modalAction(\'' . url('/prestasi/' . $prestasi->prestasi_id .
+                        '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
+                    return $btn;
+                }
             })
             ->rawColumns(['action'])
             ->make(true);

@@ -14,22 +14,22 @@
                 </div><!-- End Portfolio Filters -->
             </div>
             <div class="row">
-                @forelse ($competitions as $competition)
+                @forelse ($competitions as $c)
                     <div class="col-lg-4 col-md-6 pb-4">
                         <a class="courses-list-item position-relative d-block overflow-hidden mb-2"
-                            href="{{ url('competition/' . $competition->lomba_id) }}">
+                            href="{{ url('competition/' . $c->lomba_id) }}">
                             <img class="img-fluid" src="{{ asset('Edukate/img/courses-1.jpg') }}" alt="">
                             <div class="courses-text">
-                                <h4 class="text-center text-white px-3">{{ $competition->lomba_nama }}</h4>
+                                <h4 class="text-center text-white px-3">{{ $c->lomba_nama }}</h4>
                                 <div class="border-top w-100 mt-3">
                                     <div class="d-flex justify-content-between p-4">
                                         <span class="text-white"><i
-                                                class="fa fa-list mr-2"></i>{{ $competition->kategori->kategori_nama ?? 'N/A' }}</span>
+                                                class="fa fa-list mr-2"></i>{{ $c->kategori->kategori_nama ?? 'N/A' }}</span>
                                         <span class="text-white"><i
-                                                class="fa fa-calendar mr-2"></i>{{ $competition->lomba_tanggal }}</span>
+                                                class="fa fa-calendar mr-2"></i>{{ $c->lomba_tanggal }}</span>
                                     </div>
                                     <div class="text-center text-white pb-2">
-                                        <span><i class="fa fa-info-circle mr-2"></i>{{ $competition->lomba_tingkat }}</span>
+                                        <span><i class="fa fa-info-circle mr-2"></i>{{ $c->lomba_tingkat }}</span>
                                     </div>
                                 </div>
                             </div>
