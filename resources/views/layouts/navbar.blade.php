@@ -50,9 +50,16 @@
                 <div class="navbar-nav mx-auto py-0">
                     <a href="{{ url('/') }}"
                         class="nav-item nav-link {{ $activeMenu == 'home' ? 'active' : '' }}">Home</a>
-                    <a href="{{ url('/Achievement') }}"
-                        class="nav-item nav-link {{ $activeMenu == 'achievement' ? 'active' : '' }}">My
-                        Achievement</a>
+                    @if (Auth::user()->hasRole('DSN'))
+                        <a href="{{ url('/Achievement') }}"
+                            class="nav-item nav-link {{ $activeMenu == 'achievement' ? 'active' : '' }}">My Student
+                            Achievement</a>
+                    @endif
+                    @if (Auth::user()->hasRole('MHS'))
+                        <a href="{{ url('/Student/achievement') }}"
+                            class="nav-item nav-link {{ $activeMenu == 'achievement' ? 'active' : '' }}">My
+                            Achievement</a>
+                    @endif
                     <a href="{{ url('/Competition') }}"
                         class="nav-item nav-link {{ $activeMenu == 'competition' ? 'active' : '' }}">Competition</a>
                     @if (Auth::user()->hasRole('ADM'))

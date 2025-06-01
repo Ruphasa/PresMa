@@ -43,7 +43,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home', [LandingPageController::class, 'index']);
 
     Route::get('/Achievement', [ListAchievementController::class, 'index']);
-    Route::get('student/Achievement/', [ListAchievementController::class, 'studentIndex']);
+    Route::get('Student/achievement/', [ListAchievementController::class, 'studentIndex']);
 
     Route::get('/Competition', [ListCompetitionController::class, 'index']);
     Route::get('/competition/{id}', [ListCompetitionController::class, 'show']);
