@@ -21,9 +21,8 @@ class DatabaseSeeder extends Seeder
             MahasiswaSeeder::class,
             AdminSeeder::class,
             KategoriLombaSeeder::class,
-            LombaSeeder::class,            
+            LombaSeeder::class,
             PrestasiSeeder::class,
-            SertifikatSeeder::class,
         ]);
     }
 }

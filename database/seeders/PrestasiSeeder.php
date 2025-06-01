@@ -17,6 +17,7 @@ class PrestasiSeeder extends Seeder
             [
                 'prestasi_id' => 1,
                 'lomba_id' => 1,
+                'mahasiswa_id' => 2341720134,
                 'tingkat_prestasi' => 'Nasional',
                 'juara_ke' => 3,
                 'status' => 'validated',
@@ -26,6 +27,7 @@ class PrestasiSeeder extends Seeder
             [
                 'prestasi_id' => 2,
                 'lomba_id' => 1,
+                'mahasiswa_id' => 2341720143,
                 'tingkat_prestasi' => 'Internasional',
                 'juara_ke' => 3,
                 'status' => 'pending',

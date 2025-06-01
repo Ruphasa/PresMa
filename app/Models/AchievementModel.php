@@ -14,6 +14,7 @@ class AchievementModel extends Model
     protected $primaryKey = 'prestasi_id';
     protected $fillable = [
         'lomba_id',
+        'mahasiswa_id',
         'tingkat_prestasi',
         'juara_ke',
         'status'
@@ -21,5 +22,9 @@ class AchievementModel extends Model
     public function lomba()
     {
         return $this->belongsTo(CompetitionModel::class, 'lomba_id');
+    }
+    public function mahasiswa()
+    {
+        return $this->belongsTo(MahasiswaModel::class, 'mahasiswa_id', 'nim');
     }
 }

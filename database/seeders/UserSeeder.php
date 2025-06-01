@@ -41,6 +41,16 @@ class UserSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'user_id' => 4,
+                'level_id' => 3,
+                'nama' => 'Ripqi',
+                'email' => 'Ripqi@gmail.com',
+                'password' => Hash::make('12345'),
+                'img' => 'default.jpg',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ];
 
         DB::table('m_user')->insert($users);

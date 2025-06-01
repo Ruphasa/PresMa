@@ -38,9 +38,9 @@
 
                                 <div class="text-center mb-4">
                                     <img src="{{ auth()->user()->img
-        ? asset('storage/img/' . auth()->user()->img)
-        : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->nama) . '&size=120&background=random' 
-                                }}" alt="Foto Profil" class="rounded-circle shadow" width="120" height="120"
+                                        ? asset('storage/img/' . auth()->user()->img)
+                                        : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->nama) . '&size=120&background=random' }}"
+                                        alt="Foto Profil" class="rounded-circle shadow" width="120" height="120"
                                         onerror="this.onerror=null; this.src='https://via.placeholder.com/120?text=No+Image';" />
                                 </div>
 
@@ -66,7 +66,7 @@
                                     <input type="file" name="img" class="form-control-file">
                                 </div>
 
-                                @if (auth()->user()->level_id == 1)
+                                @if (auth()->user()->level_id == 3)
                                     <div class="row">
                                         <div class="col-md-6">
                                             <div class="form-group">
@@ -84,7 +84,8 @@
                                         </div>
                                     </div>
                                 @else
-                                    <input type="hidden" name="ipk" value="{{ auth()->user()->mahasiswa()->ipk ?? '' }}">
+                                    <input type="hidden" name="ipk"
+                                        value="{{ auth()->user()->mahasiswa()->ipk ?? '' }}">
                                     <input type="hidden" name="point"
                                         value="{{ auth()->user()->mahasiswa()->preferensi_lomba ?? '' }}">
                                 @endif

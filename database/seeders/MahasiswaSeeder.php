@@ -19,6 +19,15 @@ class MahasiswaSeeder extends Seeder
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
+            [
+                'nim' => 2341720134,
+                'user_id' => 4,
+                'prodi_id' => 1,
+                'dosen_id' => 1,
+                'angkatan' => 2023,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
         ];
 
         DB::table('m_mahasiswa')->insert($mahasiswas);
