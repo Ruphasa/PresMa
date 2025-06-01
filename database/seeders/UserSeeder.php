@@ -13,7 +13,7 @@ class UserSeeder extends Seeder
         $users = [
             [
                 'user_id' => 1,
-                'level_id' => 1,
+                'level_id' => 3,
                 'nama' => 'Ruphasa Mafahl',
                 'email' => 'ruphasamafahl@gmail.com',
                 'password' => Hash::make('12345'),
@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
             ],
             [
                 'user_id' => 3,
-                'level_id' => 3,
+                'level_id' => 1,
                 'nama' => 'Admin',
                 'email' => 'admin@gmail.com',
                 'password' => Hash::make('12345'),
