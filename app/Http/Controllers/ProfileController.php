@@ -36,6 +36,9 @@ class ProfileController extends Controller
         ];
         $activeMenu = 'profile'; // set menu yang sedang aktif
         $user = $request->user(); // Ambil data user yang sedang login
+        if (!$user) {
+            return redirect()->route('profile.show')->with('error', 'User not found');
+        }
 
         return view('profile.edit', compact('breadcrumb', 'page', 'activeMenu', 'user'));
     }
@@ -48,6 +51,8 @@ class ProfileController extends Controller
             'nama' => 'required|string|max:255',
             'password' => 'nullable|string|min:5',
             'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'ipk' => 'nullable|numeric|min:0|max:4.0',
+            'preferensi_lomba' => 'nullable|string|max:255',
         ]);
         $user->nama = $validated['nama'];
         if ($request->filled('password')) {

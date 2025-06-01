@@ -20,6 +20,11 @@ public $incrementing = false; // Memberitahu Laravel bahwa primary key tidak aut
         'user_id',
         'prodi_id',
         'dosen_id',
+        'ipk',
+        'jumlah_lomba',
+        'preferensi_lomba',
+        'angkatan',
+        'point',
     ];
     public function prestasi()
     {

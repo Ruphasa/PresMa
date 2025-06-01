@@ -21,7 +21,17 @@
                                 onerror="this.onerror=null; this.src='https://via.placeholder.com/120?text=No+Image';">
                             <h3 class="mb-0">{{ auth()->user()->nama }}</h3>
                             <p class="text-muted mb-1">{{ auth()->user()->email }}</p>
-                            <span class="badge bg-secondary">Level ID: {{ auth()->user()->level_id }}</span>
+
+                            <!-- Mahasiswa Exclusive -->
+                            @if (auth()->user()->level_id == 1)
+                                <p class="text-muted mb-1">
+                                    <span class="badge bg-success">{{ auth()->user()->mahasiswa()->ipk ?? 'N/A' }}</span>
+                                    <span class="badge bg-info">{{ auth()->user()->mahasiswa()->point ?? 'N/A' }}</span>
+                                    <span class="badge bg-warning">{{ auth()->user()->mahasiswa()->angkatan ?? 'N/A' }}</span>
+                                </p>
+                            @endif
+
+                            <span class="badge bg-primary">Joined: {{ auth()->user()->created_at->format('d M Y') }}</span>
                         </div>
                         <div class="card-footer text-center">
                             <a href="./profile/edit" class="btn btn-primary btn-sm">Edit Profile</a>
