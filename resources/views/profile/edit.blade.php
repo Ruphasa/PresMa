@@ -40,7 +40,7 @@
                                     <img src="{{ auth()->user()->img
         ? asset('storage/img/' . auth()->user()->img)
         : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->nama) . '&size=120&background=random' 
-                        }}" alt="Foto Profil" class="rounded-circle shadow" width="120" height="120"
+                                }}" alt="Foto Profil" class="rounded-circle shadow" width="120" height="120"
                                         onerror="this.onerror=null; this.src='https://via.placeholder.com/120?text=No+Image';" />
                                 </div>
 
@@ -65,6 +65,29 @@
                                     <label for="img">Foto Profil</label>
                                     <input type="file" name="img" class="form-control-file">
                                 </div>
+
+                                @if (auth()->user()->level_id == 1)
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="ipk">IPK</label>
+                                                <input type="text" name="ipk" class="form-control"
+                                                    value="{{ old('ipk', auth()->user()->mahasiswa()->ipk ?? '') }}">
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-group">
+                                                <label for="point">Preferensi Lomba</label>
+                                                <input type="text" name="point" class="form-control"
+                                                    value="{{ old('point', auth()->user()->mahasiswa()->preferensi_lomba ?? '') }}">
+                                            </div>
+                                        </div>
+                                    </div>
+                                @else
+                                    <input type="hidden" name="ipk" value="{{ auth()->user()->mahasiswa()->ipk ?? '' }}">
+                                    <input type="hidden" name="point"
+                                        value="{{ auth()->user()->mahasiswa()->preferensi_lomba ?? '' }}">
+                                @endif
 
                                 <div class="mt-4 text-center">
                                     <button type="submit" class="btn btn-primary px-5">Update Profil</button>
