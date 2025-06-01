@@ -91,39 +91,17 @@
         data-keyboard="false" data-width="75%" aria-hidden="true"></div> <!-- Admin Dashboard End -->
 @endsection
 
-@push('css')
-    <style>
-        .card-body {
-            padding: 1.25rem !important;
-            width: 100% !important;
-        }
-
-        .card-body .table {
-            width: 100% !important;
-            table-layout: auto !important;
-            min-width: 100% !important;
-        }
-
-        .dataTables_wrapper {
-            width: 100% !important;
-            min-width: 100% !important;
-        }
-
-        .collapse.show {
-            display: block !important;
-        }
-    </style>
-@endpush
-
 @push('js')
     <script>
         $(document).ready(function() {
             // Modal Action Function
-            function modalAction(url = '') {
+            window.modalAction = function(url) {
+                $('#myModal').html(''); // Bersihkan semua konten lama
                 $('#myModal').load(url, function() {
-                    $('#myModal').modal('show');
+                    $('#myModal').modal('show'); // Tampilkan modal setelah konten dimuat
+                    $('#myModal').data('url', url); // Simpan URL untuk keperluan POST
                 });
-            }
+            };
 
             // Pending Competitions Table
             var tablePending;

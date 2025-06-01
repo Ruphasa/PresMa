@@ -42,56 +42,69 @@
     </div>
 </form>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         // Validasi dan submit form untuk Dosen
         $("#form-tambah-dosen").validate({
             rules: {
-                nidn: { required: true },
-                user_id: { required: true },
-                nama: { required: true },
-                password: { required: true },
-                email: { required: true, email: true },
-                img: { required: true, extension: "jpg,jpeg,png,gif" }
+                nidn: {
+                    required: true
+                },
+                user_id: {
+                    required: true
+                },
+                nama: {
+                    required: true
+                },
+                password: {
+                    required: true
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                img: {
+                    required: true,
+                    extension: "jpg,jpeg,png,gif"
+                }
             },
-            submitHandler: function (form) {
+            submitHandler: function(form) {
                 $.ajax({
                     url: form.action,
                     type: form.method,
                     data: $(form).serialize(),
-                    success: function (response) {
+                    success: function(response) {
                         if (response.status) {
-                            $('#myModal').modal('hide'); // Pastikan modal dengan ID ini ada
+                            $('#myModal').modal(
+                            'hide'); // Pastikan modal dengan ID ini ada
                             Swal.fire('Berhasil', response.message, 'success');
                             if (typeof dataDosen !== 'undefined') {
-                                dataDosen.ajax.reload(); // Reload DataTable Dosen jika ada
+                                dataDosen.ajax
+                            .reload(); // Reload DataTable Dosen jika ada
                             }
                         } else {
                             $('.error-text').text('');
-                            $.each(response.msgField, function (prefix, val) {
+                            $.each(response.msgField, function(prefix, val) {
                                 $('#error-' + prefix).text(val[0]);
                             });
                             Swal.fire('Gagal', response.message, 'error');
                         }
                     },
-                    error: function () {
+                    error: function() {
                         Swal.fire('Error', 'Terjadi kesalahan pada server', 'error');
                     }
                 });
                 return false;
             },
             errorElement: 'span',
-            errorPlacement: function (error, element) {
+            errorPlacement: function(error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function (element) {
+            highlight: function(element) {
                 $(element).addClass('is-invalid');
             },
-            unhighlight: function (element) {
+            unhighlight: function(element) {
                 $(element).removeClass('is-invalid');
             }
         });

@@ -25,6 +25,7 @@
     <!-- Customized Bootstrap Stylesheet -->
     <link href="{{ asset('Edukate/css/style.css') }}" rel="stylesheet">
 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Data Table -->
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.6/css/jquery.dataTables.min.css">
     <!-- DataTables Responsive CSS -->
@@ -90,7 +91,6 @@
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <!-- Bootstrap JS (includes Popper.js for Bootstrap 4) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
-
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
     <script src="{{ asset('Edukate/lib/easing/easing.min.js') }}"></script>
     <script src="{{ asset('Edukate/lib/waypoints/waypoints.min.js') }}"></script>
