@@ -62,7 +62,7 @@ class ProfileController extends Controller
             if ($user->img && Storage::exists('public/img/' . $user->img)) {
                 Storage::delete('public/img/' . $user->img);
             }
-            $filename = uniqid() . '.' . $request->img->extension();
+            $filename = $user->username . '.png';
             $request->img->storeAs('public/img', $filename);
             $user->img = $filename;
         }

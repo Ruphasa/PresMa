@@ -71,7 +71,7 @@
                 @if (Auth::user())
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">
-                            <img src="{{ asset('storage/img/' . Auth::user()->img) }}" alt=""
+                            <img src="{{ asset('storage/img/' . Auth::user()->username . '.png') }}" alt=""
                                 class="img-size-50 img-circle mr-2">
                             {{ Auth::user()->nama }}
                         </a>
