@@ -49,6 +49,18 @@ class UserSeeder extends Seeder
             ],
         ];
 
+        for ($i = 1; $i <= 200; $i++) {
+            $users[] = [
+                'user_id' => 4 + $i, 
+                'level_id' => rand(1, 3),
+                'nama' => 'user' . $i,
+                'password' => Hash::make('12345'), // password default sama
+                'img' => 'default.jpg',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
         DB::table('m_user')->insert($users);
     }
 }

@@ -2,7 +2,6 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -14,20 +13,22 @@ class PrestasiSeeder extends Seeder
     public function run(): void
     {
         /**
-         * points:
-         * 1 point:ikut regional
-         * 2 point:juara 3 regional
-         * 3 point:juara 2 regional
-         * 4 point:juara 1 regional
-         * 5 point:ikut nasional
-         * 6 point:juara 3 nasional
-         * 7 point:juara 2 nasional
-         * 8 point:juara 1 nasional
-         * 9 point:ikut internasional
-         * 10 point:juara 3 internasional
-         * 11 point:juara 2 internasional
-         * 12 point:juara 1 internasional
+         * Points reference:
+         * 1: ikut regional
+         * 2: juara 3 regional
+         * 3: juara 2 regional
+         * 4: juara 1 regional
+         * 5: ikut nasional
+         * 6: juara 3 nasional
+         * 7: juara 2 nasional
+         * 8: juara 1 nasional
+         * 9: ikut internasional
+         * 10: juara 3 internasional
+         * 11: juara 2 internasional
+         * 12: juara 1 internasional
          */
+
+        // Data awal
         $prestasis = [
             [
                 'prestasi_id' => 1,
@@ -52,6 +53,34 @@ class PrestasiSeeder extends Seeder
                 'updated_at' => now(),
             ],
         ];
+
+        // Tambahkan 50 data prestasi tambahan
+        for ($i = 3; $i <= 52; $i++) {
+            $mahasiswaId = 2341720000 + rand(1, 200); 
+            $tingkatOptions = ['Regional', 'Nasional', 'Internasional'];
+            $tingkat = $tingkatOptions[array_rand($tingkatOptions)];
+
+            // Mapping point berdasarkan tingkat dan juara
+            $juara = rand(1, 4); // 4 = ikut saja,  1-3 = juara 
+            $pointMap = [
+            'Regional' => [1 => 4, 2 => 3, 3 => 2, 4 => 1],         // Juara 1 = 4 poin, ikut saja = 1 poin
+            'Nasional' => [1 => 8, 2 => 7, 3 => 6, 4 => 5],         // Juara 1 = 8 poin, ikut saja = 5 poin
+            'Internasional' => [1 => 12, 2 => 11, 3 => 10, 4 => 9], // Juara 1 = 12 poin, ikut saja = 9 poin
+            ];
+            $point = $pointMap[$tingkat][$juara];
+
+            $prestasis[] = [
+                'prestasi_id' => $i,
+                'lomba_id' => rand(1, 3), 
+                'mahasiswa_id' => $mahasiswaId,
+                'tingkat_prestasi' => $tingkat,
+                'juara_ke' => $juara,
+                'status' => ['pending', 'validated'][rand(0, 1)],
+                'point' => $point,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
 
         DB::table('t_prestasi')->insert($prestasis);
     }

@@ -9,9 +9,12 @@ class MahasiswaSeeder extends Seeder
 {
     public function run(): void
     {
+        $daftarLomba = ['Pemrograman', 'UI/UX', 'Data Science', 'Cyber Security', 'IoT', 'Robotic', 'Mobile App', 'Web Dev'];
+        
+        // Data mahasiswa awal yang sudah ada
         $mahasiswas = [
             [
-                'nim' => 2341720143,
+                'nim' => 2341720202,
                 'user_id' => 1,
                 'prodi_id' => 1,
                 'dosen_id' => 1,
@@ -20,8 +23,8 @@ class MahasiswaSeeder extends Seeder
                 'updated_at' => now(),
             ],
             [
-                'nim' => 2341720134,
-                'user_id' => 4,
+                'nim' => 2341720204,
+                'user_id' => 2,
                 'prodi_id' => 1,
                 'dosen_id' => 1,
                 'angkatan' => 2023,
@@ -29,6 +32,18 @@ class MahasiswaSeeder extends Seeder
                 'updated_at' => now(),
             ],
         ];
+
+        for ($i = 1; $i <= 200; $i++) {
+            $mahasiswas[] = [
+                'nim' => 2341720000 + $i,
+                'user_id' => rand(3, 204), 
+                'prodi_id' => rand(1, 3), 
+                'dosen_id' => 1, 
+                'angkatan' => rand(2020, 2024),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
 
         DB::table('m_mahasiswa')->insert($mahasiswas);
     }
