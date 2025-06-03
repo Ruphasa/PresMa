@@ -19,7 +19,7 @@ class ListCompetitionController extends Controller
             'title' => 'List of Competitions Available'
         ];
 
-        $activeMenu = 'competition';
+        $activeMenu = 'listcompetition';
 
         // Ambil semua kategori untuk dropdown
         $categories = KategoriModel::all();

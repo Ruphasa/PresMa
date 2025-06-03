@@ -42,7 +42,6 @@
                                                 <th>No.</th>
                                                 <th>NIM</th>
                                                 <th>Nama</th>
-                                                <th>Email</th>
                                                 <th>Image path</th>
                                                 <th>Prodi</th>
                                                 <th>Dospem</th>
@@ -86,7 +85,6 @@
                                                 <th>No.</th>
                                                 <th>NIDN</th>
                                                 <th>Nama</th>
-                                                <th>Email</th>
                                                 <th>Image path</th>
                                                 <th>Action</th>
                                             </tr>
@@ -128,7 +126,6 @@
                                                 <th>No.</th>
                                                 <th>NIP</th>
                                                 <th>Nama</th>
-                                                <th>Email</th>
                                                 <th>Image path</th>
                                                 <th>Action</th>
                                             </tr>
@@ -184,11 +181,6 @@
                         searchable: true
                     }, // Updated to use 'nama'
                     {
-                        data: 'user.email',
-                        orderable: true,
-                        searchable: true
-                    }, // Updated to use 'email'
-                    {
                         data: 'user.img',
                         orderable: true,
                         searchable: true
@@ -243,11 +235,6 @@
                         searchable: true
                     }, // Updated to use 'nama'
                     {
-                        data: 'user.email',
-                        orderable: true,
-                        searchable: true
-                    }, // Updated to use 'email'
-                    {
                         data: 'user.img',
                         orderable: true,
                         searchable: true
@@ -291,11 +278,6 @@
                         orderable: true,
                         searchable: true
                     }, // Updated to use 'nama'
-                    {
-                        data: 'user.email',
-                        orderable: true,
-                        searchable: true
-                    }, // Updated to use 'email'
                     {
                         data: 'user.img',
                         orderable: true,

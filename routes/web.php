@@ -45,8 +45,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/Achievement', [ListAchievementController::class, 'index']);
     Route::get('Student/achievement/', [ListAchievementController::class, 'studentIndex']);
 
-    Route::get('/Competition', [ListCompetitionController::class, 'index']);
-    Route::get('/competition/{id}', [ListCompetitionController::class, 'show']);
+    Route::get('/ListCompetition', [ListCompetitionController::class, 'index']);
+    Route::get('/Competition/{id}', [ListCompetitionController::class, 'show']);
 
 
     Route::get('/detail', function () {
@@ -55,6 +55,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::get('/Admin', [DashboardController::class, 'index']);
     Route::get('/Admin/dashboard/stats', [DashboardController::class, 'getDashboardStats'])->name('dashboard.stats');
+    Route::get('/Admin/dashboard/export-pdf', [DashboardController::class, 'exportPdf'])->name('dashboard.exportPdf');
     Route::get('/Admin/user', [UserController::class, 'index']);
     Route::post('/Admin/mahasiswa/list', [MahasiswaController::class, 'list']);
     Route::post('/Admin/dosen/list', [DosenController::class, 'list']);

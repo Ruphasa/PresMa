@@ -130,7 +130,14 @@ class CompetitionController extends Controller
     public function rekomendasi($id)
     {
         // Ambil semua data mahasiswa
-        $mahasiswa = MahasiswaModel::all(['nim', 'ipk', 'jumlah_prestasi', 'angkatan', 'point', 'pengalaman_organisasi'])->toArray();
+        $mahasiswa = MahasiswaModel::all([
+            'nim',
+            'ipk',
+            'angkatan',
+            'prefrensi_lomba',
+            ])
+            ->join('prestasi', 'mahasiswa.nim', '=', 'prestasi.nim')
+            ->toArray();
 
         // Kirim data ke API SPK
         $response = Http::post('http://localhost:5001/recommend', [

@@ -21,10 +21,8 @@ public $incrementing = false; // Memberitahu Laravel bahwa primary key tidak aut
         'prodi_id',
         'dosen_id',
         'ipk',
-        'jumlah_lomba',
-        'preferensi_lomba',
+        'prefrensi_lomba',
         'angkatan',
-        'point',
     ];
     public function prestasi()
     {
@@ -44,5 +42,8 @@ public $incrementing = false; // Memberitahu Laravel bahwa primary key tidak aut
         return $this->belongsTo(UserModel::class, 'user_id');
     }
 
-    
+    public function kategori()
+    {
+        return $this->belongsTo(KategoriModel::class, 'prefrensi_lomba', 'kategori_id');
+    }
 }

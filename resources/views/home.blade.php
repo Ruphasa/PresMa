@@ -146,7 +146,7 @@
                             </div>
                         </div>
                         <div class="w-100 bg-white text-center p-4">
-                            <a class="btn btn-primary" href="{{ url('competition/' . $competition->lomba_id) }}">Course
+                            <a class="btn btn-primary" href="{{ url('Competition/' . $competition->lomba_id) }}">Course
                                 Detail</a>
                         </div>
                     </div>

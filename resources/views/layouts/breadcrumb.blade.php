@@ -11,17 +11,17 @@
                 @endforeach
             </h1>
             <h1 class="text-white display-1 mb-5">{{ $breadcrumb->title }}</h1>
-            @if ($activeMenu == 'competition')
+            @if ($activeMenu == 'listcompetition')
                 <div class="mx-auto mb-5" style="width: 100%; max-width: 600px;">
-                    <form action="{{ url('/Competition') }}" method="GET" class="input-group">
+                    <form action="{{ url('/ListCompetition') }}" method="GET" class="input-group">
                         <div class="input-group-prepend">
                             <button class="btn btn-outline-light bg-white text-body px-4 dropdown-toggle" type="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Kategori</button>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="{{ url('/Competition') }}">All</a>
+                                <a class="dropdown-item" href="{{ url('/ListCompetition') }}">All</a>
                                 @foreach ($categories as $category)
                                     <a class="dropdown-item"
-                                        href="{{ url('/Competition?kategori_id=' . $category->kategori_id) }}">{{ $category->kategori_nama }}</a>
+                                        href="{{ url('/ListCompetition?kategori_id=' . $category->kategori_id) }}">{{ $category->kategori_nama }}</a>
                                 @endforeach
                             </div>
                         </div>

@@ -1,16 +1,6 @@
 @extends('layouts.template')
 
 @section('content')
-    <!-- Navbar Start -->
-    <div class="container-fluid p-0">
-        <nav class="navbar navbar-expand-lg bg-white navbar-light py-3 py-lg-0 px-lg-5">
-            <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-        </nav>
-    </div>
-    <!-- Navbar End -->
-
     <!-- Admin Dashboard Start -->
     <div class="container-fluid py-5">
         <div class="container">
@@ -20,6 +10,7 @@
                         <h1 class="display-4">Admin Dashboard</h1>
                         <p class="lead" id="timeNow">Selamat datang, kelola sistem Anda dengan mudah di sini.
                             {{ $timeNow }}</p>
+                        <a href="{{ url('Admin/dashboard/export-pdf') }}" class="btn btn-primary mt-3">Export to PDF</a>
                     </div>
                 </div>
             </div>
@@ -60,15 +51,25 @@
                 </div>
             </div>
 
-            <!-- Grafik atau Informasi Tambahan -->
+            <!-- Grafik Statistik -->
             <div class="row mt-5">
-                <div class="col-lg-12">
+                <div class="col-lg-6">
                     <div class="card">
                         <div class="card-header bg-dark text-white">
                             <h4>Statistik Lomba per Bulan</h4>
                         </div>
                         <div class="card-body">
-                            <div id="competitionChart" style="height: 300px;"></div>
+                            <canvas id="competitionChart" style="height: 300px;"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header bg-dark text-white">
+                            <h4>Mahasiswa Berprestasi per Bulan</h4>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="achievementChart" style="height: 300px;"></canvas>
                         </div>
                     </div>
                 </div>
@@ -105,62 +106,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
     <script>
-        // Tunggu DOM selesai dimuat
         $(document).ready(function() {
-            // Fungsi untuk memperbarui data secara real-time
-            function updateDashboardStats() {
-                $.ajax({
-                    url: '{{ url('Admin/dashboard/stats') }}',
-                    method: 'GET',
-                    success: function(response) {
-                        console.log('Stats response:', response);
-
-                        // Debugging: pastikan elemen ditemukan
-                        if ($('#totalUsers').length) {
-                            $('#totalUsers').text(response.totalUsers || 0);
-                        } else {
-                            console.error('Element #totalUsers not found.');
-                        }
-
-                        if ($('#totalCompetitions').length) {
-                            $('#totalCompetitions').text(response.totalCompetitions || 0);
-                        } else {
-                            console.error('Element #totalCompetitions not found.');
-                        }
-
-                        if ($('#totalAchievements').length) {
-                            $('#totalAchievements').text(response.totalAchievements || 0);
-                        } else {
-                            console.error('Element #totalAchievements not found.');
-                        }
-
-                        if ($('#pendingCompetitions').length) {
-                            $('#pendingCompetitions').text(response.pendingCompetitions || 0);
-                        } else {
-                            console.error('Element #pendingCompetitions not found.');
-                        }
-
-                        if ($('#timeNow').length) {
-                            $('#timeNow').text(
-                                'Selamat datang, kelola sistem Anda dengan mudah di sini. ' +
-                                response.timeNow);
-                        } else {
-                            console.error('Element #timeNow not found.');
-                        }
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error fetching stats:', status, error, xhr.responseText);
-                    }
-                });
-            }
-
-            // Panggil fungsi setiap 5 detik
-            setInterval(updateDashboardStats, 5000);
-
-            // Inisialisasi grafik
-            const chartElement = document.getElementById('competitionChart');
-            if (chartElement) {
-                const competitionChart = new Chart(chartElement, {
+            // Inisialisasi grafik lomba
+            const competitionChartElement = document.getElementById('competitionChart');
+            let competitionChart = null;
+            if (competitionChartElement) {
+                competitionChart = new Chart(competitionChartElement, {
                     type: 'bar',
                     data: {
                         labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct',
@@ -168,7 +119,7 @@
                         ],
                         datasets: [{
                             label: 'Jumlah Lomba',
-                            data: [10, 20, 15, 25, 1, 0, 0, 0, 0, 0, 0, 0],
+                            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
                             backgroundColor: ['#007bff', '#28a745', '#ffc107', '#17a2b8', '#dc3545',
                                 '#6f42c1', '#fd7e14', '#20c997', '#e83e8c', '#343a40',
                                 '#6610f2', '#007bff'
@@ -180,7 +131,10 @@
                     options: {
                         scales: {
                             y: {
-                                beginAtZero: true
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
                             }
                         }
                     }
@@ -188,6 +142,84 @@
             } else {
                 console.error('Element with ID "competitionChart" not found.');
             }
+
+            // Inisialisasi grafik mahasiswa berprestasi
+            const achievementChartElement = document.getElementById('achievementChart');
+            let achievementChart = null;
+            if (achievementChartElement) {
+                achievementChart = new Chart(achievementChartElement, {
+                    type: 'bar',
+                    data: {
+                        labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct',
+                            'Nov', 'Dec'
+                        ],
+                        datasets: [{
+                            label: 'Mahasiswa Berprestasi',
+                            data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+                            backgroundColor: ['#007bff', '#28a745', '#ffc107', '#17a2b8', '#dc3545',
+                                '#6f42c1', '#fd7e14', '#20c997', '#e83e8c', '#343a40',
+                                '#6610f2', '#007bff'
+                            ],
+                            borderColor: '#fff',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true,
+                                ticks: {
+                                    stepSize: 1
+                                }
+                            }
+                        }
+                    }
+                });
+            } else {
+                console.error('Element with ID "achievementChart" not found.');
+            }
+
+            // Fungsi untuk memperbarui data secara real-time
+            function updateDashboardStats() {
+                $.ajax({
+                    url: '{{ url('Admin/dashboard/stats') }}',
+                    method: 'GET',
+                    success: function(response) {
+                        console.log('Stats response:', response);
+
+                        // Update statistik kartu
+                        $('#totalUsers').text(response.totalUsers || 0);
+                        $('#totalCompetitions').text(response.totalCompetitions || 0);
+                        $('#totalAchievements').text(response.totalAchievements || 0);
+                        $('#pendingCompetitions').text(response.pendingCompetitions || 0);
+                        $('#timeNow').text('Selamat datang, kelola sistem Anda dengan mudah di sini. ' +
+                            response.timeNow);
+
+                        // Update grafik lomba
+                        if (competitionChart && response.competitionData) {
+                            console.log('Updating competition chart with data:', response
+                                .competitionData);
+                            competitionChart.data.datasets[0].data = response.competitionData;
+                            competitionChart.update();
+                        }
+
+                        // Update grafik mahasiswa berprestasi
+                        if (achievementChart && response.achievementData) {
+                            console.log('Updating achievement chart with data:', response
+                                .achievementData);
+                            achievementChart.data.datasets[0].data = response.achievementData;
+                            achievementChart.update();
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error('Error fetching stats:', status, error, xhr.responseText);
+                    }
+                });
+            }
+
+            // Panggil fungsi setiap 5 detik
+            setInterval(updateDashboardStats, 5000);
+            updateDashboardStats(); // Panggil sekali saat halaman dimuat
         });
     </script>
 @endpush

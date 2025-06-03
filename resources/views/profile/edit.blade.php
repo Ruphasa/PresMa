@@ -43,29 +43,19 @@
                                         alt="Foto Profil" class="rounded-circle shadow" width="120" height="120"
                                         onerror="this.onerror=null; this.src='https://via.placeholder.com/120?text=No+Image';" />
                                 </div>
-
                                 <div class="form-group">
                                     <label for="nama">Nama Lengkap</label>
                                     <input type="text" name="nama" class="form-control"
                                         value="{{ old('nama', auth()->user()->nama) }}">
                                 </div>
-
-                                <div class="form-group">
-                                    <label for="email">Email</label>
-                                    <input type="email" name="email" class="form-control"
-                                        value="{{ auth()->user()->email }}" readonly>
-                                </div>
-
                                 <div class="form-group">
                                     <label for="password">Password Baru</label>
                                     <input type="password" name="password" class="form-control">
                                 </div>
-
                                 <div class="form-group">
                                     <label for="img">Foto Profil</label>
                                     <input type="file" name="img" class="form-control-file">
                                 </div>
-
                                 @if (auth()->user()->level_id == 3)
                                     <div class="row">
                                         <div class="col-md-6">
@@ -78,8 +68,13 @@
                                         <div class="col-md-6">
                                             <div class="form-group">
                                                 <label for="point">Prefrensi Lomba</label>
-                                                <input type="text" name="point" class="form-control"
-                                                    value="{{ old('point', auth()->user()->mahasiswa->prefrensi_lomba ?? '') }}">
+                                                <select name="prefrensi_lomba" id="prefrensi_lomba">
+                                                    {{ old('prefrensi_lomba', auth()->user()->mahasiswa->preferensi_lomba ?? '') == $k->id ? 'selected' : '' }}
+                                                    @foreach ($kategori as $k)
+                                                        <option value="{{ $k->kategori_id }}">
+                                                            {{ $k->kategori_nama }}</option>
+                                                    @endforeach
+                                                </select>
                                             </div>
                                         </div>
                                     </div>

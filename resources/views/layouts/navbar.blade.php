@@ -60,8 +60,8 @@
                             class="nav-item nav-link {{ $activeMenu == 'achievement' ? 'active' : '' }}">My
                             Achievement</a>
                     @endif
-                    <a href="{{ url('/Competition') }}"
-                        class="nav-item nav-link {{ $activeMenu == 'competition' ? 'active' : '' }}">Competition</a>
+                    <a href="{{ url('/ListCompetition') }}"
+                        class="nav-item nav-link {{ $activeMenu == 'listcompetition' ? 'active' : '' }}">Competition</a>
                     @if (Auth::user()->hasRole('ADM'))
                         <a href="{{ url('/Admin') }}"
                             class="nav-item nav-link {{ $activeMenu == 'admin' ? 'active' : '' }}">Admin 🤫</a>
