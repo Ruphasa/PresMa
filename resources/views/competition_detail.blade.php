@@ -1,40 +1,46 @@
 @extends('layouts.template')
 
 @section('content')
-    <!-- Competition Detail Start -->
+    <!-- Competitions Start -->
     <div class="container-fluid py-5">
         <div class="container py-5">
-            <!-- Breadcrumb -->
-            <nav aria-label="breadcrumb">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ url('/') }}">{{ $breadcrumb->list[0] }}</a></li>
-                    <li class="breadcrumb-item"><a href="{{ url('/Competition') }}">{{ $breadcrumb->list[1] }}</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{ $breadcrumb->list[2] }}</li>
-                </ol>
-            </nav>
-            <h1 class="mb-4">{{ $breadcrumb->title }}</h1>
-
-            <!-- Page Title -->
-            <div class="mb-4">
-                <h4>{{ $page->title }}</h4>
-            </div>
-
-            <!-- Competition Details -->
-            <div class="row">
-                <div class="col-lg-8 mx-auto">
-                    <div class="card">
-                        <img class="card-img-top" src="{{ asset('Edukate/img/courses-1.jpg') }}" alt="{{ $competition->lomba_nama }}">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ $competition->lomba_nama }}</h5>
-                            <p class="card-text"><strong>Category:</strong> {{ $competition->kategori->nama ?? 'N/A' }}</p>
-                            <p class="card-text"><strong>Date:</strong> {{ $competition->lomba_tanggal }}</p>
-                            <p class="card-text"><strong>Details:</strong> {{ $competition->lomba_detail ?? 'No details available.' }}</p>
-                            <p class="card-text"><strong>Status:</strong> {{ $competition->status }}</p>
-                        </div>
+            <div class="row mx-0 justify-content-center">
+                <div class="col-lg-8">
+                    <div class="section-title text-center position-relative mb-5">
+                        <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Our Competition</h6>
+                        <h1 class="display-4">List of Competitions Available</h1>
                     </div>
-                </div>
+                </div><!-- End Portfolio Filters -->
+            </div>
+            <div class="row">
+                @forelse ($competitions as $c)
+                    <div class="col-lg-4 col-md-6 pb-4">
+                        <a class="courses-list-item position-relative d-block overflow-hidden mb-2"
+                            href="{{ url('competition/' . $c->lomba_id) }}">
+                            <img class="img-fluid" src="{{ asset('Edukate/img/courses-1.jpg') }}" alt="">
+                            <div class="courses-text">
+                                <h4 class="text-center text-white px-3">{{ $c->lomba_nama }}</h4>
+                                <div class="border-top w-100 mt-3">
+                                    <div class="d-flex justify-content-between p-4">
+                                        <span class="text-white"><i
+                                                class="fa fa-list mr-2"></i>{{ $c->kategori->kategori_nama ?? 'N/A' }}</span>
+                                        <span class="text-white"><i
+                                                class="fa fa-calendar mr-2"></i>{{ $c->lomba_tanggal }}</span>
+                                    </div>
+                                    <div class="text-center text-white pb-2">
+                                        <span><i class="fa fa-info-circle mr-2"></i>{{ $c->lomba_tingkat }}</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                @empty
+                    <div class="col-12 text-center">
+                        <p class="text-muted">No validated competitions available at the moment.</p>
+                    </div>
+                @endforelse
             </div>
         </div>
     </div>
-    <!-- Competition Detail End -->
+    <!-- Competitions End -->
 @endsection

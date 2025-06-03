@@ -6,29 +6,31 @@
                     @if ($key == count($breadcrumb->list) - 1)
                         {{ $value }}
                     @else
-                        {{ $value }}
+                        {{ $value }} /
                     @endif
                 @endforeach
             </h1>
             <h1 class="text-white display-1 mb-5">{{ $breadcrumb->title }}</h1>
             @if ($activeMenu == 'competition')
                 <div class="mx-auto mb-5" style="width: 100%; max-width: 600px;">
-                    <div class="input-group">
+                    <form action="{{ url('/Competition') }}" method="GET" class="input-group">
                         <div class="input-group-prepend">
                             <button class="btn btn-outline-light bg-white text-body px-4 dropdown-toggle" type="button"
-                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Courses</button>
+                                data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Kategori</button>
                             <div class="dropdown-menu">
-                                <a class="dropdown-item" href="#">Courses 1</a>
-                                <a class="dropdown-item" href="#">Courses 2</a>
-                                <a class="dropdown-item" href="#">Courses 3</a>
+                                <a class="dropdown-item" href="{{ url('/Competition') }}">All</a>
+                                @foreach ($categories as $category)
+                                    <a class="dropdown-item"
+                                        href="{{ url('/Competition?kategori_id=' . $category->kategori_id) }}">{{ $category->kategori_nama }}</a>
+                                @endforeach
                             </div>
                         </div>
-                        <input type="text" class="form-control border-light" style="padding: 30px 25px;"
-                            placeholder="Keyword">
+                        <input type="text" name="keyword" class="form-control border-light"
+                            style="padding: 30px 25px;" placeholder="Keyword" value="{{ request('keyword') }}">
                         <div class="input-group-append">
-                            <button class="btn btn-danger px-4 px-lg-5">Search</button>
+                            <button type="submit" class="btn btn-danger px-4 px-lg-5">Search</button>
                         </div>
-                    </div>
+                    </form>
                 </div>
             @endif
         </div>
