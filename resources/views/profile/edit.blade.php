@@ -72,14 +72,14 @@
                                             <div class="form-group">
                                                 <label for="ipk">IPK</label>
                                                 <input type="text" name="ipk" class="form-control"
-                                                    value="{{ old('ipk', auth()->user()->mahasiswa()->ipk ?? '') }}">
+                                                    value="{{ old('ipk', auth()->user()->mahasiswa->ipk ?? '') }}">
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="point">Preferensi Lomba</label>
+                                                <label for="point">Prefrensi Lomba</label>
                                                 <input type="text" name="point" class="form-control"
-                                                    value="{{ old('point', auth()->user()->mahasiswa()->preferensi_lomba ?? '') }}">
+                                                    value="{{ old('point', auth()->user()->mahasiswa->prefrensi_lomba ?? '') }}">
                                             </div>
                                         </div>
                                     </div>

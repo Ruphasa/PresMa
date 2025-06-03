@@ -50,7 +50,7 @@
                 <div class="navbar-nav mx-auto py-0">
                     <a href="{{ url('/') }}"
                         class="nav-item nav-link {{ $activeMenu == 'home' ? 'active' : '' }}">Home</a>
-                    @if (Auth::user()->hasRole('DSN'))
+                    @if (Auth::user()->hasRole('DP'))
                         <a href="{{ url('/Achievement') }}"
                             class="nav-item nav-link {{ $activeMenu == 'achievement' ? 'active' : '' }}">My Student
                             Achievement</a>
@@ -76,7 +76,6 @@
                             {{ Auth::user()->nama }}
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <div class="dropdown-divider"></div>
                             <a href="{{ url('/profile') }}" class="dropdown-item">
                                 <i class="fas fa-user mr-2"></i> Profile
                             </a>

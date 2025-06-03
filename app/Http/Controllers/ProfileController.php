@@ -78,6 +78,18 @@ class ProfileController extends Controller
         // Update the user instance in the session
         $request->session()->put('user', $user);
 
+        DB::table('m_mahasiswa')
+            ->where('user_id', $user->user_id)
+            ->update([
+                'ipk' => $request->ipk,
+                'prefrensi_lomba' => $request->prefrensi_lomba,
+            ]);
+        // Update the mahasiswa instance in the session
+        $mahasiswa = DB::table('m_mahasiswa')
+            ->where('user_id', $user->user_id)
+            ->first();
+        $request->session()->put('mahasiswa', $mahasiswa);
+
         return back()->with('success', 'Profil berhasil diperbarui!');
     }
 }

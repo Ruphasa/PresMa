@@ -25,10 +25,9 @@
                             <!-- Mahasiswa Exclusive -->
                             @if (auth()->user()->level_id == 3)
                                 <p class="text-muted mb-1">
-                                    <span class="badge bg-success">{{ auth()->user()->mahasiswa()->ipk ?? 'N/A' }}</span>
-                                    <span class="badge bg-info">{{ auth()->user()->mahasiswa()->point ?? 'N/A' }}</span>
-                                    <span
-                                        class="badge bg-warning">{{ auth()->user()->mahasiswa()->angkatan ?? 'N/A' }}</span>
+                                    <span class="badge bg-success">{{ auth()->user()->mahasiswa->ipk ?? 'N/A' }}</span>
+                                    <span class="badge bg-info">{{ auth()->user()->mahasiswa->point ?? 'N/A' }}</span>
+                                    <span class="badge bg-warning">{{ auth()->user()->mahasiswa->angkatan ?? 'N/A' }}</span>
                                 </p>
                             @endif
 

@@ -72,26 +72,20 @@
                         <div class="col-3 px-0">
                             <div class="bg-success text-center p-4">
                                 <h1 class="text-white" data-toggle="counter-up">{{ $totalAchievements }}</h1>
-                                <h6 class="text-uppercase text-white">Total<span class="d-block">Achievements</span></h6>
+                                <h6 class="text-uppercase text-white">Total<span class="d-block">Prestasi</span></h6>
                             </div>
                         </div>
                         <div class="col-3 px-0">
                             <div class="bg-primary text-center p-4">
                                 <h1 class="text-white" data-toggle="counter-up">{{ $studentsWithAchievements }}</h1>
-                                <h6 class="text-uppercase text-white">Students with<span class="d-block">Achievements</span>
+                                <h6 class="text-uppercase text-white">Mahasiswa<span class="d-block">Berprestasi</span>
                                 </h6>
                             </div>
                         </div>
                         <div class="col-3 px-0">
                             <div class="bg-secondary text-center p-4">
                                 <h1 class="text-white" data-toggle="counter-up">{{ $totalCompetitions }}</h1>
-                                <h6 class="text-uppercase text-white">Total<span class="d-block">Competitions</span></h6>
-                            </div>
-                        </div>
-                        <div class="col-3 px-0">
-                            <div class="bg-warning text-center p-4">
-                                <h1 class="text-white" data-toggle="counter-up">{{ $studentsWithAchievements }}</h1>
-                                <h6 class="text-uppercase text-white">Happy<span class="d-block">Students</span></h6>
+                                <h6 class="text-uppercase text-white">Total<span class="d-block">Lomba</span></h6>
                             </div>
                         </div>
                     </div>
