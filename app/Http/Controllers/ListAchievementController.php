@@ -93,7 +93,8 @@ class ListAchievementController extends Controller
             ->make(true);
     }
 
-    public function create(){
+    public function create()
+    {
         $breadcrumb = (object) [
             'title' => 'Add Achievement',
             'list' => ['Add a', 'New Achievement'],
@@ -119,12 +120,12 @@ class ListAchievementController extends Controller
             'lomba_id' => $request->lomba_id,
             'tingkat_prestasi' => $request->tingkat_prestasi,
             'juara_ke' => $request->juara_ke,
-            'status' => 'pending', // Default status
-            'point' => 0, // Default point
+            'status' => 'pending',
+            'point' => 0,
             'mahasiswa_id' => $request->mahasiswa_nim,
         ]);
 
-        return redirect()->view('studentachievement')->with('success', 'Prestasi berhasil ditambahkan.');
+        return redirect('/student/achievement')->with('success', 'Prestasi berhasil ditambahkan.');
     }
 
     public function edit($id)
@@ -140,6 +141,7 @@ class ListAchievementController extends Controller
         $achievement = AchievementModel::findOrFail($id);
         $lomba = CompetitionModel::all();
         return view('studentachievementresubmit', [
+            'id' => $id,
             'breadcrumb' => $breadcrumb,
             'page' => $page,
             'activeMenu' => $activeMenu,
@@ -152,7 +154,7 @@ class ListAchievementController extends Controller
         $achievement = AchievementModel::findOrFail($id);
 
         $request->validate([
-            'lomba_id' => 'required|exists:competitions,id',
+            'lomba_id' => 'required',
             'tingkat_prestasi' => 'required|string|max:255',
             'juara_ke' => 'required|integer|min:1',
         ]);
@@ -163,6 +165,6 @@ class ListAchievementController extends Controller
             'juara_ke' => $request->juara_ke,
         ]);
 
-        return redirect()->route('achievement.index')->with('success', 'Prestasi berhasil diperbarui.');
+        return redirect('./student/achievement')->with('success', 'Prestasi berhasil diperbarui.');
     }
 }

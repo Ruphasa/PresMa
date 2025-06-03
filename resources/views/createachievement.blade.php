@@ -13,7 +13,7 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    <form action="./store" method="POST" enctype="multipart/form-data">
+                    <form action="{{ url('/student/achievement/store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
                             <label for="lomba_id">Prestasi Lomba</label>
@@ -26,7 +26,7 @@
                         </div>
                         <div class="form-group">
                             <label for="tingkat_prestasi">Tingkat Prestasi</label>
-                            <textarea class="form-control" id="tingkat_prestasi" name="tingkat_prestasi" rows="3" placeholder="Masukkan Tingkat Prestasi (Nasional, Internasional...)" required></textarea>
+                            <input type="text" class="form-control" id="tingkat_prestasi" name="tingkat_prestasi" placeholder="Masukkan Tingkat Prestasi (Nasional, Internasional...)" required>
                         </div>
                         <div class="form-group">
                             <label for="juara_ke">Juara ke</label>

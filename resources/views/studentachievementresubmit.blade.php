@@ -19,31 +19,35 @@
                     Silakan lengkapi ulang data prestasi Anda sebelum mengirim ulang.
                 </div>
                 <div class="col-lg-12">
-                    <form action="./store" method="POST" enctype="multipart/form-data">
+                    <form action="./update" method="POST" enctype="multipart/form-data">
                         @csrf
+                        @method('PUT')
                         <div class="form-group">
                             <label for="lomba_id">Prestasi Lomba</label>
-                            <select name="lomba_id" id="lomba_id" class="form-control" required>
-                                <option value="" disabled selected>Pilih Lomba</option>
+                            <select name="lomba_id" id="lomba_id" class="form-control">
                                 @foreach ($lomba as $l)
-                                    <option value="{{ $l->id }}">{{ $l->lomba_nama }}</option>
+                                    <option value="{{ $l->lomba_id }}" {{ $l->lomba_id == $id ? 'selected' : '' }}>
+                                        {{ $l->lomba_nama }}
+                                    </option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="tingkat_prestasi">Tingkat Prestasi</label>
-                            <textarea class="form-control" id="tingkat_prestasi" name="tingkat_prestasi" rows="3" placeholder="Masukkan Tingkat Prestasi (Nasional, Internasional...)" required></textarea>
+                            <input type="text" class="form-control" id="tingkat_prestasi" name="tingkat_prestasi"
+                                placeholder="Masukkan Tingkat Prestasi (Nasional, Internasional...)"
+                                value="{{ $achievement->tingkat_prestasi }}" required>
                         </div>
                         <div class="form-group">
                             <label for="juara_ke">Juara ke</label>
                             <input type="number" class="form-control" id="juara_ke" name="juara_ke"
-                                placeholder="Masukkan Juara ke (1, 2, 3...)" required>
+                                placeholder="Masukkan Juara ke (1, 2, 3...)" value="{{ $achievement->juara_ke }}" required>
                         </div>
                         <!-- Hidden, Mahasiswa NIM -->
                         <input type="hidden" name="mahasiswa_nim" value="{{ auth()->user()->nim }}">
                         <!-- Submit -->
                         <button class="btn btn-primary" type="submit">
-                            <i class="fa fa-plus"></i> Tambah Prestasi
+                            <i class="fa fa-plus"></i> Edit Prestasi
                         </button>
                     </form>
                 </div>
