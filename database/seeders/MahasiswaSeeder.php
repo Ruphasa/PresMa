@@ -9,7 +9,6 @@ class MahasiswaSeeder extends Seeder
 {
     public function run(): void
     {
-        $daftarLomba = ['Pemrograman', 'UI/UX', 'Data Science', 'Cyber Security', 'IoT', 'Robotic', 'Mobile App', 'Web Dev'];
         
         // Data mahasiswa awal yang sudah ada
         $mahasiswas = [
