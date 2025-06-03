@@ -17,7 +17,6 @@ return new class extends Migration
                 $table->id('user_id')->autoIncrement();
                 $table->unsignedBigInteger('level_id');
                 $table->string('nama');
-                $table->string('email')->unique();
                 $table->string('password');
                 $table->string('img');
                 $table->timestamps();

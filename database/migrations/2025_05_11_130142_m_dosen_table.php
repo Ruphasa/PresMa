@@ -16,6 +16,7 @@ return new class extends Migration
             Schema::create($table, function (Blueprint $table) {
                 $table->id('nidn');
                 $table->unsignedBigInteger('user_id');
+                $table->string('username')->unique();
                 $table->timestamps();
 
                 $table->foreign('user_id')->references('user_id')->on('m_user');

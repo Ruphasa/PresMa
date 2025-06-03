@@ -12,7 +12,8 @@ class DosenSeeder extends Seeder
         $dosens = [
             [
                 'nidn' => 1,
-                'user_id' => 2, // Merujuk ke Prof. Andi Wijaya
+                'user_id' => 2, // Merujuk ke Prof. Hikari Megumi
+                'username' => 'megumi',
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
