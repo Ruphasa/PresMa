@@ -104,7 +104,7 @@
                                     <select name="dosen_id" id="dosen_id" class="form-select">
                                         <option value="">-- Pilih Dosen Pembimbing --</option>
                                         @foreach ($dosen as $d)
-                                            <option value="{{ $d->nidn }}">{{ $d->user->nama }}</option>
+                                            <option value="{{ $d->user_id }}">{{ $d->user->nama }}</option>
                                         @endforeach
                                     </select>
                                 </div>
@@ -115,10 +115,6 @@
                                 <div class="col-12">
                                     <label for="nidn" class="form-label">NIDN</label>
                                     <input type="text" class="form-control" name="nidn" id="nidn">
-                                </div>
-                                <div class="col-12">
-                                    <label for="prodi_id" class="form-label">Prodi</label>
-                                    <input type="text" class="form-control" name="prodi_id" id="prodi_id_dosen">
                                 </div>
                             </div>
 

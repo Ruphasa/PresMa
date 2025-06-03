@@ -15,7 +15,7 @@ class RegisterController extends Controller
     public function index()
     {
         $level = LevelModel::select('level_id', 'level_nama')->get();
-        $dosen = DosenModel::select('user_id')->get();
+        $dosen = DosenModel::with('user')->select('user_id')->get();
         $prodi = ProdiModel::select('prodi_id', 'nama_prodi')->get();
         return view('register.register', ['level' => $level, 'dosen' => $dosen, 'prodi' => $prodi]);
     }
@@ -61,12 +61,8 @@ class RegisterController extends Controller
                     'nim' => $request->nim,
                     'user_id' => $user->user_id,
                     'prodi_id' => $request->prodi_id,
-                    'dosen_id' => $request->dosen_id ?? null,
-                    'ipk' => 2.0,
-                    'jumlah_lomba' => 0,
-                    'preferensi_lomba' => '',
+                    'dosen_id' => $request->dosen_id,
                     'angkatan' => $request->angkatan,
-                    'point' => 0,
                 ]);
                 break;
             case 2: // Dosen
@@ -84,6 +80,6 @@ class RegisterController extends Controller
         }
 
         // Arahkan ke halaman login dengan pesan sukses
-        return redirect('/login')->with('success', 'Registrasi berhasil! Silakan login.');
+        return redirect('./login')->with('success', 'Registrasi berhasil! Silakan login.');
     }
 }

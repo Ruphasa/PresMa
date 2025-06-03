@@ -15,9 +15,10 @@
             </div>
 
             <div class="btn">
-                <button class="btn btn-primary" onclick="modalAction('{{ url('') }}')">
-                    Tambah Prestasi
-                </button>
+                <!-- IMMEDIATELY go to another link, no modal -->
+                <a href="achievement/new" class="btn btn-primary mb-3">
+                    <i class="fa fa-plus"></i> Tambah Prestasi Baru
+                </a>
             </div>
             <!-- Accordion Container -->
             <div id="accordion">
@@ -71,6 +72,8 @@
                                                 <th>Lomba ID</th>
                                                 <th>Tingkat Prestasi</th>
                                                 <th>Juara Ke</th>
+                                                <th>Keterangan</th>
+                                                <th>Aksi</th>
                                             </tr>
                                         </thead>
                                         <tbody></tbody>
@@ -230,6 +233,8 @@
                 { data: 'lomba_id', orderable: true, searchable: true, width: '20%' },
                 { data: 'tingkat_prestasi', orderable: true, searchable: true, width: '25%' },
                 { data: 'juara_ke', orderable: true, searchable: true, width: '20%' },
+                { data: 'keterangan', orderable: false, searchable: false, width: '20%' },
+                { data: 'action', orderable: false, searchable: false, width: '10%' }
             ],
             order: [[1, 'asc']]
         });
