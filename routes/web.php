@@ -43,12 +43,12 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/home', [LandingPageController::class, 'index']);
 
     Route::get('/Achievement', [ListAchievementController::class, 'index']);
-    Route::get('/student/achievement', [ListAchievementController::class, 'studentIndex']);
-    Route::get('/student/achievement/new', [ListAchievementController::class, 'create']);
-    Route::post('/student/achievement/store', [ListAchievementController::class, 'store']);
-    Route::get('/student/achievement/{id}', [ListAchievementController::class, 'show']);
-    Route::get('/student/achievement/{id}/edit', [ListAchievementController::class, 'edit']);
-    Route::put('/student/achievement/{id}/update', [ListAchievementController::class, 'update']);
+    Route::get('/Student/achievement', [ListAchievementController::class, 'studentIndex']);
+    Route::get('/Student/achievement/new', [ListAchievementController::class, 'create']);
+    Route::post('/Student/achievement/store', [ListAchievementController::class, 'store']);
+    Route::get('/Student/achievement/{id}', [ListAchievementController::class, 'show']);
+    Route::get('/Student/achievement/{id}/edit', [ListAchievementController::class, 'edit']);
+    Route::put('/Student/achievement/{id}/update', [ListAchievementController::class, 'update']);
 
     Route::get('/ListCompetition', [ListCompetitionController::class, 'index']);
     Route::get('/Competition/{id}', [ListCompetitionController::class, 'show']);
@@ -153,7 +153,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/Dosen/achievement', [AchievementController::class, 'dosen']);
     Route::post('/Dosen/achievement/list', [AchievementController::class, 'listDosen']);
 
-    Route::post('/student/achievement/listPending', [ListAchievementController::class, 'listPending'])->name('achievement.listPending');
-    Route::post('/student/achievement/listValid', [ListAchievementController::class, 'listValid'])->name('achievement.listValid');
-    Route::post('/student/achievement/listReject', [ListAchievementController::class, 'listRejected'])->name('achievement.listRejected');
+    Route::post('/Student/achievement/listPending', [ListAchievementController::class, 'listPending'])->name('achievement.listPending');
+    Route::post('/Student/achievement/listValid', [ListAchievementController::class, 'listValid'])->name('achievement.listValid');
+    Route::post('/Student/achievement/listReject', [ListAchievementController::class, 'listRejected'])->name('achievement.listRejected');
 });

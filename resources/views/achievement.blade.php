@@ -34,6 +34,14 @@
 @push('js')
     <script>
         $(document).ready(function() {
+            // Modal Action Function
+            window.modalAction = function(url) {
+                $('#myModal').html(''); // Bersihkan semua konten lama
+                $('#myModal').load(url, function() {
+                    $('#myModal').modal('show'); // Tampilkan modal setelah konten dimuat
+                    $('#myModal').data('url', url); // Simpan URL untuk keperluan POST
+                });
+            };
             $('#table-achievements').DataTable({
                 processing: true,
                 serverSide: true,

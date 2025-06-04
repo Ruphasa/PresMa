@@ -13,7 +13,7 @@
 
             <div class="row">
                 <div class="col-lg-12">
-                    <form action="{{ url('/student/achievement/store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ url('/Student/achievement/store') }}" method="POST" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
                             <label for="lomba_id">Prestasi Lomba</label>

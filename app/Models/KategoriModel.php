@@ -15,9 +15,14 @@ class KategoriModel extends Model
         'kategori_nama',
         'kategori_keterangan'
     ];
-    
+
     public function lomba()
     {
         return $this->hasMany(CompetitionModel::class, 'kategori_id');
+    }
+
+    public function mahasiswa()
+    {
+        return $this->hasMany(MahasiswaModel::class, 'prefrensi_lomba', 'kategori_id');
     }
 }

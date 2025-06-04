@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use App\Models\KategoriModel;
 
 class ProfileController extends Controller
 {
@@ -36,11 +37,12 @@ class ProfileController extends Controller
         ];
         $activeMenu = 'profile'; // set menu yang sedang aktif
         $user = $request->user(); // Ambil data user yang sedang login
+        $kategori = KategoriModel::all(); // Ambil semua kategori
         if (!$user) {
             return redirect()->route('profile.show')->with('error', 'User not found');
         }
 
-        return view('profile.edit', compact('breadcrumb', 'page', 'activeMenu', 'user'));
+        return view('profile.edit', compact('breadcrumb', 'page', 'activeMenu', 'user', 'kategori'));
     }
 
     public function update(Request $request)
@@ -52,7 +54,7 @@ class ProfileController extends Controller
             'password' => 'nullable|string|min:5',
             'img' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             'ipk' => 'nullable|numeric|min:0|max:4.0',
-            'preferensi_lomba' => 'nullable|string|max:255',
+            'prefrensi_lomba' => 'nullable|exists:m_kategori,kategori_id',
         ]);
         $user->nama = $validated['nama'];
         if ($request->filled('password')) {

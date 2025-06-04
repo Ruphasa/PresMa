@@ -19,7 +19,7 @@ return new class extends Migration
                 $table->unsignedBigInteger('prodi_id');
                 $table->unsignedBigInteger('dosen_id');
                 $table->float('ipk', 3, 2)->default(0.00);
-                $table->string('prefrensi_lomba')->nullable();
+                $table->unsignedBigInteger('prefrensi_lomba')->nullable();
                 $table->integer('angkatan')->nullable();
 
                 $table->timestamps();
@@ -27,6 +27,7 @@ return new class extends Migration
                 $table->foreign('user_id')->references('user_id')->on('m_user');
                 $table->foreign('prodi_id')->references('prodi_id')->on('m_prodi');
                 $table->foreign('dosen_id')->references('nidn')->on('m_dosen');
+                $table->foreign('prefrensi_lomba')->references('kategori_id')->on('m_kategori');
             });
         }
     }

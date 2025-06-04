@@ -18,14 +18,12 @@
                         <div class="card-body">
                             <form action="./update" method="POST" enctype="multipart/form-data">
                                 @csrf
-
                                 @method('PUT')
                                 @if (session('success'))
                                     <div class="alert alert-success text-center">
                                         {{ session('success') }}
                                     </div>
                                 @endif
-
                                 @if ($errors->any())
                                     <div class="alert alert-danger text-center">
                                         <ul class="mb-0">
@@ -35,7 +33,6 @@
                                         </ul>
                                     </div>
                                 @endif
-
                                 <div class="text-center mb-4">
                                     <img src="{{ auth()->user()->img
                                         ? asset('storage/img/' . auth()->user()->img)
@@ -67,12 +64,16 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-group">
-                                                <label for="point">Prefrensi Lomba</label>
-                                                <select name="prefrensi_lomba" id="prefrensi_lomba">
-                                                    {{ old('prefrensi_lomba', auth()->user()->mahasiswa->preferensi_lomba ?? '') == $k->id ? 'selected' : '' }}
+                                                <label for="prefrensi_lomba">Prefrensi Lomba</label>
+                                                <select name="prefrensi_lomba" id="prefrensi_lomba" class="form-control">
+                                                    <option value=""
+                                                        {{ old('prefrensi_lomba', auth()->user()->mahasiswa->prefrensi_lomba ?? '') == '' ? 'selected' : '' }}>
+                                                        Pilih Kategori</option>
                                                     @foreach ($kategori as $k)
-                                                        <option value="{{ $k->kategori_id }}">
-                                                            {{ $k->kategori_nama }}</option>
+                                                        <option value="{{ $k->kategori_id }}"
+                                                            {{ old('prefrensi_lomba', auth()->user()->mahasiswa->prefrensi_lomba ?? '') == $k->kategori_id ? 'selected' : '' }}>
+                                                            {{ $k->kategori_nama }}
+                                                        </option>
                                                     @endforeach
                                                 </select>
                                             </div>
@@ -80,11 +81,10 @@
                                     </div>
                                 @else
                                     <input type="hidden" name="ipk"
-                                        value="{{ auth()->user()->mahasiswa()->ipk ?? '' }}">
-                                    <input type="hidden" name="point"
-                                        value="{{ auth()->user()->mahasiswa()->preferensi_lomba ?? '' }}">
+                                        value="{{ old('ipk', auth()->user()->mahasiswa->ipk ?? '') }}">
+                                    <input type="hidden" name="prefrensi_lomba"
+                                        value="{{ old('prefrensi_lomba', auth()->user()->mahasiswa->prefrensi_lomba ?? '') }}">
                                 @endif
-
                                 <div class="mt-4 text-center">
                                     <button type="submit" class="btn btn-primary px-5">Update Profil</button>
                                 </div>
