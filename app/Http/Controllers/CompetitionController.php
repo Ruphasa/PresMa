@@ -6,6 +6,7 @@ use App\Models\CompetitionModel;
 use App\Models\KategoriModel;
 use App\Models\MahasiswaModel;
 use App\Models\RekomendasiModel;
+use App\Models\AchievementModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Yajra\DataTables\DataTables;
@@ -95,10 +96,14 @@ class CompetitionController extends Controller
 
     public function validate_ajax($id)
     {
-        $competition = CompetitionModel::findOrFail($id);
-        $competition->status = 'validated';
-        $competition->save();
-        return redirect('/Admin/competition');
+        try{
+            $competition = CompetitionModel::findOrFail($id);
+            $competition->status = 'validated';
+            $competition->save();
+            return response()->json(['success' => true, 'message' => 'Competition validated successfully.']);
+        } catch (\Exception $e) {
+            return response()->json(['gagal' => false, 'message' => 'Failed to validate competition: ' . $e->getMessage()]);
+        }
     }
 
     public function confirmReject($id)
@@ -127,28 +132,110 @@ class CompetitionController extends Controller
         return view('Admin.competition.show_ajax', ['competition' => $competition, 'rekomendasi' => $rekomendasi]);
     }
 
-    public function rekomendasi($id)
-    {
-        // Ambil semua data mahasiswa
-        $mahasiswa = MahasiswaModel::all([
-            'nim',
-            'ipk',
-            'angkatan',
-            'prefrensi_lomba',
-            ])
-            ->join('prestasi', 'mahasiswa.nim', '=', 'prestasi.nim')
-            ->toArray();
+    public function findRecommendations($competition_id)
+{
+    $competition = CompetitionModel::findOrFail($competition_id);
 
-        // Kirim data ke API SPK
-        $response = Http::post('http://localhost:5001/recommend', [
-            'mahasiswa' => $mahasiswa
+    $students = MahasiswaModel::select(
+            'm_mahasiswa.nim',
+            'm_mahasiswa.ipk',
+            'm_mahasiswa.angkatan',
+            'm_mahasiswa.prefrensi_lomba'
+        )
+        ->get()
+        ->map(function ($mhs) {
+            $jumlah_prestasi = AchievementModel::where('mahasiswa_id', $mhs->nim)
+                ->where('status', 'valid')
+                ->count();
+
+            $points = AchievementModel::where('mahasiswa_id', $mhs->nim)
+                ->where('status', 'valid')
+                ->get()
+                ->sum(function ($prestasi) {
+                    $point_map = [
+                        'internasional' => 10,
+                        'nasional' => 7,
+                        'regional' => 5,
+                        'lokal' => 3
+                    ];
+                    $juara_weight = (6 - min($prestasi->juara_ke, 5));
+                    return ($point_map[$prestasi->tingkat_prestasi] ?? 1) * $juara_weight;
+                });
+
+            return [
+                'nim' => $mhs->nim,
+                'ipk' => $mhs->ipk,
+                'angkatan' => $mhs->angkatan,
+                'prefrensi_lomba' => $mhs->prefrensi_lomba,
+                'jumlah_prestasi' => $jumlah_prestasi,
+                'point' => $points
+            ];
+        })->toArray();
+
+    \Log::info("Jumlah mahasiswa setelah map: " . count($students));
+
+    $csv_file_path = storage_path('app/mahasiswa_data.csv');
+    $file = fopen($csv_file_path, 'w');
+    fputcsv($file, ['nim', 'ipk', 'angkatan', 'jumlah_prestasi', 'point', 'prefrensi_lomba']);
+
+    foreach ($students as $student) {
+        fputcsv($file, [
+            $student['nim'],
+            $student['ipk'],
+            $student['angkatan'],
+            $student['jumlah_prestasi'],
+            $student['point'],
+            $student['prefrensi_lomba'],
         ]);
+    }
+    fclose($file);
 
-        if ($response->successful()) {
-            $rekomendasi = $response->json()['rekomendasi'];
-            return view('Admin.competition.show_ajax', ['rekomendasi' => $rekomendasi]);
-        } else {
-            return view('Admin.competition.error_ajax', ['message' => 'Gagal mendapatkan rekomendasi']);
+    if (!file_exists($csv_file_path)) {
+        \Log::error("File CSV tidak ditemukan di: " . $csv_file_path);
+        return response()->json(['message' => 'Gagal membuat file CSV'], 500);
+    }
+
+    $level = $competition->lomba_tingkat;
+    $category_id = $competition->kategori_id;
+    $command = escapeshellcmd("\"C:\\Users\\USER\\AppData\\Local\\Programs\\Python\\Python311\\python.exe\" " . base_path('public/spk_model.py') . " $level $category_id $csv_file_path");
+    \Log::info("Executing command: " . $command);
+    $output = @shell_exec($command);
+
+    if ($output === null || $output === false) {
+        \Log::error("Gagal menjalankan skrip Python. Command: " . $command . ". Output: " . ($output ?: 'No output'));
+        return response()->json(['message' => 'Gagal menjalankan skrip Python'], 500);
+    }
+
+    unlink($csv_file_path);
+
+    $output = trim($output);
+
+    if ($output === 'tidak ada yang cocok') {
+        return response()->json(['message' => 'Tidak dapat menemukan mahasiswa yang cocok'], 404);
+    }
+
+    $recommended_nims = array_filter(explode(',', $output));
+    $recommended_nims = array_map('trim', $recommended_nims);
+
+    if (empty($recommended_nims)) {
+        return response()->json(['message' => 'Tidak ada NIM yang valid dari rekomendasi'], 400);
+    }
+
+    foreach ($recommended_nims as $nim) {
+        if (!empty($nim) && is_numeric($nim)) {
+            RekomendasiModel::create([
+                'lomba_id' => $competition_id,
+                'nim' => $nim,
+            ]);
         }
     }
+
+    $rekomendasi = RekomendasiModel::where('lomba_id', $competition_id)
+                                   ->with('mahasiswa')
+                                   ->get();
+
+    $html = view('partials.rekomendasi_list', compact('rekomendasi'))->render();
+
+    return response()->json(['html' => $html]);
+}
 }

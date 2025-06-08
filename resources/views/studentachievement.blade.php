@@ -264,7 +264,8 @@
             });
 
             //Rejected Achievements Table
-            var tableReject = $('#table-reject-achievements').DataTable({
+                var tableReject;
+                tableReject = $('#table-reject-achievements').DataTable({
                 processing: true,
                 serverSide: true,
                 responsive: true,

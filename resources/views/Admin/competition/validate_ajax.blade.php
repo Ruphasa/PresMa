@@ -16,7 +16,8 @@
         </div>
     </div>
 @else
-    <form action="{{ url('/Admin/competition/' . $competition->lomba_id . '/validate_ajax') }}" method="POST" id="form-validate-competition">
+    <form action="{{ url('/Admin/competition/' . $competition->lomba_id . '/validate_ajax') }}" method="POST"
+        id="form-validate-competition">
         @csrf
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -28,7 +29,8 @@
                 <div class="modal-body">
                     <div class="alert alert-warning">
                         <h5><i class="icon fas fa-ban"></i> Konfirmasi !!!</h5>
-                        Apakah Anda ingin memvalidasi lomba seperti di bawah ini? Status akan diubah menjadi <strong>Valid</strong>.
+                        Apakah Anda ingin memvalidasi lomba seperti di bawah ini? Status akan diubah menjadi
+                        <strong>Valid</strong>.
                     </div>
                     <table class="table table-sm table-bordered table-striped">
                         <tr>
@@ -61,15 +63,15 @@
         </div>
     </form>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $("#form-validate-competition").validate({
                 rules: {},
-                submitHandler: function (form) {
+                submitHandler: function(form) {
                     $.ajax({
                         url: form.action,
                         type: form.method,
                         data: $(form).serialize(),
-                        success: function (response) {
+                        success: function(response) {
                             if (response.success) {
                                 $('#myModal').modal('hide');
                                 Swal.fire({
@@ -77,11 +79,20 @@
                                     title: 'Berhasil',
                                     text: response.message
                                 });
-                                $('#table-pending-competitions').DataTable().ajax.reload();
-                                $('#table-valid-competitions').DataTable().ajax.reload();
+                                // Reload both tables to reflect the status change
+                                if ($.fn.DataTable.isDataTable(
+                                        '#table-pending-competitions')) {
+                                    $('#table-pending-competitions').DataTable().ajax
+                                        .reload();
+                                }
+                                if ($.fn.DataTable.isDataTable(
+                                        '#table-valid-competitions')) {
+                                    $('#table-valid-competitions').DataTable().ajax
+                                        .reload();
+                                }
                             } else {
                                 $('.error-text').text('');
-                                $.each(response.msgField, function (prefix, val) {
+                                $.each(response.msgField, function(prefix, val) {
                                     $('#error-' + prefix).text(val[0]);
                                 });
                                 Swal.fire({
@@ -90,19 +101,26 @@
                                     text: response.message
                                 });
                             }
+                        },
+                        error: function(xhr, status, error) {
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Terjadi Kesalahan',
+                                text: 'Gagal memproses permintaan. Silakan coba lagi.'
+                            });
                         }
                     });
                     return false;
                 },
                 errorElement: 'span',
-                errorPlacement: function (error, element) {
+                errorPlacement: function(error, element) {
                     error.addClass('invalid-feedback');
                     element.closest('.form-group').append(error);
                 },
-                highlight: function (element, errorClass, validClass) {
+                highlight: function(element, errorClass, validClass) {
                     $(element).addClass('is-invalid');
                 },
-                unhighlight: function (element, errorClass, validClass) {
+                unhighlight: function(element, errorClass, validClass) {
                     $(element).removeClass('is-invalid');
                 }
             });

@@ -139,8 +139,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/Admin/competition/{id}/reject_ajax', [CompetitionController::class, 'confirmReject']);
     Route::post('/Admin/competition/{id}/reject_ajax', [CompetitionController::class, 'reject_ajax']);
     Route::get('Admin/competition/{id}', [CompetitionController::class, 'show_ajax']);
-    Route::get('Admin/competition/{id}/rekomendasi', [CompetitionController::class, 'rekomendasi']);
-
+    Route::post('/find-recommendations/{competition_id}', [CompetitionController::class, 'findRecommendations']);
 
     Route::get('/Admin/achievement', [AchievementController::class, 'index']);
     Route::post('/Admin/achievement/listPending', [AchievementController::class, 'listPending'])->name('achievement.listPending');

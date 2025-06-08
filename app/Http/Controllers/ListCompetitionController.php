@@ -25,7 +25,7 @@ class ListCompetitionController extends Controller
         $categories = KategoriModel::all();
 
         // Query untuk kompetisi
-        $query = CompetitionModel::with('kategori')->where('status', 'validated');
+        $query = CompetitionModel::with('kategori')->where('status', 'validated')->where('lomba_tanggal', '>=', now())->orderBy('lomba_tanggal', 'asc');
 
         // Filter berdasarkan kategori jika ada
         if ($request->has('kategori_id') && $request->kategori_id != '') {

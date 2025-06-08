@@ -186,7 +186,7 @@
                         searchable: true
                     },
                     {
-                        data: 'prodi.prodi_id',
+                        data: 'prodi.nama_prodi',
                         orderable: true,
                         searchable: true
                     }, // Updated to use 'prodi'
@@ -303,6 +303,10 @@
                         api: true
                     }).columns.adjust();
                 });
+            });
+            $(window).on('resize', function() {
+                tablePending.columns.adjust().responsive.recalc();
+                if (validInitialized) tableValid.columns.adjust().responsive.recalc();
             });
         });
     </script>

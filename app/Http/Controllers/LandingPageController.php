@@ -26,7 +26,7 @@ class LandingPageController extends Controller
 
         // Fetch top 5 students by points
         $topStudents = MahasiswaModel::with(['user', 'achievements' => function ($query) {
-            $query->select('mahasiswa_id', \DB::raw('SUM(poin) as total_poin'))
+            $query->select('mahasiswa_id', \DB::raw('SUM(point) as total_poin'))
                 ->groupBy('mahasiswa_id')
                 ->orderBy('total_poin', 'desc')
                 ->take(5);

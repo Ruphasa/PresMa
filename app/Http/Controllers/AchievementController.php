@@ -38,22 +38,30 @@ class AchievementController extends Controller
         return view('dosen.achievement', ['breadcrumb' => $breadcrumb, 'page' => $page, 'lomba' => $lomba, 'activeMenu' => $activeMenu]);
     }
 
+    //join with prestasi and mahasiswa
     public function listDosen(Request $request)
     {
         $prestasi = AchievementModel::select(
             'prestasi_id',
+            'mahasiswa_id',
             'lomba_id',
             'tingkat_prestasi',
             'juara_ke',
             'status'
         )
-            ->with('lomba')
-            ->where('status', '!=','rejected') // Exclude rejected achievements
-            ->orderBy('status', 'asc')
+            ->with('lomba', 'mahasiswa')
+            ->where('status', '!=','rejected')
+            ->whereHas('mahasiswa', function ($query) {
+                $query->where('dosen_id', auth()->user()->dosen->nidn);
+            })
+            ->orderBy('status', 'desc')
             ->get();
 
         return DataTables::of($prestasi)
             ->addIndexColumn()
+            ->addColumn('nama', function ($prestasi) {
+                return $prestasi->mahasiswa->user->nama ?? 'N/A'; // Assuming mahasiswa relation exists
+            })
             ->addColumn('action', function ($prestasi) {
                 if ($prestasi->status === 'pending') {
                     $btn = '<button onclick="modalAction(\'' . url('Admin/achievement/' . $prestasi->prestasi_id .
@@ -65,10 +73,6 @@ class AchievementController extends Controller
                 if ($prestasi->status === 'validated') {
                     $btn = '<button onclick="modalAction(\'' . url('Admin/achievement/' . $prestasi->prestasi_id .
                         '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
-                    $btn .= '<button onclick="modalAction(\'' . url('Admin/achievement/' . $prestasi->prestasi_id .
-                        '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
-                    $btn .= '<button onclick="modalAction(\'' . url('Admin/achievement/' . $prestasi->prestasi_id .
-                        '/delete_ajax') . '\')"  class="btn btn-danger btn-sm">Hapus</button> ';
                     return $btn;
                 }
             })
@@ -80,17 +84,20 @@ class AchievementController extends Controller
     {
         $prestasi = AchievementModel::select(
             'prestasi_id',
+            'mahasiswa_id',
             'lomba_id',
-            'tingkat_prestasi',
-            'juara_ke',
+            'point',
             'status'
         )
-            ->with('lomba')
+            ->with('lomba', 'mahasiswa')
             ->where('status', 'pending')
             ->get();
 
         return DataTables::of($prestasi)
             ->addIndexColumn()
+            ->addColumn('nama', function ($prestasi) {
+                return $prestasi->mahasiswa->user->nama ?? 'N/A'; // Assuming mahasiswa relation exists
+            })
             ->addColumn('validate', function ($prestasi) {
                 $btn = '<button onclick="modalAction(\'' . url('Admin/achievement/' . $prestasi->prestasi_id .
                     '/validate_ajax') . '\')" class="btn btn-success btn-sm">Validasi</button> ';
@@ -109,24 +116,23 @@ class AchievementController extends Controller
     {
         $prestasi = AchievementModel::select(
             'prestasi_id',
+            'mahasiswa_id',
             'lomba_id',
-            'tingkat_prestasi',
-            'juara_ke',
+            'point',
             'status'
         )
-            ->with('lomba')
+            ->with('lomba', 'mahasiswa')
             ->where('status', 'validated')
             ->get();
 
         return DataTables::of($prestasi)
             ->addIndexColumn()
+            ->addColumn('nama', function ($prestasi) {
+                return $prestasi->mahasiswa->user->nama ?? 'N/A'; // Assuming mahasiswa relation exists
+            })
             ->addColumn('action', function ($prestasi) {
                 $btn = '<button onclick="modalAction(\'' . url('/prestasi/' . $prestasi->prestasi_id .
                     '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/prestasi/' . $prestasi->prestasi_id .
-                    '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/prestasi/' . $prestasi->prestasi_id .
-                    '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
                 return $btn;
             })
             ->rawColumns(['action'])
@@ -142,7 +148,7 @@ class AchievementController extends Controller
     public function validate_ajax($id)
     {
         try {
-            $prestasi = AchievementModel::findOrFail($id);
+            $prestasi = AchievementModel::find($id);
             if ($prestasi->status === 'pending') {
                 $prestasi->status = 'validated';
                 $prestasi->save();
@@ -151,7 +157,7 @@ class AchievementController extends Controller
                 return response()->json(['success' => false, 'message' => 'Prestasi tidak dalam status pending']);
             }
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Terjadi kesalahan: ' . $e->getMessage()]);
+            return response()->json(['gagal' => false, 'message' => 'Terjadi kesalahan: ' . $e->getMessage()]);
         }
     }
 

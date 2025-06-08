@@ -15,10 +15,11 @@ return new class extends Migration
         // and their respective data types.
 
         Schema::create('m_lomba', function (Blueprint $table) {
-            $table->id('lomba_id'); // Primary key for the table
+            $table->id('lomba_id')->autoIncrement(); // Primary key for the lomba table
             //tingkat, tanggal, nama, detail, kategori
             $table->unsignedBigInteger('kategori_id');
-            $table->string('lomba_tingkat');
+            $table->unsignedBigInteger('user_id'); // Foreign key to the user who created the lomba
+            $table->enum('lomba_tingkat', ['Regional','Nasional', 'Internasional']);
             $table->date('lomba_tanggal');
             $table->string('lomba_nama');
             $table->text('lomba_detail');
@@ -28,6 +29,7 @@ return new class extends Migration
 
             // Foreign key constraint to ensure referential integrity
             $table->foreign('kategori_id')->references('kategori_id')->on('m_kategori');
+            $table->foreign('user_id')->references('user_id')->on('m_user');
         });
     }
 

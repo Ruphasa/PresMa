@@ -13,6 +13,7 @@
                                 <thead>
                                     <tr>
                                         <th>No.</th>
+                                        <th>Nama Mahasiswa</th>
                                         <th>Nama Lomba</th>
                                         <th>Tingkat Prestasi</th>
                                         <th>Juara Ke</th>
@@ -59,7 +60,11 @@
                         orderable: false,
                         searchable: false
                     },
-
+                    {
+                        data: 'nama',
+                        orderable: true,
+                        searchable: true
+                    },
                     {
                         data: 'lomba.lomba_nama',
                         orderable: true,

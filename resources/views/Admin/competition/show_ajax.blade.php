@@ -34,37 +34,18 @@
                         <td>{{ $competition->lomba_tanggal }}</td>
                     </tr>
                 </table>
-                <table class="table table-bordered table-striped table-hover table-sm" id="table_rekomendasi">
+                <div id="rekomendasi-section">
                     @if ($rekomendasi->isEmpty())
-                        <div class="alert alert-warning">
-                            <h5><i class="icon fas fa-exclamation-triangle"></i> Cari Rekomndasi Mahasiswa ?</h5>
-                            <a type="button" class="btn btn-primary" id="btn-cari-rekomendasi"
-                                href="{{ url('/Admin/competition/' . $competition->lomba_id . '/rekomendasi') }}">
-                                Carikan doong~
-                            </a>
+                        <div>
+                            <p>Cari Rekomendasi Mahasiswa ?</p>
+                            <button class="btn btn-primary" id="find-recommendations-btn"
+                                data-competition-id="{{ $competition->lomba_id }}">Carikan
+                                doong~</button>
                         </div>
                     @else
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>NIM</th>
-                                <th>Nama</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach ($rekomendasi as $item)
-                                <tr>
-                                    <td>{{ $item->rekomendasi_id }}</td>
-                                    <td>{{ $item->mahasiswa->nim }}</td>
-                                    <td>{{ $item->mahasiswa->mahasiswa_nama }}</td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                        <a type="button" class="btn btn-success" id="btn-kirim-notif" href="{{ url('') }}">
-                            Kirim Notif
-                        </a>
+                        @include('partials.rekomendasi_list')
                     @endif
-                </table>
+                </div>
             @endisset
         </div>
         <div class="modal-footer">
@@ -72,3 +53,45 @@
         </div>
     </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function() {
+        $('#find-recommendations-btn').on('click', function() {
+            var competition_id = $(this).data('competition-id');
+
+            $.ajax({
+                url: '/find-recommendations/' + competition_id,
+                method: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                },
+                success: function(data) {
+                    if (data.html) {
+                        $('#rekomendasi-section').html(data.html);
+                    } else if (data.showPopup) {
+                        Swal.fire({
+                            title: 'Peringatan!',
+                            text: data.message,
+                            icon: 'warning',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                },
+                error: function(xhr) {
+                    var response = xhr.responseJSON;
+                    if (response && response.message) {
+                        Swal.fire({
+                            title: 'Error!',
+                            text: response.message,
+                            icon: 'error',
+                            confirmButtonText: 'OK'
+                        });
+                    } else {
+                        alert('Terjadi kesalahan: '.xhr.responseText);
+                    }
+                }
+            });
+        });
+    });
+</script>

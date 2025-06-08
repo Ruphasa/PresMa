@@ -126,7 +126,7 @@
                         width: '5%'
                     },
                     {
-                        data: 'kategori_id',
+                        data: 'kategori.kategori_nama',
                         orderable: true,
                         searchable: true,
                         width: '10%'
@@ -193,7 +193,7 @@
                                 width: '5%'
                             },
                             {
-                                data: 'kategori_id',
+                                data: 'kategori.kategori_nama',
                                 orderable: true,
                                 searchable: true,
                                 width: '10%'

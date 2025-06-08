@@ -11,6 +11,7 @@ class RekomendasiModel extends Model
 
     protected $table = 't_rekomendasi';
     protected $primaryKey = 'rekomendasi_id';
+    public $timestamps = false;
     protected $fillable = [
         'lomba_id',
         'nim',

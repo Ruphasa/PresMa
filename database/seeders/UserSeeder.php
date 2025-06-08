@@ -49,11 +49,23 @@ class UserSeeder extends Seeder
             ],
         ];
 
-        for ($i = 1; $i <= 200; $i++) {
+        for ($i = 0; $i < 200; $i++) {
             $users[] = [
-                'user_id' => 4 + $i, 
-                'level_id' => rand(1, 3),
-                'nama' => 'user' . $i,
+                'user_id' => 5 + $i,
+                'level_id' => 3,
+                'nama' => 'mahasiswa' . $i,
+                'password' => Hash::make('12345'), // password default sama
+                'img' => 'default.jpg',
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
+
+        for ($i = 0; $i < 20; $i++) {
+            $users[] = [
+                'user_id' => 205 + $i,
+                'level_id' => 2,
+                'nama' => 'dosen' . $i,
                 'password' => Hash::make('12345'), // password default sama
                 'img' => 'default.jpg',
                 'created_at' => now(),

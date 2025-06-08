@@ -34,9 +34,9 @@
                                         <thead>
                                             <tr>
                                                 <th>No.</th>
-                                                <th>Lomba ID</th>
-                                                <th>Tingkat Prestasi</th>
-                                                <th>Juara Ke</th>
+                                                <th>Nama Mahasiswa</th>
+                                                <th>Nama Lomba</th>
+                                                <th>Point</th>
                                                 <th>Validate</th>
                                             </tr>
                                         </thead>
@@ -67,9 +67,9 @@
                                         <thead>
                                             <tr>
                                                 <th>No.</th>
-                                                <th>Lomba ID</th>
-                                                <th>Tingkat Prestasi</th>
-                                                <th>Juara Ke</th>
+                                                <th>Nama Mahasiswa</th>
+                                                <th>Nama Lomba</th>
+                                                <th>Point</th>
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
@@ -103,7 +103,8 @@
             };
 
             // Pending Achievements Table
-            var tablePending = $('#table-pending-achievements').DataTable({
+            var tablePending;
+            tablePending = $('#table-pending-achievements').DataTable({
                 processing: true,
                 serverSide: true,
                 responsive: true,
@@ -124,22 +125,22 @@
                         width: '5%'
                     },
                     {
-                        data: 'lomba_id',
-                        orderable: true,
-                        searchable: true,
-                        width: '20%'
-                    },
-                    {
-                        data: 'tingkat_prestasi',
+                        data: 'nama',
                         orderable: true,
                         searchable: true,
                         width: '25%'
                     },
                     {
-                        data: 'juara_ke',
+                        data: 'lomba.lomba_nama',
                         orderable: true,
                         searchable: true,
                         width: '20%'
+                    },
+                    {
+                        data: 'point',
+                        orderable: true,
+                        searchable: true,
+                        width: '25%'
                     },
                     {
                         data: 'validate',
@@ -179,22 +180,22 @@
                                 width: '5%'
                             },
                             {
-                                data: 'lomba_id',
+                                data: 'nama',
                                 orderable: true,
                                 searchable: true,
                                 width: '20%'
                             },
                             {
-                                data: 'tingkat_prestasi',
+                                data: 'lomba.lomba_nama',
+                                orderable: true,
+                                searchable: true,
+                                width: '20%'
+                            },
+                            {
+                                data: 'point',
                                 orderable: true,
                                 searchable: true,
                                 width: '25%'
-                            },
-                            {
-                                data: 'juara_ke',
-                                orderable: true,
-                                searchable: true,
-                                width: '20%'
                             },
                             {
                                 data: 'action',

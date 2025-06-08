@@ -14,7 +14,7 @@ def recommend():
     try:
         # Ambil data dari request
         data = request.get_json()
-        mahasiswa_data = pd.DataFrame(data['mahasiswa'], columns=['ipk', 'prefrenkatesi_lomba', 'jumlah_prestasi', 'angkatan', 'point'])
+        mahasiswa_data = pd.DataFrame(data['mahasiswa'], columns=['ipk', 'prefrensi_lomba', 'jumlah_prestasi', 'angkatan', 'point'])
 
         # Normalisasi data
         mahasiswa_scaled = scaler.transform(mahasiswa_data)
@@ -39,4 +39,4 @@ def recommend():
         })
 
 if __name__ == '__main__':
-    app.run(debug=True, host='0.0.0.0', port=5001)
+    app.run(debug=True, host='127.0.0.1', port=8000)

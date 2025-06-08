@@ -18,6 +18,15 @@ class DosenSeeder extends Seeder
                 'updated_at' => now(),
             ],
         ];
+        for ($i=0; $i < 19 ; $i++) {
+            $dosens []=[
+                'nidn' => $i + 2, // NIDN dimulai dari 2
+                'user_id' => $i + 205, // User ID dimulai dari 3
+                'username' => 'dosen' . ($i), // Username dosen
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        }
 
         DB::table('m_dosen')->insert($dosens);
     }

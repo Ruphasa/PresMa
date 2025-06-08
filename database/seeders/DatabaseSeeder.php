@@ -18,9 +18,9 @@ class DatabaseSeeder extends Seeder
             ProdiSeeder::class,
             UserSeeder::class,
             DosenSeeder::class,
-            MahasiswaSeeder::class,
-            AdminSeeder::class,
             KategoriLombaSeeder::class,
+            AdminSeeder::class,
+            MahasiswaSeeder::class,
             LombaSeeder::class,
             PrestasiSeeder::class,
         ]);

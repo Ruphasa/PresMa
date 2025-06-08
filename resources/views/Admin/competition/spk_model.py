@@ -1,37 +1,89 @@
+import sys
+import numpy as np
 import pandas as pd
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.naive_bayes import GaussianNB
-from sklearn.ensemble import VotingClassifier
-from sklearn.model_selection import train_test_split
-from sklearn.preprocessing import StandardScaler
-import joblib
 
-# Load dataset (contoh: mahasiswa_data.csv)
-data = pd.read_csv('mahasiswa_data.csv')  # Pastikan dataset ini ada
-X = data[['ipk','prefrensi_lomba', 'jumlah_prestasi', 'angkatan', 'point']]  # Fitur
-y = data['target']  # Label (1: berpotensi, 0: tidak)
+def recommend_students(competition_level, category_id, csv_file_path, N=10):
+    """
+    Merekomendasikan hingga N mahasiswa untuk kompetisi berdasarkan Naive Bayes dan KNN.
+    Args:
+        competition_level (str): Tingkat kompetisi (misalnya 'national', 'international', 'regional')
+        category_id (int): ID kategori kompetisi
+        csv_file_path (str): Path ke file CSV mahasiswa
+        N (int): Jumlah maksimum rekomendasi (default 10)
+    Returns:
+        list: Daftar NIM mahasiswa yang direkomendasikan (bisa kurang dari N)
+    """
+    # Baca data mahasiswa dari CSV
+    df = pd.read_csv(csv_file_path)
 
-# Normalisasi data
-scaler = StandardScaler()
-X_scaled = scaler.fit_transform(X)
+    # Tambahkan fitur prefrensi_lomba_match
+    df['prefrensi_lomba_match'] = (df['prefrensi_lomba'] == category_id).astype(int)
 
-# Split data untuk pelatihan dan pengujian
-X_train, X_test, y_train, y_test = train_test_split(X_scaled, y, test_size=0.3, random_state=42)
+    # Buat label sintetis berdasarkan aturan
+    if competition_level == 'Nasional':
+        y = ((df['jumlah_prestasi'] > 3) &
+             (df['point'] > 10) &
+             (df['prefrensi_lomba_match'] == 1)).astype(int)
+    elif competition_level == 'Internasional':
+        y = ((df['jumlah_prestasi'] > 5) &
+             (df['point'] > 25) &
+             (df['prefrensi_lomba_match'] == 1)).astype(int)
+    elif competition_level == 'Regional':
+        y = ((~((df['jumlah_prestasi'] > 3) & (df['point'] > 10)) &
+              ~((df['jumlah_prestasi'] > 5) & (df['point'] > 25)) &
+              (df['prefrensi_lomba_match'] == 1))).astype(int)
+    else:
+        raise ValueError("Tingkat kompetisi tidak dikenal")
 
-# Inisialisasi model KNN dan Naive Bayes
-knn = KNeighborsClassifier(n_neighbors=5)  # KNN dengan 5 tetangga terdekat
-nb = GaussianNB()  # Naive Bayes Gaussian
+    # Siapkan matriks fitur
+    X = df[['ipk', 'angkatan', 'jumlah_prestasi', 'point', 'prefrensi_lomba_match']].values
 
-# Kombinasi model dengan soft voting
-ensemble = VotingClassifier(estimators=[('knn', knn), ('nb', nb)], voting='soft')
+    # Latih model Naive Bayes
+    nb = GaussianNB()
+    nb.fit(X, y)
 
-# Latih model
-ensemble.fit(X_train, y_train)
+    # Periksa apakah ada mahasiswa yang cocok
+    if 1 not in nb.classes_ or sum(y) == 0:
+        return 'tidak ada yang cocok'
 
-# Simpan model dan scaler
-joblib.dump(ensemble, 'spk_model.pkl')
-joblib.dump(scaler, 'scaler.pkl')
+    suitable_class_idx = list(nb.classes_).index(1)
+    mean_suitable = nb.theta_[suitable_class_idx]
+    var_suitable = nb.var_[suitable_class_idx]
 
-# Evaluasi model (opsional)
-accuracy = ensemble.score(X_test, y_test)
-print(f"Akurasi model: {accuracy * 100:.2f}%")
+    # Hitung bobot (1/varians)
+    weights = 1 / (var_suitable + 1e-9)
+
+    # Vektor ideal
+    ideal = mean_suitable
+
+    # Hitung jarak terbobot hanya untuk mahasiswa yang cocok
+    distances = []
+    for i, (x, label) in enumerate(zip(X, y)):
+        if label == 1:
+            distance = np.sum(weights * (x - ideal) ** 2)
+            distances.append((df.iloc[i]["nim"], distance))
+
+    # Urutkan berdasarkan jarak
+    distances.sort(key=lambda x: x[1])
+
+    # Pilih hingga N teratas
+    recommended_nims = [nim for nim, _ in distances[:N]]
+
+    return recommended_nims
+
+if __name__ == "__main__":
+    if len(sys.argv) != 4:
+        print("Usage: python spk_model.py <competition_level> <category_id> <csv_file_path>")
+        sys.exit(1)
+
+    competition_level = sys.argv[1]
+    category_id = int(sys.argv[2])
+    csv_file_path = sys.argv[3]
+
+    recommendations = recommend_students(competition_level, category_id, csv_file_path, N=10)
+
+    if recommendations == 'tidak ada yang cocok':
+        print('tidak ada yang cocok')
+    else:
+        print(','.join(recommendations))

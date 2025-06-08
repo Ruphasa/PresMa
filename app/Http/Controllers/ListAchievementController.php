@@ -46,6 +46,7 @@ class ListAchievementController extends Controller
         )
             ->with('lomba')
             ->where('status', 'pending')
+            ->where('mahasiswa_id', auth()->user()->mahasiswa->nim)
             ->get();
 
         return DataTables::of($prestasi)
@@ -64,6 +65,7 @@ class ListAchievementController extends Controller
         )
             ->with('lomba')
             ->where('status', 'validated')
+            ->where('mahasiswa_id', auth()->user()->mahasiswa->nim)
             ->get();
 
         return DataTables::of($prestasi)
@@ -83,8 +85,8 @@ class ListAchievementController extends Controller
         )
             ->with('lomba')
             ->where('status', 'rejected')
+            ->where('mahasiswa_id', auth()->user()->mahasiswa->nim)
             ->get();
-
         return DataTables::of($prestasi)
             ->addIndexColumn()
             ->addColumn(('action'), function ($row) {
