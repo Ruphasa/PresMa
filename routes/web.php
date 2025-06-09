@@ -54,7 +54,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/Competition/{id}', [ListCompetitionController::class, 'show']);
     Route::get('/Competition/create', [ListCompetitionController::class, 'create']);
     Route::put('/Competition/store', [ListCompetitionController::class, 'store']);
-
+});
 
     Route::get('/detail', function () {
         return view('detail');
@@ -123,14 +123,15 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/export_pdf', [AdminController::class, 'export_pdf']); // ajax export pdf
     });
 
-
-    Route::prefix('prodi')->group(function () {
-        Route::post('/list', [ProdiController::class, 'list']); // datatables ajax
-        Route::get('/create_ajax', [ProdiController::class, 'create_ajax']); // form create
-        Route::post('/ajax', [ProdiController::class, 'store_ajax']); // store via ajax
-        Route::get('/{id}/show_ajax', [ProdiController::class, 'show_ajax']); // detail prodi
-        Route::delete('/{id}/delete_ajax', [ProdiController::class, 'delete_ajax']); // hapus via ajax
-    });
+   Route::group(['prefix' => 'Admin/prodi'], function () {
+    Route::post('/list', [ProdiController::class, 'list'])->name('prodi.list');
+    Route::get('/create_ajax', [ProdiController::class, 'create_ajax'])->name('prodi.create_ajax');
+    Route::post('/ajax', [ProdiController::class, 'store_ajax'])->name('prodi.store_ajax');
+    Route::get('/{id}/show_ajax', [ProdiController::class, 'show_ajax'])->name('prodi.show_ajax');
+    Route::get('/{id}/edit_ajax', [ProdiController::class, 'edit_ajax'])->name('prodi.edit_ajax');
+    Route::put('/{id}/update_ajax', [ProdiController::class, 'update_ajax'])->name('prodi.update_ajax');
+    Route::delete('/{id}/delete_ajax', [ProdiController::class, 'delete_ajax'])->name('prodi.delete_ajax');
+});
 
 
     Route::get('/Admin/competition', [CompetitionController::class, 'index']);
@@ -157,4 +158,5 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/Student/achievement/listPending', [ListAchievementController::class, 'listPending'])->name('achievement.listPending');
     Route::post('/Student/achievement/listValid', [ListAchievementController::class, 'listValid'])->name('achievement.listValid');
     Route::post('/Student/achievement/listReject', [ListAchievementController::class, 'listRejected'])->name('achievement.listRejected');
-});
+
+    Route::post('/prodi/list', [ProdiController::class, 'list'])->name('prodi.list');
