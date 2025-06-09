@@ -6,15 +6,16 @@
                 <div class="col-lg-12">
                     <div class="section-title text-center position-relative mb-5">
                         <h1 class="display-4">Tambah Prestasi Baru</h1>
-                        <p class="lead">Submit Prestasi baru!.</p>
+                        <p class="lead">Submit Prestasi baru!</p>
                     </div>
                 </div>
             </div>
 
             <div class="row">
                 <div class="col-lg-12">
-                    <form action="{{ url('/Student/achievement/store') }}" method="POST" enctype="multipart/form-data">
+                    <form action="./store" method="POST" enctype="multipart/form-data">
                         @csrf
+                        @method('PUT')
                         <div class="form-group">
                             <label for="lomba_id">Prestasi Lomba</label>
                             <select name="lomba_id" id="lomba_id" class="form-control" required>
@@ -34,7 +35,7 @@
                                 placeholder="Masukkan Juara ke (1, 2, 3...)" required>
                         </div>
                         <!-- Hidden, Mahasiswa NIM -->
-                        <input type="hidden" name="mahasiswa_nim" value="{{ auth()->user()->nim }}">
+                        <input type="hidden" name="mahasiswa_id" value="{{ auth()->user()->nim }}">
                         <!-- Submit -->
                         <button class="btn btn-primary" type="submit">
                             <i class="fa fa-plus"></i> Tambah Prestasi

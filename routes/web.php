@@ -45,13 +45,15 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/Achievement', [ListAchievementController::class, 'index']);
     Route::get('/Student/achievement', [ListAchievementController::class, 'studentIndex']);
     Route::get('/Student/achievement/new', [ListAchievementController::class, 'create']);
-    Route::post('/Student/achievement/store', [ListAchievementController::class, 'store']);
+    Route::put('/Student/achievement/store', [ListAchievementController::class, 'store']);
     Route::get('/Student/achievement/{id}', [ListAchievementController::class, 'show']);
     Route::get('/Student/achievement/{id}/edit', [ListAchievementController::class, 'edit']);
     Route::put('/Student/achievement/{id}/update', [ListAchievementController::class, 'update']);
 
     Route::get('/ListCompetition', [ListCompetitionController::class, 'index']);
     Route::get('/Competition/{id}', [ListCompetitionController::class, 'show']);
+    Route::get('/Competition/create', [ListCompetitionController::class, 'create']);
+    Route::put('/Competition/store', [ListCompetitionController::class, 'store']);
 
 
     Route::get('/detail', function () {

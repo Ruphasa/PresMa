@@ -17,7 +17,9 @@ class AchievementModel extends Model
         'mahasiswa_id',
         'tingkat_prestasi',
         'juara_ke',
-        'status'
+        'status',
+        'point',
+        'keterangan',
     ];
     public function lomba()
     {

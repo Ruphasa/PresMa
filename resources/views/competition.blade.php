@@ -10,6 +10,11 @@
                         <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Our Competition
                         </h6>
                         <h1 class="display-4">List of Competitions Available</h1>
+                        <div class="btn btn-primary mb-4">
+                        <a class="text-white" href="{{ url('Competition/create') }}">
+                            <i class="fa fa-plus mr-2"></i> Suggest New Competition
+                        </a>
+                    </div>
                     </div>
                 </div><!-- End Portfolio Filters -->
             </div>
