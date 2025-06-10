@@ -95,7 +95,7 @@ class ListCompetitionController extends Controller
 
         // Ambil semua kategori untuk dropdown
         $categories = KategoriModel::all();
-        
+
         //Ambil User ID dari auth
         if (!auth()->check()) {
             return redirect()->route('login')->with('error', 'You must be logged in to create a competition.');
@@ -120,7 +120,6 @@ class ListCompetitionController extends Controller
             'lomba_tingkat' => 'required|string|max:255',
             'lomba_tanggal' => 'required|date',
             'lomba_detail' => 'required|string',
-            'keterangan' => 'nullable|string',
         ]);
 
         $competition = new CompetitionModel();
@@ -130,12 +129,16 @@ class ListCompetitionController extends Controller
         $competition->lomba_tingkat = $request->lomba_tingkat;
         $competition->lomba_tanggal = $request->lomba_tanggal;
         $competition->lomba_detail = $request->lomba_detail;
-        $competition->status = 'pending'; // Default status
-        $competition->keterangan = $request->keterangan;
+        if(Auth()->user()->hasRole('ADM')) {
+            $competition->status = 'validated'; // Admin can directly validate
+        } else {
+            // For non-admin users, set status to pending
+            $competition->status = 'pending';
+        }
         $competition->save();
 
         //REDIRECT MAY OR MAY NOT WORK PROPERLY
-        return redirect('./Student/achievement/')->with('success', 'Lomba berhasil ditambahkan!');
+        return redirect('./ListCompetition')->with('success', 'Lomba berhasil ditambahkan!');
     }
 
 }

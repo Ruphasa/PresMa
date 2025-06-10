@@ -53,8 +53,7 @@
                         <!-- Detail Lomba -->
                         <div class="form-group">
                             <label for="lomba_detail">Detail Lomba</label>
-                            <textarea name="lomba_detail" id="lomba_detail" class="form-control" rows="4"
-                                required></textarea>
+                            <textarea name="lomba_detail" id="lomba_detail" class="form-control" rows="4" required></textarea>
                         </div>
 
                         <!-- Status -->
@@ -65,15 +64,10 @@
                             </select>
                         </div>
 
-                        <!-- Keterangan (Opsional) -->
-                        <div class="form-group">
-                            <label for="keterangan">Keterangan (Opsional)</label>
-                            <input type="text" name="keterangan" id="keterangan" class="form-control">
-                        </div>
-
                         <!-- Ambil USER ID -->
                         <div class="form-group" hidden>
-                            <input type="text" name="user_id" id="user_id" class="form-control" hidden value="{{ $userId }}">
+                            <input type="text" name="user_id" id="user_id" class="form-control" hidden
+                                value="{{ $userId }}">
                         </div>
 
                         <!-- Submit -->
