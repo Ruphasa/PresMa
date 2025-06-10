@@ -21,13 +21,18 @@
                             <select name="lomba_id" id="lomba_id" class="form-control" required>
                                 <option value="" disabled selected>Pilih Lomba</option>
                                 @foreach ($lomba as $l)
-                                    <option value="{{ $l->id }}">{{ $l->lomba_nama }}</option>
+                                    <option value="{{ $l->lomba_id }}">{{ $l->lomba_nama }}</option>
                                 @endforeach
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="tingkat_prestasi">Tingkat Prestasi</label>
-                            <input type="text" class="form-control" id="tingkat_prestasi" name="tingkat_prestasi" placeholder="Masukkan Tingkat Prestasi (Nasional, Internasional...)" required>
+                            <select name="tingkat_prestasi" id="tingkat_prestasi" class="form-control" required>
+                                <option value="" disabled selected>Pilih Tingkat Prestasi</option>
+                                <option value="Nasional">Nasional</option>
+                                <option value="Internasional">Internasional</option>
+                                <option value="Regional">Regional</option>
+                            </select>
                         </div>
                         <div class="form-group">
                             <label for="juara_ke">Juara ke</label>

@@ -120,22 +120,22 @@ class ListCompetitionController extends Controller
             'lomba_tingkat' => 'required|string|max:255',
             'lomba_tanggal' => 'required|date',
             'lomba_detail' => 'required|string',
-            'status' => 'required|in:pending',
             'keterangan' => 'nullable|string',
         ]);
 
         $competition = new CompetitionModel();
         $competition->kategori_id = $request->kategori_id;
-        $competition->user_id = auth()->id(); // assuming login
+        $competition->user_id = $request->user_id;
         $competition->lomba_nama = $request->lomba_nama;
         $competition->lomba_tingkat = $request->lomba_tingkat;
         $competition->lomba_tanggal = $request->lomba_tanggal;
         $competition->lomba_detail = $request->lomba_detail;
-        $competition->status = $request->status;
+        $competition->status = 'pending'; // Default status
         $competition->keterangan = $request->keterangan;
         $competition->save();
 
-        return redirect()->route('competition.index')->with('success', 'Lomba berhasil ditambahkan!');
+        //REDIRECT MAY OR MAY NOT WORK PROPERLY
+        return redirect('./Student/achievement/')->with('success', 'Lomba berhasil ditambahkan!');
     }
 
 }

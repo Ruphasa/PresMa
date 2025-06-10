@@ -36,7 +36,12 @@
                         <!-- Tingkat Lomba -->
                         <div class="form-group">
                             <label for="lomba_tingkat">Tingkat</label>
-                            <input type="text" name="lomba_tingkat" id="lomba_tingkat" class="form-control" required>
+                            <select name="lomba_tingkat" id="lomba_tingkat" class="form-control" required>
+                                <option value="">-- Pilih Tingkat --</option>
+                                <option value="Nasional">Nasional</option>
+                                <option value="Internasional">Internasional</option>
+                                <option value="Regional">Regional</option>
+                            </select>
                         </div>
 
                         <!-- Tanggal -->
@@ -54,8 +59,8 @@
 
                         <!-- Status -->
                         <div class="form-group">
-                            <label for="status">Status</label>
-                            <select name="status" id="status" class="form-control" required disabled>
+                            <label for="status" hidden>Status</label>
+                            <select name="status" id="status" class="form-control" required disabled hidden>
                                 <option value="pending">Pending</option>
                             </select>
                         </div>
@@ -68,7 +73,7 @@
 
                         <!-- Ambil USER ID -->
                         <div class="form-group" hidden>
-                            <input type="text" name="user_id" id="user_id" class="form-control" hidden value="{{ auth()->user()->id }}">
+                            <input type="text" name="user_id" id="user_id" class="form-control" hidden value="{{ $userId }}">
                         </div>
 
                         <!-- Submit -->

@@ -111,29 +111,23 @@ class ListAchievementController extends Controller
 
     public function store(Request $request)
     {
-        $mahasiswa = auth()->user()->mahasiswa;
-        if (!$mahasiswa) {
-            return back()->withErrors(['auth' => 'Data mahasiswa tidak ditemukan.']);
-        }
-        $dd['mahasiswa_id'] = $mahasiswa->nim;
-
+        $mahasiswa = auth()->user()->mahasiswa->nim;
         $request->validate([
-            'lomba_id' => 'required|exists:competitions,lomba_id',
-            'tingkat_prestasi' => 'required|string|max:255',
+            'lomba_id' => 'required',
+            'tingkat_prestasi' => 'required',
             'juara_ke' => 'required|integer|min:1',
         ]);
 
-
         AchievementModel::create([
             'lomba_id' => $request->lomba_id,
+            'mahasiswa_id' => $mahasiswa,
             'tingkat_prestasi' => $request->tingkat_prestasi,
             'juara_ke' => $request->juara_ke,
             'status' => 'pending',
             'point' => 0,
-            'mahasiswa_id' => $request->mahasiswa_id,
         ]);
 
-        return redirect()->route('achievement.index')->with('success', 'Prestasi berhasil ditambahkan!');
+        return redirect('./Student/achievement/')->with('success', 'Prestasi berhasil ditambahkan!');
     }
 
     public function edit($id)
@@ -173,6 +167,6 @@ class ListAchievementController extends Controller
             'juara_ke' => $request->juara_ke,
         ]);
 
-        return redirect('./student/achievement')->with('success', 'Prestasi berhasil diperbarui.');
+        return redirect('./Student/achievement/')->with('success', 'Prestasi berhasil diperbarui.');
     }
 }
