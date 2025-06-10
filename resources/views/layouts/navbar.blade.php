@@ -67,6 +67,20 @@
                             class="nav-item nav-link {{ $activeMenu == 'admin' ? 'active' : '' }}">Admin 🤫</a>
                     @endif
                 </div>
+
+                <!-- Dropdown Notifikasi -->
+                <div class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" data-toggle="dropdown"
+                        role="button" aria-expanded="false">
+                        <i class="bi bi-bell">🔔</i>
+                        <span class="badge badge-danger" id="notificationCount"></span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right" id="notificationList"
+                        aria-labelledby="notificationDropdown">
+                        <!-- Notifikasi akan diisi oleh AJAX -->
+                    </div>
+                </div>
+
                 <!-- User Dropdown -->
                 @if (Auth::user())
                     <div class="nav-item dropdown">
@@ -98,9 +112,116 @@
     <!-- Navbar End -->
 
     <!-- Load jQuery and Bootstrap JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- AJAX untuk Notifikasi -->
+    <script>
+        $(document).ready(function() {
+            // Atur CSRF token untuk AJAX
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+            });
+
+            // Fungsi untuk memuat notifikasi
+            function loadNotifications() {
+                $.ajax({
+                    url: '/notifications',
+                    method: 'GET',
+                    success: function(response) {
+                        const {
+                            data,
+                            total
+                        } = response;
+                        const notificationList = $('#notificationList');
+                        const notificationCount = $('#notificationCount');
+
+                        // Bersihkan daftar notifikasi
+                        notificationList.empty();
+
+                        // Perbarui jumlah notifikasi
+                        notificationCount.text(total > 10 ? '10+' : total);
+                        notificationCount.toggle(total > 0);
+
+                        // Tambahkan item notifikasi ke dropdown untuk role ADM
+                        if ({{ Auth::user()->hasRole('ADM') ? 'true' : 'false' }}) {
+                            if (data.pending_achievements > 0) {
+                                notificationList.append(
+                                    '<a class="dropdown-item" href="' +
+                                    '{{ url('/Admin/achievement') }}' +
+                                    '">Pending Achievements: ' +
+                                    data.pending_achievements + '</a>'
+                                );
+                            }
+                            if (data.pending_competitions > 0) {
+                                notificationList.append(
+                                    '<a class="dropdown-item" href="' +
+                                    '{{ url('/Admin/competition') }}' +
+                                    '">Pending Competitions: ' +
+                                    data.pending_competitions + '</a>'
+                                );
+                            }
+                        } else if ({{ Auth::user()->hasRole('MHS') ? 'true' : 'false' }}) {
+                            data.recommended_competitions.forEach(competition => {
+                                notificationList.append(
+                                    '<a class="dropdown-item" href="' +
+                                    '{{ url('/Competition') }}/' + competition.lomba
+                                    .lomba_id + '">Recommended: ' +
+                                    competition.lomba.lomba_nama + '</a>'
+                                );
+                            });
+                            data.rejected_competitions.forEach(competition => {
+                                notificationList.append(
+                                    '<a class="dropdown-item" href="#">Rejected Competition: ' +
+                                    competition.lomba_nama + '</a>'
+                                );
+                            });
+                            data.rejected_achievements.forEach(achievement => {
+                                notificationList.append(
+                                    '<a class="dropdown-item" href="#">Rejected Achievement: ' +
+                                    achievement.lomba.lomba_nama + '</a>'
+                                );
+                            });
+                        } else if ({{ Auth::user()->hasRole('DP') ? 'true' : 'false' }}) {
+                            data.rejected_competitions.forEach(competition => {
+                                notificationList.append(
+                                    '<a class="dropdown-item" href="#">Rejected Competition: ' +
+                                    competition.lomba_nama + '</a>'
+                                );
+                            });
+                            if (data.pending_achievements > 0) {
+                                notificationList.append(
+                                    '<a class="dropdown-item" href="' +
+                                    '{{ url('/ListAchievement') }}' + '">Pending Achievements: ' +
+                                    data.pending_achievements + '</a>'
+                                );
+                            }
+                        }
+
+                        // Jika tidak ada notifikasi, tambahkan pesan default
+                        if (notificationList.children().length === 0) {
+                            notificationList.append(
+                                '<a class="dropdown-item" href="#">No notifications</a>'
+                            );
+                        }
+                    },
+                    error: function() {
+                        $('#notificationList').append(
+                            '<a class="dropdown-item" href="#">Gagal memuat notifikasi</a>'
+                        );
+                    }
+                });
+            }
+
+            // Panggil loadNotifications saat halaman dimuat
+            loadNotifications();
+
+            // Opsional: Perbarui notifikasi setiap 60 detik
+            setInterval(loadNotifications, 60000);
+        });
+    </script>
 </body>
 
 </html>

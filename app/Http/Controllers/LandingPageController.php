@@ -25,7 +25,7 @@ class LandingPageController extends Controller
         $totalCompetitions = CompetitionModel::count();
 
         // Fetch top 5 students by points
-        $topStudents = MahasiswaModel::with(['user', 'achievements' => function ($query) {
+        $topStudents = MahasiswaModel::with(['user', 'prestasi' => function ($query) {
             $query->select('mahasiswa_id', \DB::raw('SUM(point) as total_poin'))
                 ->groupBy('mahasiswa_id')
                 ->orderBy('total_poin', 'desc')

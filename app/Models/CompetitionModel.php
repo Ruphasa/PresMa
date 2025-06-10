@@ -15,6 +15,7 @@ class CompetitionModel extends Model
 
     protected $fillable = [
         'kategori_id',
+        'user_id',
         'lomba_tingkat',
         'lomba_tanggal',
         'lomba_nama',
@@ -24,5 +25,10 @@ class CompetitionModel extends Model
     public function kategori()
     {
         return $this->belongsTo(KategoriModel::class, 'kategori_id');
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(UserModel::class, 'user_id');
     }
 }

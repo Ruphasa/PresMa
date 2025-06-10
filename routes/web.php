@@ -11,6 +11,7 @@ use App\Http\Controllers\ListAchievementController;
 use App\Http\Controllers\ListCompetitionController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\MahasiswaController;
+use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\ProdiController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RegisterController;
@@ -41,6 +42,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/', [LandingPageController::class, 'index']);
 
     Route::get('/home', [LandingPageController::class, 'index']);
+    Route::get('notifications', [NotificationController::class, 'getNotifications'])->name('notifications');
 
     Route::get('/Achievement', [ListAchievementController::class, 'index']);
     Route::get('/Student/achievement', [ListAchievementController::class, 'studentIndex']);
