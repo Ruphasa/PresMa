@@ -342,6 +342,7 @@ class MahasiswaController extends Controller
             'level'     => $level,
             'dosen'     => $dosen,
             'prodi'     => $prodi,
+            'kategori'  => $kategori,
         ]);
     }
 
