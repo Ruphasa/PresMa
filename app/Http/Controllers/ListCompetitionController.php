@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\CompetitionModel;
@@ -12,11 +11,11 @@ class ListCompetitionController extends Controller
     {
         $breadcrumb = (object) [
             'title' => 'Competitions',
-            'list' => ['Home', 'Competitions']
+            'list'  => ['Home', 'Competitions'],
         ];
 
         $page = (object) [
-            'title' => 'List of Competitions Available'
+            'title' => 'List of Competitions Available',
         ];
 
         $activeMenu = 'listcompetition';
@@ -46,11 +45,11 @@ class ListCompetitionController extends Controller
         $competitions = $query->get();
 
         return view('competition', [
-            'breadcrumb' => $breadcrumb,
-            'page' => $page,
-            'activeMenu' => $activeMenu,
+            'breadcrumb'   => $breadcrumb,
+            'page'         => $page,
+            'activeMenu'   => $activeMenu,
             'competitions' => $competitions,
-            'categories' => $categories
+            'categories'   => $categories,
         ]);
     }
 
@@ -64,18 +63,18 @@ class ListCompetitionController extends Controller
         // Prepare breadcrumb and page data
         $breadcrumb = (object) [
             'title' => 'Competition Details',
-            'list' => ['Home /', 'Competitions /', $competition->lomba_nama],
+            'list'  => ['Home /', 'Competitions /', $competition->lomba_nama],
         ];
         $page = (object) [
-            'title' => 'Detail Lomba: ' . $competition->lomba_nama
+            'title' => 'Detail Lomba: ' . $competition->lomba_nama,
         ];
         $activeMenu = 'competition';
 
         // Return the detail view with the competition data
         return view('detail', [
-            'breadcrumb' => $breadcrumb,
-            'page' => $page,
-            'activeMenu' => $activeMenu,
+            'breadcrumb'  => $breadcrumb,
+            'page'        => $page,
+            'activeMenu'  => $activeMenu,
             'competition' => $competition,
         ]);
     }
@@ -84,11 +83,11 @@ class ListCompetitionController extends Controller
     {
         $breadcrumb = (object) [
             'title' => 'Create Competition',
-            'list' => ['Home', 'Create Competition']
+            'list'  => ['Home', 'Create Competition'],
         ];
 
         $page = (object) [
-            'title' => 'Create a New Competition'
+            'title' => 'Create a New Competition',
         ];
 
         $activeMenu = 'createcompetition';
@@ -97,7 +96,7 @@ class ListCompetitionController extends Controller
         $categories = KategoriModel::all();
 
         //Ambil User ID dari auth
-        if (!auth()->check()) {
+        if (! auth()->check()) {
             return redirect()->route('login')->with('error', 'You must be logged in to create a competition.');
         }
         //Ambil
@@ -105,31 +104,31 @@ class ListCompetitionController extends Controller
 
         return view('createcompetition', [
             'breadcrumb' => $breadcrumb,
-            'page' => $page,
+            'page'       => $page,
             'activeMenu' => $activeMenu,
             'categories' => $categories,
-            'userId' => $userId
+            'userId'     => $userId,
         ]);
     }
     public function store(Request $request)
     {
         $request->validate([
-            'kategori_id' => 'required',
-            'user_id' => 'required',
-            'lomba_nama' => 'required|string|max:255',
+            'kategori_id'   => 'required',
+            'user_id'       => 'required',
+            'lomba_nama'    => 'required|string|max:255',
             'lomba_tingkat' => 'required|string|max:255',
             'lomba_tanggal' => 'required|date',
-            'lomba_detail' => 'required|string',
+            'lomba_detail'  => 'required|string',
         ]);
 
-        $competition = new CompetitionModel();
-        $competition->kategori_id = $request->kategori_id;
-        $competition->user_id = $request->user_id;
-        $competition->lomba_nama = $request->lomba_nama;
+        $competition                = new CompetitionModel();
+        $competition->kategori_id   = $request->kategori_id;
+        $competition->user_id       = $request->user_id;
+        $competition->lomba_nama    = $request->lomba_nama;
         $competition->lomba_tingkat = $request->lomba_tingkat;
         $competition->lomba_tanggal = $request->lomba_tanggal;
-        $competition->lomba_detail = $request->lomba_detail;
-        if(Auth()->user()->hasRole('ADM')) {
+        $competition->lomba_detail  = $request->lomba_detail;
+        if (Auth()->user()->hasRole('ADM')) {
             $competition->status = 'validated'; // Admin can directly validate
         } else {
             // For non-admin users, set status to pending
@@ -141,4 +140,66 @@ class ListCompetitionController extends Controller
         return redirect('./ListCompetition')->with('success', 'Lomba berhasil ditambahkan!');
     }
 
+    public function edit($lomba_id)
+    {
+        $competition = CompetitionModel::findOrFail($lomba_id);
+        $breadcrumb  = (object) [
+            'title' => 'Edit Competition',
+            'list'  => ['Home', 'Edit Competition'],
+        ];
+
+        $page = (object) [
+            'title' => 'Edit Competition: ' . $competition->lomba_nama,
+        ];
+
+        $activeMenu = 'editcompetition';
+
+        // Ambil semua kategori untuk dropdown
+        $categories = KategoriModel::all();
+
+        return view('editcompetition', [
+            'breadcrumb'  => $breadcrumb,
+            'page'        => $page,
+            'activeMenu'  => $activeMenu,
+            'competition' => $competition,
+            'categories'  => $categories,
+        ]);
+    }
+
+    public function update(Request $request, $lomba_id)
+    {
+        $request->validate([
+            'kategori_id'   => 'required',
+            'user_id'       => 'required',
+            'lomba_nama'    => 'required|string|max:255',
+            'lomba_tingkat' => 'required|string|max:255',
+            'lomba_tanggal' => 'required|date',
+            'lomba_detail'  => 'required|string',
+        ]);
+
+        $competition                = CompetitionModel::findOrFail($lomba_id);
+        $competition->kategori_id   = $request->kategori_id;
+        $competition->user_id       = $request->user_id;
+        $competition->lomba_nama    = $request->lomba_nama;
+        $competition->lomba_tingkat = $request->lomba_tingkat;
+        $competition->lomba_tanggal = $request->lomba_tanggal;
+        $competition->lomba_detail  = $request->lomba_detail;
+        if (Auth()->user()->hasRole('ADM')) {
+            $competition->status = 'validated'; // Admin can directly validate
+        } else {
+            // For non-admin users, set status to pending
+            $competition->status = 'pending';
+        }
+        $competition->save();
+
+        return redirect('./ListCompetition')->with('success', 'Lomba berhasil diperbarui!');
+    }
+
+    public function destroy($lomba_id)
+    {
+        $competition = CompetitionModel::findOrFail($lomba_id);
+        $competition->delete();
+
+        return redirect('./ListCompetition')->with('success', 'Lomba berhasil dihapus!');
+    }
 }

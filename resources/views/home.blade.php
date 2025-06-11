@@ -9,15 +9,18 @@
                         <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Why Choose Us?</h6>
                         <h1 class="display-4">Politeknik Negeri Malang</h1>
                     </div>
-                    <p class="mb-4 pb-2">Politeknik Negeri Malang adalah Instansi bla bla bla..</p>
+                    <p class="mb-4 pb-2">Politeknik Negeri Malang merupakan salah satu institusi pendidikan vokasi terbaik di
+                        Indonesia, dengan komitmen kuat dalam mencetak lulusan yang siap bersaing di dunia industri maupun
+                        akademik. Kami menawarkan berbagai keunggulan yang menjadikan kampus ini pilihan tepat bagi para
+                        mahasiswa yang ingin berkembang dan berprestasi:</p>
                     <div class="d-flex mb-3">
                         <div class="btn-icon bg-primary mr-4">
                             <i class="fa fa-2x fa-graduation-cap text-white"></i>
                         </div>
                         <div class="mt-n1">
-                            <h4>Skilled Instructors</h4>
-                            <p>Labore rebum duo est Sit dolore eos sit tempor eos stet, vero vero clita magna kasd no nonumy
-                                et eos dolor magna ipsum.</p>
+                            <h4>Tenaga Pengajar Profesional & Berpengalaman</h4>
+                            <p>Dosen dan instruktur yang berkompeten di bidangnya, tidak hanya memiliki latar belakang
+                                akademik yang kuat tetapi juga pengalaman industri yang mendukung kualitas pengajaran.</p>
                         </div>
                     </div>
                     <div class="d-flex mb-3">
@@ -25,9 +28,10 @@
                             <i class="fa fa-2x fa-certificate text-white"></i>
                         </div>
                         <div class="mt-n1">
-                            <h4>International Certificate</h4>
-                            <p>Labore rebum duo est Sit dolore eos sit tempor eos stet, vero vero clita magna kasd no nonumy
-                                et eos dolor magna ipsum.</p>
+                            <h4>Fasilitas Modern & Lengkap</h4>
+                            <p>Politeknik Negeri Malang menyediakan laboratorium canggih, pusat penelitian, ruang kelas
+                                interaktif, serta berbagai fasilitas pendukung lainnya yang menunjang pembelajaran berbasis
+                                praktik.</p>
                         </div>
                     </div>
                     <div class="d-flex">
@@ -35,9 +39,10 @@
                             <i class="fa fa-2x fa-book-reader text-white"></i>
                         </div>
                         <div class="mt-n1">
-                            <h4>Online Classes</h4>
-                            <p class="m-0">Labore rebum duo est Sit dolore eos sit tempor eos stet, vero vero clita magna
-                                kasd no nonumy et eos dolor magna ipsum.</p>
+                            <h4>Kurikulum Berbasis Industri</h4>
+                            <p class="m-0">Program studi dirancang agar selaras dengan perkembangan dunia industri,
+                                memastikan lulusan memiliki keahlian yang dibutuhkan oleh perusahaan, baik di dalam maupun
+                                luar negeri.</p>
                         </div>
                     </div>
                 </div>
@@ -67,7 +72,15 @@
                         <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">About Us</h6>
                         <h1 class="display-4">PresMa</h1>
                     </div>
-                    <p>PresMa adalah Sistem Informasi Pencatatan Prestasi untuk mahasiswa polinema bla bla blaa...</p>
+                    <p>Selamat datang di PresMa, sistem inovatif yang dirancang khusus untuk mencatat dan mengelola prestasi
+                        mahasiswa Politeknik Negeri Malang. Kami memahami bahwa setiap pencapaian akademik dan non-akademik
+                        adalah bagian penting dari perjalanan mahasiswa, baik untuk pengembangan diri maupun sebagai rekam
+                        jejak prestasi yang bernilai.
+
+                        <br><br>Dengan PresMa, mahasiswa, dosen, dan institusi pendidikan dapat dengan mudah
+                        Mendokumentasikan Prestasi, Menampilkan Data Prestasi Secara Transparan, Mendukung
+                        Pengembangan Karier Mahasiswa, dan Memudahkan Validasi dan Verifikasi
+                    </p>
                     <div class="row pt-3 mx-0">
                         <div class="col-3 px-0">
                             <div class="bg-success text-center p-4">
@@ -105,11 +118,11 @@
             <div class="owl-carousel team-carousel position-relative" style="padding: 0 30px;">
                 @foreach ($topStudents as $index => $student)
                     <div class="team-item">
-                        <img class="img-fluid w-100" src="{{ asset($student->user->img ?? 'Edukate/img/team-1.jpg') }}"
+                        <img class="img-fluid w-100" src="{{ asset($student->img ?? 'Edukate/img/team-1.jpg') }}"
                             alt="">
                         <div class="bg-light text-center p-4">
-                            <h5 class="mb-3">{{ $student->user->nama }}</h5>
-                            <p class="mb-2">Points: {{ $student->point }}</p>
+                            <h5 class="mb-3">{{ $student->nama ?? 'Nama Tidak Tersedia' }}</h5>
+                            <p class="mb-2">Points: {{ $student->total_point ?? 0 }}</p>
                             <div class="d-flex justify-content-center">
                                 <a class="mx-1 p-1" href="#">{{ $index + 1 }}</a>
                             </div>

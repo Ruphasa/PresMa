@@ -24,13 +24,19 @@ class LandingPageController extends Controller
         $studentsWithAchievements = AchievementModel::distinct('mahasiswa_id')->count();
         $totalCompetitions = CompetitionModel::count();
 
-        // Fetch top 5 students by points
-        $topStudents = MahasiswaModel::with(['user', 'prestasi' => function ($query) {
-            $query->select('mahasiswa_id', \DB::raw('SUM(point) as total_poin'))
-                ->groupBy('mahasiswa_id')
-                ->orderBy('total_poin', 'desc')
-                ->take(5);
-        }]);
+        // Fetch top 10 students by points
+        $topStudents = MahasiswaModel::select(
+            'm_user.nama',
+            'm_user.img',
+            \DB::raw('SUM(t_prestasi.point) as total_point')
+        )
+        ->join('m_user', 'm_mahasiswa.user_id', '=', 'm_user.user_id')
+        ->leftJoin('t_prestasi', 'm_mahasiswa.nim', '=', 't_prestasi.mahasiswa_id')
+        ->groupBy('m_mahasiswa.nim', 'm_user.nama', 'm_user.img')
+        ->orderByDesc('total_point')
+        ->take(10)
+        ->get();
+
         // Fetch 6 latest competitions
         $latestCompetitions = CompetitionModel::with('kategori')
             ->where('status', 'validated')

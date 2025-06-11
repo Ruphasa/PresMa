@@ -33,11 +33,11 @@ class PrestasiSeeder extends Seeder
             [
                 'prestasi_id' => 1,
                 'lomba_id' => 1,
-                'mahasiswa_id' => 2341720134,
+                'mahasiswa_id' => 2341720143,
                 'tingkat_prestasi' => 'Nasional',
                 'juara_ke' => 3,
                 'status' => 'validated',
-                'point' => 6,
+                'point' => 10,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
@@ -45,17 +45,28 @@ class PrestasiSeeder extends Seeder
                 'prestasi_id' => 2,
                 'lomba_id' => 1,
                 'mahasiswa_id' => 2341720143,
-                'tingkat_prestasi' => 'Internasional',
-                'juara_ke' => 3,
-                'status' => 'pending',
-                'point' => 10,
+                'tingkat_prestasi' => 'Nasional',
+                'juara_ke' => 1,
+                'status' => 'validated',
+                'point' => 12,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ],
+            [
+                'prestasi_id' => 3,
+                'lomba_id' => 1,
+                'mahasiswa_id' => 2341720143,
+                'tingkat_prestasi' => 'Nasional',
+                'juara_ke' => 2,
+                'status' => 'validated',
+                'point' => 11,
                 'created_at' => now(),
                 'updated_at' => now(),
             ],
         ];
 
         // Tambahkan 50 data prestasi tambahan
-        for ($i = 3; $i <= 53; $i++) {
+        for ($i = 4; $i <= 52; $i++) {
             $mahasiswaId = 2341720143 + rand(0, 198);
             $tingkatOptions = ['Regional', 'Nasional', 'Internasional'];
             $tingkat = $tingkatOptions[array_rand($tingkatOptions)];

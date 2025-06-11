@@ -158,7 +158,7 @@
                             if (data.pending_competitions > 0) {
                                 notificationList.append(
                                     '<a class="dropdown-item" href="' +
-                                    '{{ url('/Admin/competition') }}' +
+                                    '{{ url('Admin/competition') }}' +
                                     '">Pending Competitions: ' +
                                     data.pending_competitions + '</a>'
                                 );
@@ -167,14 +167,16 @@
                             data.recommended_competitions.forEach(competition => {
                                 notificationList.append(
                                     '<a class="dropdown-item" href="' +
-                                    '{{ url('/Competition') }}/' + competition.lomba
-                                    .lomba_id + '">Recommended: ' +
-                                    competition.lomba.lomba_nama + '</a>'
+                                    '{{ url('Competition/competition.lomba.lomba_id') }}' +
+                                    '">Recommended: ' +
+                                    competition.lomba_nama + '</a>'
                                 );
                             });
                             data.rejected_competitions.forEach(competition => {
                                 notificationList.append(
-                                    '<a class="dropdown-item" href="#">Rejected Competition: ' +
+                                    '<a class="dropdown-item" href="' +
+                                    '{{ url('Competition/competition.lomba.lomba_id/edit') }}/' +
+                                    '">Rejected Competition: ' +
                                     competition.lomba_nama + '</a>'
                                 );
                             });
@@ -187,14 +189,14 @@
                         } else if ({{ Auth::user()->hasRole('DP') ? 'true' : 'false' }}) {
                             data.rejected_competitions.forEach(competition => {
                                 notificationList.append(
-                                    '<a class="dropdown-item" href="#">Rejected Competition: ' +
+                                    '<a class="dropdown-item" href="{{ url('Competition/competition.lomba_id/edit') }}">Rejected Competition: ' +
                                     competition.lomba_nama + '</a>'
                                 );
                             });
                             if (data.pending_achievements > 0) {
                                 notificationList.append(
                                     '<a class="dropdown-item" href="' +
-                                    '{{ url('/ListAchievement') }}' + '">Pending Achievements: ' +
+                                    '{{ url('/Achievement') }}' + '">Pending Achievements: ' +
                                     data.pending_achievements + '</a>'
                                 );
                             }

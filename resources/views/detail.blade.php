@@ -7,12 +7,13 @@
                 <div class="col-lg-8">
                     <div class="mb-5">
                         <div class="section-title position-relative mb-5">
-                                <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Competition Detail
+                            <h6 class="d-inline-block position-relative text-secondary text-uppercase pb-2">Competition
+                                Detail
                             </h6>
                             <h1 class="display-4">{{ $competition->lomba_nama }}</h1>
                         </div>
-                        <img class="img-fluid rounded w-100 mb-4" src="{{asset('Edukate/img/header.jpg')}}" alt="Image">
-                        <p>{{$competition->lomba_detail}}</p>
+                        <img class="img-fluid rounded w-100 mb-4" src="{{ asset('Edukate/img/header.jpg') }}" alt="Image">
+                        <p>{{ $competition->lomba_detail }}</p>
 
                         <p>Sadipscing labore amet rebum est et justo gubergren. Et eirmod ipsum sit diam ut magna lorem.
                             Nonumy vero labore lorem sanctus rebum et lorem magna kasd, stet amet magna accusam
@@ -25,7 +26,7 @@
                     <div class="owl-carousel related-carousel position-relative" style="padding: 0 30px;">
                         @for ($index = 0; $index < 4; $index++)
                             <a class="courses-list-item position-relative d-block overflow-hidden mb-2" href="detail.html">
-                                <img class="img-fluid" src="{{asset('Edukate/img/courses-1.jpg')}}" alt="">
+                                <img class="img-fluid" src="{{ asset('Edukate/img/courses-1.jpg') }}" alt="">
                                 <div class="courses-text">
                                     <h4 class="text-center text-white px-3">Web design & development courses for
                                         beginners</h4>
@@ -44,32 +45,23 @@
 
                 <div class="col-lg-4 mt-5 mt-lg-0">
                     <div class="bg-primary mb-5 py-3">
-                        <h3 class="text-white py-3 px-4 m-0">Course Features</h3>
+                        <h3 class="text-white py-3 px-4 m-0">Competition Features</h3>
                         <div class="d-flex justify-content-between border-bottom px-4">
                             <h6 class="text-white my-3">Penyelenggara</h6>
                             <h6 class="text-white my-3">John Doe</h6>
                         </div>
                         <div class="d-flex justify-content-between border-bottom px-4">
-                            <h6 class="text-white my-3">Rating</h6>
-                            <h6 class="text-white my-3">4.5 <small>(250)</small></h6>
-                        </div>
-                        <div class="d-flex justify-content-between border-bottom px-4">
-                            <h6 class="text-white my-3">Lectures</h6>
-                            <h6 class="text-white my-3">15</h6>
+                            <h6 class="text-white my-3">Kategori</h6>
+                            <h6 class="text-white my-3">{{ $competition->kategori->kategori_nama ?? 'Unknown' }}</h6>
                         </div>
                         <div class="d-flex justify-content-between border-bottom px-4">
                             <h6 class="text-white my-3">Batas Waktu Pendaftaran</h6>
-                            <h6 class="text-white my-3">10.00 Hrs</h6>
+                            <h6 class="text-white my-3">{{ $competition->lomba_tanggal }}</h6>
                         </div>
                         <div class="d-flex justify-content-between border-bottom px-4">
                             <h6 class="text-white my-3">Tingkat</h6>
-                            <h6 class="text-white my-3">All Level</h6>
+                            <h6 class="text-white my-3">{{ $competition->lomba_tingkat }}</h6>
                         </div>
-                        <div class="d-flex justify-content-between px-4">
-                            <h6 class="text-white my-3">Language</h6>
-                            <h6 class="text-white my-3">English</h6>
-                        </div>
-                        <h5 class="text-white py-3 px-4 m-0">Course Price: $199</h5>
                         <div class="py-3 px-4">
                             <a class="btn btn-block btn-secondary py-3 px-5" href="">Daftar Sekarang</a>
                         </div>
@@ -91,13 +83,15 @@
                         <h2 class="mb-4">Recent Courses</h2>
                         @for ($index = 0; $index < 4; $index++)
                             <a class="d-flex align-items-center text-decoration-none mb-4" href="">
-                                <img class="img-fluid rounded" src="{{asset('Edukate/img/courses-80x80.jpg')}}" alt="">
+                                <img class="img-fluid rounded" src="{{ asset('Edukate/img/courses-80x80.jpg') }}"
+                                    alt="">
                                 <div class="pl-3">
                                     <h6>Web design & development courses for beginners</h6>
                                     <div class="d-flex">
                                         <small class="text-body mr-3"><i class="fa fa-user text-primary mr-2"></i>Jhon
                                             Doe</small>
-                                        <small class="text-body"><i class="fa fa-star text-primary mr-2"></i>4.5 (250)</small>
+                                        <small class="text-body"><i class="fa fa-star text-primary mr-2"></i>4.5
+                                            (250)</small>
                                     </div>
                                 </div>
                             </a>

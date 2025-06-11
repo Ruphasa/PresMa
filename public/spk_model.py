@@ -30,23 +30,28 @@ def recommend_students(competition_level, category_id, csv_file_path, N=5):
 
     # Buat label sintetis berdasarkan aturan
     if competition_level == 'Nasional':
-        y = ((df['jumlah_prestasi'] > 3) &
+        y = ((df['jumlah_prestasi'] >= 3) &
              (df['point'] > 10 ) &
              (df['prefrensi_lomba_match'] == 1)).astype(int)
     elif competition_level == 'Internasional':
-        y = ((df['jumlah_prestasi'] > 7) &
-             (df['point'] > 20) &
+        y = ((df['jumlah_prestasi'] > 5) &
+             (df['point'] > 15) &
              (df['prefrensi_lomba_match'] == 1)).astype(int)
     elif competition_level == 'Regional':
         y = ((~((df['jumlah_prestasi'] > 3) & (df['point'] > 10)) &
-              ~((df['jumlah_prestasi'] > 5) & (df['point'] > 25)) &
+              ~((df['jumlah_prestasi'] > 5) & (df['point'] > 15)) &
               (df['prefrensi_lomba_match'] == 1))).astype(int)
     else:
         raise ValueError("Tingkat kompetisi tidak dikenal")
 
     print(f"Jumlah mahasiswa yang cocok (y == 1): {sum(y)}", file=sys.stderr)
     print(f"Nilai y: {y.values}", file=sys.stderr)
-    print(f"Kondisi y: jumlah_prestasi > 0: {sum(df['jumlah_prestasi'] > 0)}, point > 0: {sum(df['point'] > 0)}, prefrensi_lomba_match == 1: {sum(df['prefrensi_lomba_match'] == 1)}", file=sys.stderr)
+    if competition_level == 'Regional':
+        print(f"Jumlah Prestasi < 3 : {sum(df['jumlah_prestasi'] < 3)}, point <= 10 : {sum(df['point'] < 10)}, prefrensi_lomba_match == 1: {sum(df['prefrensi_lomba_match'] == 1)}", file=sys.stderr)
+    elif competition_level == 'Nasional':
+        print(f"Jumlah Prestasi >= 3 : {sum(df['jumlah_prestasi'] >= 3)}, point > 10 : {sum(df['point'] >= 10)}, prefrensi_lomba_match == 1: {sum(df['prefrensi_lomba_match'] == 1)}", file=sys.stderr)
+    elif competition_level == 'Internasional':
+        print(f"Jumlah Prestasi > 5 : {sum(df['jumlah_prestasi'] > 5)}, point > 20 : {sum(df['point'] > 15)}, prefrensi_lomba_match == 1: {sum(df['prefrensi_lomba_match'] == 1)}", file=sys.stderr)
 
     X = df[['ipk', 'angkatan', 'jumlah_prestasi', 'point', 'prefrensi_lomba_match']].values
 

@@ -137,40 +137,18 @@ class CompetitionController extends Controller
     $competition = CompetitionModel::findOrFail($competition_id);
 
     $students = MahasiswaModel::select(
-            'm_mahasiswa.nim',
-            'm_mahasiswa.ipk',
-            'm_mahasiswa.angkatan',
-            'm_mahasiswa.prefrensi_lomba'
-        )
-        ->get()
-        ->map(function ($mhs) {
-            $jumlah_prestasi = AchievementModel::where('mahasiswa_id', $mhs->nim)
-                ->where('status', 'valid')
-                ->count();
-
-            $points = AchievementModel::where('mahasiswa_id', $mhs->nim)
-                ->where('status', 'valid')
-                ->get()
-                ->sum(function ($prestasi) {
-                    $point_map = [
-                        'internasional' => 10,
-                        'nasional' => 7,
-                        'regional' => 5,
-                        'lokal' => 3
-                    ];
-                    $juara_weight = (6 - min($prestasi->juara_ke, 5));
-                    return ($point_map[$prestasi->tingkat_prestasi] ?? 1) * $juara_weight;
-                });
-
-            return [
-                'nim' => $mhs->nim,
-                'ipk' => $mhs->ipk,
-                'angkatan' => $mhs->angkatan,
-                'prefrensi_lomba' => $mhs->prefrensi_lomba,
-                'jumlah_prestasi' => $jumlah_prestasi,
-                'point' => $points
-            ];
-        })->toArray();
+        'm_mahasiswa.nim',
+        'm_mahasiswa.ipk',
+        'm_mahasiswa.angkatan',
+        'm_mahasiswa.prefrensi_lomba',
+        \DB::raw('COUNT(t_prestasi.prestasi_id) as jumlah_prestasi'),
+        \DB::raw('SUM(CASE WHEN t_prestasi.status = "valid" THEN t_prestasi.point ELSE 0 END) as point')
+    )
+    ->leftJoin('t_prestasi', 'm_mahasiswa.nim', '=', 't_prestasi.mahasiswa_id')
+    ->groupBy('m_mahasiswa.nim', 'm_mahasiswa.ipk', 'm_mahasiswa.angkatan', 'm_mahasiswa.prefrensi_lomba')
+    ->orderBy('point', 'desc')
+    ->get()
+    ->toArray();
 
     \Log::info("Jumlah mahasiswa setelah map: " . count($students));
 

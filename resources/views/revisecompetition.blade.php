@@ -20,7 +20,8 @@
                         <div class="form-group">
                             <label for="kategori_id">Kategori</label>
                             <select name="kategori_id" id="kategori_id" class="form-control" required>
-                                <option value="">-- Pilih Kategori --</option>
+                                <option value="{{ $compeptition->kategori->kategori_id }}">
+                                    {{ $competition->kategori->kategori_nama }}</option>
                                 @foreach ($categories as $kategori)
                                     <option value="{{ $kategori->kategori_id }}">{{ $kategori->kategori_nama }}</option>
                                 @endforeach
@@ -31,13 +32,15 @@
                         <div class="form-group">
                             <label for="lomba_nama">Nama Lomba</label>
                             <input type="text" name="lomba_nama" id="lomba_nama" class="form-control" required>
+                            {{ old($competition->lomba_nama ?? '') }}
                         </div>
 
                         <!-- Tingkat Lomba -->
                         <div class="form-group">
                             <label for="lomba_tingkat">Tingkat</label>
                             <select name="lomba_tingkat" id="lomba_tingkat" class="form-control" required>
-                                <option value="">-- Pilih Tingkat --</option>
+                                <option value="{{ $competition->lomba_tingkat }}">
+                                    {{ old($competition->lomba_tingkat ?? '') }}</option>
                                 <option value="Nasional">Nasional</option>
                                 <option value="Internasional">Internasional</option>
                                 <option value="Regional">Regional</option>
@@ -48,12 +51,15 @@
                         <div class="form-group">
                             <label for="lomba_tanggal">Tanggal Lomba</label>
                             <input type="date" name="lomba_tanggal" id="lomba_tanggal" class="form-control" required>
+                            {{ old($competition->lomba_tanggal ?? '') }}
                         </div>
 
                         <!-- Detail Lomba -->
                         <div class="form-group">
                             <label for="lomba_detail">Detail Lomba</label>
-                            <textarea name="lomba_detail" id="lomba_detail" class="form-control" rows="4" required></textarea>
+                            <textarea name="lomba_detail" id="lomba_detail" class="form-control" rows="4" required>
+                                {{ old($competition->lomba_detail ?? '') }}
+                            </textarea>
                         </div>
 
                         <!-- Status -->
@@ -71,7 +77,9 @@
                         </div>
 
                         <!-- Submit -->
-                        <button type="submit" class="btn btn-primary mt-3">Upload Lomba</button>
+                        <a type="delete" class="btn btn-primary mt-3">Urungkan Lomba</button>
+
+                            <button type="submit" class="btn btn-primary mt-3">Upload Lomba</button>
                     </form>
 
                 </div>
