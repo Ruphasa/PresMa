@@ -7,6 +7,7 @@ use App\Models\LevelModel;
 use App\Models\MahasiswaModel;
 use App\Models\UserModel;
 use App\Models\ProdiModel;
+use App\Models\KategoriModel; 
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -321,29 +322,18 @@ class MahasiswaController extends Controller
 
 public function edit_ajax($nim)
 {
-    $mahasiswa = MahasiswaModel::where('nim', $nim)
-        ->with(['user', 'prodi', 'dosen'])
-        ->first();
+    // ... kode sebelumnya ...
 
-    if (!$mahasiswa) {
-        return response()->json([
-            'status' => false,
-            'message' => 'Data tidak ditemukan'
-        ]);
-    }
-
-    $level = LevelModel::all();
-    $dosen = DosenModel::all();
-    $prodi = ProdiModel::all();
+    $kategori = KategoriModel::all(); // Tambahkan baris ini
+    // atau KategoriModel::get(); tergantung preferensi
 
     return view('Admin.mahasiswa.edit_ajax', [
         'mahasiswa' => $mahasiswa,
-        'level' => $level,
         'dosen' => $dosen,
-        'prodi' => $prodi
+        'prodi' => $prodi,
+        'kategori' => $kategori // Pastikan ini di-pass
     ]);
 }
-
 public function update_ajax(Request $request, $nim)
 {
     if (!$request->ajax() && !$request->wantsJson()) {

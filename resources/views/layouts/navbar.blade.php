@@ -5,11 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PresMa</title>
-    <!-- Load Bootstrap CSS -->
     <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-    <!-- Load Font Awesome for icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <!-- Custom CSS (opsional, untuk styling tambahan) -->
     <style>
         .navbar-brand i {
             color: #007bff;
@@ -33,42 +30,39 @@
 </head>
 
 <body>
-    <!-- Navbar Start -->
     <div class="container-fluid p-0">
         <nav class="navbar navbar-expand-lg bg-white navbar-light py-3 py-lg-0 px-lg-5">
-            <!-- Logo -->
             <a href="{{ url('/') }}" class="navbar-brand ml-lg-3">
                 <h1 class="m-0 text-uppercase text-primary"><i class="fa fa-book-reader mr-3"></i>PresMa</h1>
             </a>
-            <!-- Toggler for mobile view -->
             <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <!-- Navbar Content -->
             <div class="collapse navbar-collapse justify-content-between px-lg-3" id="navbarCollapse">
-                <!-- Main Menu -->
                 <div class="navbar-nav mx-auto py-0">
                     <a href="{{ url('/') }}"
                         class="nav-item nav-link {{ $activeMenu == 'home' ? 'active' : '' }}">Home</a>
-                    @if (Auth::user()->hasRole('DP'))
+                    {{-- MODIFIKASI BAGIAN INI --}}
+                    @if (Auth::check() && Auth::user()->hasRole('DP'))
                         <a href="{{ url('/Achievement') }}"
                             class="nav-item nav-link {{ $activeMenu == 'achievement' ? 'active' : '' }}">My Student
                             Achievement</a>
                     @endif
-                    @if (Auth::user()->hasRole('MHS'))
+                    {{-- MODIFIKASI BAGIAN INI --}}
+                    @if (Auth::check() && Auth::user()->hasRole('MHS'))
                         <a href="{{ url('/Student/achievement') }}"
                             class="nav-item nav-link {{ $activeMenu == 'achievement' ? 'active' : '' }}">My
                             Achievement</a>
                     @endif
                     <a href="{{ url('/ListCompetition') }}"
                         class="nav-item nav-link {{ $activeMenu == 'listcompetition' ? 'active' : '' }}">Competition</a>
-                    @if (Auth::user()->hasRole('ADM'))
+                    {{-- MODIFIKASI BAGIAN INI --}}
+                    @if (Auth::check() && Auth::user()->hasRole('ADM'))
                         <a href="{{ url('/Admin') }}"
                             class="nav-item nav-link {{ $activeMenu == 'admin' ? 'active' : '' }}">Admin 🤫</a>
                     @endif
                 </div>
 
-                <!-- Dropdown Notifikasi -->
                 <div class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="notificationDropdown" data-toggle="dropdown"
                         role="button" aria-expanded="false">
@@ -77,12 +71,10 @@
                     </a>
                     <div class="dropdown-menu dropdown-menu-right" id="notificationList"
                         aria-labelledby="notificationDropdown">
-                        <!-- Notifikasi akan diisi oleh AJAX -->
-                    </div>
+                        </div>
                 </div>
 
-                <!-- User Dropdown -->
-                @if (Auth::user())
+                @if (Auth::user()) {{-- Ini sudah benar, memeriksa Auth::user() secara keseluruhan --}}
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">
                             <img src="{{ asset('storage/img/' . Auth::user()->username . '.png') }}" alt=""
@@ -103,19 +95,14 @@
                         </div>
                     </div>
                 @else
-                    <!-- Jika belum login, tampilkan tombol login -->
                     <a href="{{ url('/login') }}" class="btn btn-primary py-2 px-4">Login</a>
                 @endif
             </div>
         </nav>
     </div>
-    <!-- Navbar End -->
-
-    <!-- Load jQuery and Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-    <!-- AJAX untuk Notifikasi -->
     <script>
         $(document).ready(function() {
             // Atur CSRF token untuk AJAX
@@ -127,92 +114,100 @@
 
             // Fungsi untuk memuat notifikasi
             function loadNotifications() {
-                $.ajax({
-                    url: '/notifications',
-                    method: 'GET',
-                    success: function(response) {
-                        const {
-                            data,
-                            total
-                        } = response;
-                        const notificationList = $('#notificationList');
-                        const notificationCount = $('#notificationCount');
+                // Tambahkan pemeriksaan Auth::check() di sini juga
+                @if (Auth::check()) 
+                    $.ajax({
+                        url: '/notifications',
+                        method: 'GET',
+                        success: function(response) {
+                            const {
+                                data,
+                                total
+                            } = response;
+                            const notificationList = $('#notificationList');
+                            const notificationCount = $('#notificationCount');
 
-                        // Bersihkan daftar notifikasi
-                        notificationList.empty();
+                            // Bersihkan daftar notifikasi
+                            notificationList.empty();
 
-                        // Perbarui jumlah notifikasi
-                        notificationCount.text(total > 10 ? '10+' : total);
-                        notificationCount.toggle(total > 0);
+                            // Perbarui jumlah notifikasi
+                            notificationCount.text(total > 10 ? '10+' : total);
+                            notificationCount.toggle(total > 0);
 
-                        // Tambahkan item notifikasi ke dropdown untuk role ADM
-                        if ({{ Auth::user()->hasRole('ADM') ? 'true' : 'false' }}) {
-                            if (data.pending_achievements > 0) {
+                            // Tambahkan item notifikasi ke dropdown untuk role ADM
+                            // MODIFIKASI BAGIAN INI (di dalam script Blade juga perlu Auth::check())
+                            @if (Auth::check() && Auth::user()->hasRole('ADM'))
+                                if (data.pending_achievements > 0) {
+                                    notificationList.append(
+                                        '<a class="dropdown-item" href="' +
+                                        '{{ url('/Admin/achievement') }}' +
+                                        '">Pending Achievements: ' +
+                                        data.pending_achievements + '</a>'
+                                    );
+                                }
+                                if (data.pending_competitions > 0) {
+                                    notificationList.append(
+                                        '<a class="dropdown-item" href="' +
+                                        '{{ url('/Admin/competition') }}' +
+                                        '">Pending Competitions: ' +
+                                        data.pending_competitions + '</a>'
+                                    );
+                                }
+                            @elseif (Auth::check() && Auth::user()->hasRole('MHS')) {{-- MODIFIKASI BAGIAN INI --}}
+                                data.recommended_competitions.forEach(competition => {
+                                    notificationList.append(
+                                        '<a class="dropdown-item" href="' +
+                                        '{{ url('/Competition') }}/' + competition.lomba
+                                        .lomba_id + '">Recommended: ' +
+                                        competition.lomba.lomba_nama + '</a>'
+                                    );
+                                });
+                                data.rejected_competitions.forEach(competition => {
+                                    notificationList.append(
+                                        '<a class="dropdown-item" href="#">Rejected Competition: ' +
+                                        competition.lomba_nama + '</a>'
+                                    );
+                                });
+                                data.rejected_achievements.forEach(achievement => {
+                                    notificationList.append(
+                                        '<a class="dropdown-item" href="#">Rejected Achievement: ' +
+                                        achievement.lomba.lomba_nama + '</a>'
+                                    );
+                                });
+                            @elseif (Auth::check() && Auth::user()->hasRole('DP')) {{-- MODIFIKASI BAGIAN INI --}}
+                                data.rejected_competitions.forEach(competition => {
+                                    notificationList.append(
+                                        '<a class="dropdown-item" href="#">Rejected Competition: ' +
+                                        competition.lomba_nama + '</a>'
+                                    );
+                                });
+                                if (data.pending_achievements > 0) {
+                                    notificationList.append(
+                                        '<a class="dropdown-item" href="' +
+                                        '{{ url('/ListAchievement') }}' + '">Pending Achievements: ' +
+                                        data.pending_achievements + '</a>'
+                                    );
+                                }
+                            @endif
+
+                            // Jika tidak ada notifikasi, tambahkan pesan default
+                            if (notificationList.children().length === 0) {
                                 notificationList.append(
-                                    '<a class="dropdown-item" href="' +
-                                    '{{ url('/Admin/achievement') }}' +
-                                    '">Pending Achievements: ' +
-                                    data.pending_achievements + '</a>'
+                                    '<a class="dropdown-item" href="#">No notifications</a>'
                                 );
                             }
-                            if (data.pending_competitions > 0) {
-                                notificationList.append(
-                                    '<a class="dropdown-item" href="' +
-                                    '{{ url('/Admin/competition') }}' +
-                                    '">Pending Competitions: ' +
-                                    data.pending_competitions + '</a>'
-                                );
-                            }
-                        } else if ({{ Auth::user()->hasRole('MHS') ? 'true' : 'false' }}) {
-                            data.recommended_competitions.forEach(competition => {
-                                notificationList.append(
-                                    '<a class="dropdown-item" href="' +
-                                    '{{ url('/Competition') }}/' + competition.lomba
-                                    .lomba_id + '">Recommended: ' +
-                                    competition.lomba.lomba_nama + '</a>'
-                                );
-                            });
-                            data.rejected_competitions.forEach(competition => {
-                                notificationList.append(
-                                    '<a class="dropdown-item" href="#">Rejected Competition: ' +
-                                    competition.lomba_nama + '</a>'
-                                );
-                            });
-                            data.rejected_achievements.forEach(achievement => {
-                                notificationList.append(
-                                    '<a class="dropdown-item" href="#">Rejected Achievement: ' +
-                                    achievement.lomba.lomba_nama + '</a>'
-                                );
-                            });
-                        } else if ({{ Auth::user()->hasRole('DP') ? 'true' : 'false' }}) {
-                            data.rejected_competitions.forEach(competition => {
-                                notificationList.append(
-                                    '<a class="dropdown-item" href="#">Rejected Competition: ' +
-                                    competition.lomba_nama + '</a>'
-                                );
-                            });
-                            if (data.pending_achievements > 0) {
-                                notificationList.append(
-                                    '<a class="dropdown-item" href="' +
-                                    '{{ url('/ListAchievement') }}' + '">Pending Achievements: ' +
-                                    data.pending_achievements + '</a>'
-                                );
-                            }
-                        }
-
-                        // Jika tidak ada notifikasi, tambahkan pesan default
-                        if (notificationList.children().length === 0) {
-                            notificationList.append(
-                                '<a class="dropdown-item" href="#">No notifications</a>'
+                        },
+                        error: function() {
+                            $('#notificationList').append(
+                                '<a class="dropdown-item" href="#">Gagal memuat notifikasi</a>'
                             );
                         }
-                    },
-                    error: function() {
-                        $('#notificationList').append(
-                            '<a class="dropdown-item" href="#">Gagal memuat notifikasi</a>'
-                        );
-                    }
-                });
+                    });
+                @else
+                    // Jika tidak ada user login, sembunyikan atau nonaktifkan notifikasi
+                    $('#notificationCount').hide();
+                    $('#notificationList').empty().append('<a class="dropdown-item" href="#">Login to view notifications</a>');
+                @endif
             }
 
             // Panggil loadNotifications saat halaman dimuat
