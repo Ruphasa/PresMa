@@ -9,6 +9,12 @@ use Yajra\DataTables\DataTables;
 
 class ProdiController extends Controller
 {
+
+    public function index()
+{
+  return view('Admin.prodi.index'); 
+}
+
     public function list(Request $request)
     {
         $prodi = ProdiModel::withCount('mahasiswa')->get();

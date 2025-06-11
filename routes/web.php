@@ -127,6 +127,7 @@ Route::middleware(['auth'])->group(function () {
     });
 
    Route::group(['prefix' => 'Admin/prodi'], function () {
+    Route::get('/', [ProdiController::class, 'index'])->name('prodi.index');
     Route::post('/list', [ProdiController::class, 'list'])->name('prodi.list');
     Route::get('/create_ajax', [ProdiController::class, 'create_ajax'])->name('prodi.create_ajax');
     Route::post('/ajax', [ProdiController::class, 'store_ajax'])->name('prodi.store_ajax');
