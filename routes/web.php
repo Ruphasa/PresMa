@@ -45,6 +45,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('notifications', [NotificationController::class, 'getNotifications'])->name('notifications');
 
     Route::get('/Achievement', [ListAchievementController::class, 'index']);
+    Route::get('/Achievement/{id}', [AchievementController::class, 'show_ajax']);
     Route::get('/Student/achievement', [ListAchievementController::class, 'studentIndex']);
     Route::get('/Student/achievement/new', [ListAchievementController::class, 'create']);
     Route::put('/Student/achievement/store', [ListAchievementController::class, 'store']);

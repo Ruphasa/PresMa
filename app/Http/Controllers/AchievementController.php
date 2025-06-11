@@ -80,6 +80,14 @@ class AchievementController extends Controller
             ->make(true);
     }
 
+    public function show_ajax($id)
+    {
+        $prestasi = AchievementModel::where('prestasi_id', $id)
+            ->with('lomba')
+            ->firstOrFail();
+        return view('dosen.show_ajax', ['prestasi' => $prestasi]);
+    }
+
     public function listPending(Request $request)
     {
         $prestasi = AchievementModel::select(
