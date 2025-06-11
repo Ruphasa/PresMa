@@ -129,4 +129,47 @@ class DosenController extends Controller
         $pdf->setOption("isRemoteEnabled", true);
         return $pdf->stream('Data Dosen ' . date('Y-m-d H:i:s') . '.pdf');
     }
+
+    public function edit_ajax($id)
+{
+    $dosen = DosenModel::with('user')->find($id);
+
+    return view('Admin.Dosen.edit_ajax', [
+        'dosen' => $dosen
+    ]);
+}
+
+public function update_ajax(Request $request, $id)
+{
+    \DB::beginTransaction();
+    try {
+        $dosen = DosenModel::findOrFail($id);
+        $user = $dosen->user;
+
+        // Update user
+        $user->nama = $request->nama;
+        $user->email = $request->email;
+        if ($request->filled('password')) {
+            $user->password = bcrypt($request->password);
+        }
+        $user->save();
+
+        // Update dosen
+        $dosen->username = $request->username;
+        $dosen->save();
+
+        \DB::commit();
+        return response()->json([
+            'status' => true,
+            'message' => 'Data Dosen berhasil diperbarui'
+        ]);
+    } catch (\Exception $e) {
+        \DB::rollBack();
+        return response()->json([
+            'status' => false,
+            'message' => 'Gagal memperbarui data: ' . $e->getMessage()
+        ]);
+    }
+}
+
 }

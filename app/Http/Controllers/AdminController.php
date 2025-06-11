@@ -177,4 +177,85 @@ class AdminController extends Controller
         $pdf->setOption("isRemoteEnabled", true);
         return $pdf->stream('Data Admin ' . date('Y-m-d H:i:s') . '.pdf');
     }
+
+    public function edit_ajax(string $id)
+{
+    $admin = AdminModel::where('user_id', $id)->with('user')->first();
+
+    if (!$admin) {
+        return view('Admin.Admin.edit_ajax', [
+            'admin' => null
+        ]);
+    }
+
+    $user = UserModel::all(); // Jika kamu butuh daftar user lain untuk dropdown, sesuaikan jika tidak perlu
+
+    return view('Admin.Admin.edit_ajax', [
+        'admin' => $admin,
+        'user' => $user
+    ]);
+}
+
+public function update_ajax(Request $request, string $id)
+{
+    if ($request->ajax() || $request->wantsJson()) {
+        $rules = [
+            'nama' => 'required|min:3',
+            'email' => 'required|email',
+            'nip' => 'required|string',
+        ];
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Validasi Gagal',
+                'msgField' => $validator->errors()
+            ]);
+        }
+
+        try {
+            $admin = AdminModel::where('user_id', $id)->first();
+            if (!$admin) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data Admin tidak ditemukan'
+                ]);
+            }
+
+            $user = UserModel::find($id);
+            if (!$user) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Data User tidak ditemukan'
+                ]);
+            }
+
+            // Update user
+            $user->update([
+                'nama' => $request->nama,
+                'email' => $request->email,
+            ]);
+
+            // Update admin
+            $admin->update([
+                'nip' => $request->nip,
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Data Admin berhasil diperbarui'
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Gagal mengupdate data: ' . $e->getMessage()
+            ]);
+        }
+    }
+
+    return redirect('/');
+}
+
 }

@@ -318,4 +318,104 @@ class MahasiswaController extends Controller
         ->header('Content-Type', 'application/pdf')
         ->header('Content-Disposition', 'inline; filename="Data mahasiswa.pdf"');
 }
+
+public function edit_ajax($nim)
+{
+    $mahasiswa = MahasiswaModel::where('nim', $nim)
+        ->with(['user', 'prodi', 'dosen'])
+        ->first();
+
+    if (!$mahasiswa) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Data tidak ditemukan'
+        ]);
+    }
+
+    $level = LevelModel::all();
+    $dosen = DosenModel::all();
+    $prodi = ProdiModel::all();
+
+    return view('Admin.mahasiswa.edit_ajax', [
+        'mahasiswa' => $mahasiswa,
+        'level' => $level,
+        'dosen' => $dosen,
+        'prodi' => $prodi
+    ]);
+}
+
+public function update_ajax(Request $request, $nim)
+{
+    if (!$request->ajax() && !$request->wantsJson()) {
+        return redirect('/');
+    }
+
+    $mahasiswa = MahasiswaModel::where('nim', $nim)->with('user')->first();
+
+    if (!$mahasiswa) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Data tidak ditemukan'
+        ], 404);
+    }
+
+    $rules = [
+        'nama' => 'required|string|max:255',
+        'email' => 'required|email|max:255|unique:m_user,email,' . $mahasiswa->user_id . ',user_id',
+        'level_id' => 'required|integer|exists:m_level,level_id',
+        'prodi_id' => 'required|integer|exists:m_prodi,prodi_id',
+        'dosen_id' => 'required|string|exists:m_dosen,nidn',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ];
+
+    $validator = Validator::make($request->all(), $rules);
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Validasi gagal.',
+            'msgField' => $validator->errors()->toArray()
+        ], 422);
+    }
+
+    \DB::beginTransaction();
+    try {
+        // Jika ada gambar baru di-upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('public/mahasiswa_images', $imageName);
+            $imagePath = \Storage::url($imagePath);
+
+            // Hapus gambar lama
+            if ($mahasiswa->user->img && \Storage::exists(str_replace('/storage/', 'public/', $mahasiswa->user->img))) {
+                \Storage::delete(str_replace('/storage/', 'public/', $mahasiswa->user->img));
+            }
+
+            $mahasiswa->user->img = $imagePath;
+        }
+
+        // Update data user
+        $mahasiswa->user->nama = $request->nama;
+        $mahasiswa->user->email = $request->email;
+        $mahasiswa->user->level_id = $request->level_id;
+        $mahasiswa->user->save();
+
+        // Update data mahasiswa
+        $mahasiswa->prodi_id = $request->prodi_id;
+        $mahasiswa->dosen_id = $request->dosen_id;
+        $mahasiswa->save();
+
+        \DB::commit();
+        return response()->json([
+            'status' => true,
+            'message' => 'Data mahasiswa berhasil diperbarui.'
+        ]);
+    } catch (\Exception $e) {
+        \DB::rollback();
+        return response()->json([
+            'status' => false,
+            'message' => 'Gagal memperbarui data: ' . $e->getMessage()
+        ], 500);
+    }
+}
 }
