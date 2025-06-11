@@ -1,18 +1,18 @@
 <?php
+
 namespace App\Http\Controllers;
 
 use App\Models\DosenModel;
-use App\Models\KategoriModel;
 use App\Models\LevelModel;
 use App\Models\MahasiswaModel;
-use App\Models\ProdiModel;
 use App\Models\UserModel;
+use App\Models\ProdiModel;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Yajra\DataTables\DataTables;
+use Illuminate\Support\Facades\Hash;
 
 class MahasiswaController extends Controller
 {
@@ -38,18 +38,20 @@ class MahasiswaController extends Controller
             ->make(true);
     }
 
+
+
     public function create_ajax()
     {
         $level = LevelModel::all();
         $dosen = DosenModel::all();
         $prodi = ProdiModel::all();
-        return view('Admin.mahasiswa.create_ajax', ['level' => $level, 'dosen' => $dosen, 'prodi' => $prodi]);
+        return view('Admin.mahasiswa.create_ajax', ['level' => $level, 'dosen'=> $dosen  , 'prodi' => $prodi ]);
     }
 
     public function store_ajax(Request $request)
     {
         // Pastikan ini adalah request AJAX
-        if (! $request->ajax() && ! $request->wantsJson()) {
+        if (!$request->ajax() && !$request->wantsJson()) {
             // Ini seharusnya tidak tercapai jika ini dipanggil via AJAX
             return redirect('/');
         }
@@ -57,25 +59,25 @@ class MahasiswaController extends Controller
         // 1. Definisikan semua aturan validasi untuk User dan Mahasiswa sekaligus
         // Perhatikan nama field harus sesuai dengan name di form blade
         $rules = [
-            'nim'      => 'required|string|max:20|unique:m_mahasiswa,nim',
+            'nim' => 'required|string|max:20|unique:m_mahasiswa,nim',
             // 'user_id' tidak diperlukan di sini karena akan dibuat otomatis
-            'nama'     => 'required|string|max:255',
+            'nama' => 'required|string|max:255',
             'password' => 'required|string|min:6',
             'level_id' => 'required|integer|exists:m_level,level_id',
-            'email'    => 'required|email|max:255|unique:m_user,email',
-            'image'    => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // name="image" di blade
-            'prodi_id' => 'required|integer|exists:m_prodi,prodi_id',       // Pastikan m_prodi adalah tabel yang benar
-            'dosen_id' => 'required|string|exists:m_dosen,nidn',            // Validasi untuk NIDN
+            'email' => 'required|email|max:255|unique:m_user,email',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif|max:2048', // name="image" di blade
+            'prodi_id' => 'required|integer|exists:m_prodi,prodi_id', // Pastikan m_prodi adalah tabel yang benar
+            'dosen_id' => 'required|string|exists:m_dosen,nidn', // Validasi untuk NIDN
         ];
 
         $validator = Validator::make($request->all(), $rules);
 
         if ($validator->fails()) {
             return response()->json([
-                'status'   => false,
-                'message'  => 'Validasi Gagal.',
-                'msgField' => $validator->errors()->toArray(), // Mengubah ke array untuk ditampilkan di frontend
-            ], 422);                                       // Status code 422 Unprocessable Entity cocok untuk validasi gagal
+                'status' => false,
+                'message' => 'Validasi Gagal.',
+                'msgField' => $validator->errors()->toArray() // Mengubah ke array untuk ditampilkan di frontend
+            ], 422); // Status code 422 Unprocessable Entity cocok untuk validasi gagal
         }
 
         DB::beginTransaction(); // Mulai transaksi database
@@ -83,7 +85,7 @@ class MahasiswaController extends Controller
             // 2. Tangani Upload Gambar Terlebih Dahulu
             $imagePath = null;
             if ($request->hasFile('image')) {
-                $image     = $request->file('image');
+                $image = $request->file('image');
                 $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
                 $imagePath = $image->storeAs('public/mahasiswa_images', $imageName);
                 $imagePath = Storage::url($imagePath); // Dapatkan URL publik
@@ -91,17 +93,17 @@ class MahasiswaController extends Controller
 
             // 3. Simpan data ke tabel User (m_user)
             $user = UserModel::create([
-                'nama'     => $request->nama,
+                'nama' => $request->nama,
                 'password' => Hash::make($request->password), // WAJIB HASH PASSWORD!
                 'level_id' => $request->level_id,
-                'email'    => $request->email,
-                'img'      => $imagePath, // Simpan path gambar yang sudah di-upload
+                'email' => $request->email,
+                'img' => $imagePath, // Simpan path gambar yang sudah di-upload
             ]);
 
             // 4. Simpan data ke tabel Mahasiswa (m_mahasiswa) menggunakan user_id yang baru dibuat
             MahasiswaModel::create([
-                'nim'      => $request->nim,
-                'user_id'  => $user->user_id, // Gunakan ID dari user yang baru dibuat
+                'nim' => $request->nim,
+                'user_id' => $user->user_id, // Gunakan ID dari user yang baru dibuat
                 'prodi_id' => $request->prodi_id,
                 'dosen_id' => $request->dosen_id,
             ]);
@@ -109,20 +111,20 @@ class MahasiswaController extends Controller
             DB::commit(); // Komit transaksi jika semua berhasil
 
             return response()->json([
-                'status'  => true,
-                'message' => 'Data Mahasiswa berhasil disimpan.',
+                'status' => true,
+                'message' => 'Data Mahasiswa berhasil disimpan.'
             ], 200); // Status code 200 OK untuk sukses
 
         } catch (\Exception $e) {
             DB::rollback(); // Rollback transaksi jika ada error
-                            // Hapus gambar yang sudah diupload jika terjadi error saat menyimpan ke DB
+            // Hapus gambar yang sudah diupload jika terjadi error saat menyimpan ke DB
             if ($imagePath && Storage::exists(str_replace('/storage/', 'public/', $imagePath))) {
                 Storage::delete(str_replace('/storage/', 'public/', $imagePath));
             }
 
             return response()->json([
-                'status'  => false,
-                'message' => 'Gagal menyimpan data mahasiswa. Error: ' . $e->getMessage(),
+                'status' => false,
+                'message' => 'Gagal menyimpan data mahasiswa. Error: ' . $e->getMessage()
             ], 500); // Status code 500 Internal Server Error untuk error server
         }
     }
@@ -134,20 +136,20 @@ class MahasiswaController extends Controller
             ->with(['user', 'prodi', 'dosen']) // Eager load relasi
             ->first();
 
-        if (! $mahasiswa) {
+        if (!$mahasiswa) {
             return response()->json([
-                'status'  => false,
-                'message' => 'Data tidak ditemukan',
+                'status' => false,
+                'message' => 'Data tidak ditemukan'
             ]);
         }
         $breadcrumb = (object) [
             'title' => 'Detail Mahasiswa',
-            'list'  => ['Home', 'Mahasiswa', 'Detail'],
+            'list' => ['Home', 'Mahasiswa', 'Detail']
         ];
         $page =
-        (object) [
-            'title' => 'Detail Mahasiswa',
-        ];
+            (object) [
+                'title' => 'Detail Mahasiswa'
+            ];
         $activeMenu = 'mahasiswa';
         return view('Admin.mahasiswa.show_ajax', ['breadcrumb' => $breadcrumb, 'page' => $page, 'mahasiswa' => $mahasiswa, 'activeMenu' => $activeMenu]);
     }
@@ -156,10 +158,10 @@ class MahasiswaController extends Controller
     {
         $mahasiswa = MahasiswaModel::where('user_id', $id)->with('user')->first();
 
-        if (! $mahasiswa) {
+        if (!$mahasiswa) {
             return response()->json([
-                'status'  => false,
-                'message' => 'Data tidak ditemukan',
+                'status' => false,
+                'message' => 'Data tidak ditemukan'
             ]);
         }
         return view('Admin.mahasiswa.confirm_ajax', ['mahasiswa' => $mahasiswa]);
@@ -170,10 +172,10 @@ class MahasiswaController extends Controller
         if ($request->ajax() || $request->wantsJson()) {
             $mahasiswa = MahasiswaModel::where('user_id', $id)->first();
 
-            if (! $mahasiswa) {
+            if (!$mahasiswa) {
                 return response()->json([
-                    'status'  => false,
-                    'message' => 'Data tidak ditemukan',
+                    'status' => false,
+                    'message' => 'Data tidak ditemukan'
                 ]);
             }
 
@@ -185,14 +187,14 @@ class MahasiswaController extends Controller
                 \DB::commit();
 
                 return response()->json([
-                    'status'  => true,
-                    'message' => 'Data mahasiswa berhasil dihapus',
+                    'status' => true,
+                    'message' => 'Data mahasiswa berhasil dihapus'
                 ]);
             } catch (\Exception $e) {
                 \DB::rollback();
                 return response()->json([
-                    'status'  => false,
-                    'message' => 'Gagal menghapus data: ' . $e->getMessage(),
+                    'status' => false,
+                    'message' => 'Gagal menghapus data: ' . $e->getMessage()
                 ]);
             }
         }
@@ -208,31 +210,31 @@ class MahasiswaController extends Controller
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
                 // validasi file harus xls atau xlsx, max 1MB
-                'file_User' => 'required|mimes:xls,xlsx|max:1024',
+                'file_User' => 'required|mimes:xls,xlsx|max:1024'
             ];
             $validator = Validator::make($request->all(), $rules);
             if ($validator->fails()) {
                 return response()->json([
-                    'status'   => false,
-                    'message'  => 'Validasi Gagal',
-                    'msgField' => $validator->errors(),
+                    'status' => false,
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors()
                 ]);
             }
-            $file   = $request->file('file_User');                   // ambil file dari request
-            $reader = IOFactory::createReader('Xlsx');               // load reader file excel
-            $reader->setReadDataOnly(true);                          // hanya membaca data
-            $spreadsheet = $reader->load($file->getRealPath());      // load file excel
-            $sheet       = $spreadsheet->getActiveSheet();           // ambil sheet yang aktif
-            $data        = $sheet->toArray(null, false, true, true); // ambil data excel
-            $insert      = [];
+            $file = $request->file('file_User'); // ambil file dari request
+            $reader = IOFactory::createReader('Xlsx'); // load reader file excel
+            $reader->setReadDataOnly(true); // hanya membaca data
+            $spreadsheet = $reader->load($file->getRealPath()); // load file excel
+            $sheet = $spreadsheet->getActiveSheet(); // ambil sheet yang aktif
+            $data = $sheet->toArray(null, false, true, true); // ambil data excel
+            $insert = [];
             if (count($data) > 1) { // jika data lebih dari 1 baris
                 foreach ($data as $baris => $value) {
                     if ($baris > 1) { // baris ke 1 adalah header, maka lewati
                         $insert[] = [
-                            'user_id'           => $value['A'],
-                            'User_kode'         => $value['B'],
+                            'user_id' => $value['A'],
+                            'User_kode' => $value['B'],
                             'punjualan_tanggal' => $value['C'],
-                            'created_at'        => now(),
+                            'created_at' => now(),
                         ];
                     }
                 }
@@ -241,13 +243,13 @@ class MahasiswaController extends Controller
                     UserModel::insertOrIgnore($insert);
                 }
                 return response()->json([
-                    'status'  => true,
-                    'message' => 'Data berhasil di import',
+                    'status' => true,
+                    'message' => 'Data berhasil di import'
                 ]);
             } else {
                 return response()->json([
-                    'status'  => false,
-                    'message' => 'Tidak ada data yang di import',
+                    'status' => false,
+                    'message' => 'Tidak ada data yang di import'
                 ]);
             }
         }
@@ -261,7 +263,7 @@ class MahasiswaController extends Controller
             ->with('user')
             ->get();
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
-        $sheet       = $spreadsheet->getActiveSheet();
+        $sheet = $spreadsheet->getActiveSheet();
 
         $sheet->setCellValue('A1', 'No');
         $sheet->setCellValue('B1', 'Kode User');
@@ -269,7 +271,7 @@ class MahasiswaController extends Controller
         $sheet->setCellValue('D1', 'Tanggal User');
 
         $sheet->getStyle('A1:D1')->getFont()->setBold(true);
-        $no    = 1;
+        $no = 1;
         $baris = 2;
         foreach ($User as $key => $value) {
             $sheet->setCellValue('A' . $baris, $no);
@@ -286,7 +288,7 @@ class MahasiswaController extends Controller
 
         $sheet->setTitle('Data User');
 
-        $writer   = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
         $filename = 'Data User ' . date('Y-m-d H:i:s') . '.xlsx';
 
         header('Content-Type: application/vnd.openxmlformats-offocedocumentsreadsheetml.sheet');
@@ -303,119 +305,117 @@ class MahasiswaController extends Controller
     }
 
     public function export_pdf()
-    {
-        $mahasiswa = MahasiswaModel::with(['user', 'prodi', 'dosen'])->get();
+{
+    $mahasiswa = MahasiswaModel::with(['user', 'prodi', 'dosen'])->get();
 
-        $pdf = Pdf::loadView('Admin.mahasiswa.export_pdf', ['mahasiswa' => $mahasiswa]);
-        $pdf->setPaper('a4', 'portrait');
+    $pdf = Pdf::loadView('Admin.mahasiswa.export_pdf', ['mahasiswa' => $mahasiswa]);
+    $pdf->setPaper('a4', 'portrait');
 
-        // Enable remote assets safely
-        $pdf->getDomPDF()->getOptions()->setIsRemoteEnabled(true);
+    // Enable remote assets safely
+    $pdf->getDomPDF()->getOptions()->setIsRemoteEnabled(true);
 
-        return response($pdf->output(), 200)
-            ->header('Content-Type', 'application/pdf')
-            ->header('Content-Disposition', 'inline; filename="Data mahasiswa.pdf"');
-    }
+    return response($pdf->output(), 200)
+        ->header('Content-Type', 'application/pdf')
+        ->header('Content-Disposition', 'inline; filename="Data mahasiswa.pdf"');
+}
 
-    public function edit_ajax($nim)
-    {
-        $mahasiswa = MahasiswaModel::where('nim', $nim)
-            ->with(['user', 'prodi', 'dosen', 'kategori'])
-            ->first();
+public function edit_ajax($nim)
+{
+    $mahasiswa = MahasiswaModel::where('nim', $nim)
+        ->with(['user', 'prodi', 'dosen'])
+        ->first();
 
-        if (! $mahasiswa) {
-            return response()->json([
-                'status'  => false,
-                'message' => 'Data tidak ditemukan',
-            ]);
-        }
-
-        $level    = LevelModel::all();
-        $dosen    = DosenModel::all();
-        $prodi    = ProdiModel::all();
-        $kategori = KategoriModel::all();
-
-        return view('Admin.mahasiswa.edit_ajax', [
-            'mahasiswa' => $mahasiswa,
-            'level'     => $level,
-            'dosen'     => $dosen,
-            'prodi'     => $prodi,
-            'kategori'  => $kategori,
+    if (!$mahasiswa) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Data tidak ditemukan'
         ]);
     }
 
-    public function update_ajax(Request $request, $nim)
-    {
-        if (! $request->ajax() && ! $request->wantsJson()) {
-            return redirect('/');
-        }
+    $level = LevelModel::all();
+    $dosen = DosenModel::all();
+    $prodi = ProdiModel::all();
 
-        $mahasiswa = MahasiswaModel::where('nim', $nim)->with('user')->first();
+    return view('Admin.mahasiswa.edit_ajax', [
+        'mahasiswa' => $mahasiswa,
+        'level' => $level,
+        'dosen' => $dosen,
+        'prodi' => $prodi
+    ]);
+}
 
-        if (! $mahasiswa) {
-            return response()->json([
-                'status'  => false,
-                'message' => 'Data tidak ditemukan',
-            ], 404);
-        }
+public function update_ajax(Request $request, $nim)
+{
+    if (!$request->ajax() && !$request->wantsJson()) {
+        return redirect('/');
+    }
 
-        $rules = [
-            'nama'     => 'required|string|max:255',
-            'email'    => 'required|email|max:255|unique:m_user,email,' . $mahasiswa->user_id . ',user_id',
-            'level_id' => 'required|integer|exists:m_level,level_id',
-            'prodi_id' => 'required|integer|exists:m_prodi,prodi_id',
-            'dosen_id' => 'required|string|exists:m_dosen,nidn',
-            'image'    => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ];
+    $mahasiswa = MahasiswaModel::where('nim', $nim)->with('user')->first();
 
-        $validator = Validator::make($request->all(), $rules);
-        if ($validator->fails()) {
-            return response()->json([
-                'status'   => false,
-                'message'  => 'Validasi gagal.',
-                'msgField' => $validator->errors()->toArray(),
-            ], 422);
-        }
+    if (!$mahasiswa) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Data tidak ditemukan'
+        ], 404);
+    }
 
-        \DB::beginTransaction();
-        try {
-            // Jika ada gambar baru di-upload
-            if ($request->hasFile('image')) {
-                $image     = $request->file('image');
-                $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
-                $imagePath = $image->storeAs('public/mahasiswa_images', $imageName);
-                $imagePath = \Storage::url($imagePath);
+    $rules = [
+        'nama' => 'required|string|max:255',
+        'email' => 'required|email|max:255|unique:m_user,email,' . $mahasiswa->user_id . ',user_id',
+        'level_id' => 'required|integer|exists:m_level,level_id',
+        'prodi_id' => 'required|integer|exists:m_prodi,prodi_id',
+        'dosen_id' => 'required|string|exists:m_dosen,nidn',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ];
 
-                // Hapus gambar lama
-                if ($mahasiswa->user->img && \Storage::exists(str_replace('/storage/', 'public/', $mahasiswa->user->img))) {
-                    \Storage::delete(str_replace('/storage/', 'public/', $mahasiswa->user->img));
-                }
+    $validator = Validator::make($request->all(), $rules);
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Validasi gagal.',
+            'msgField' => $validator->errors()->toArray()
+        ], 422);
+    }
 
-                $mahasiswa->user->img = $imagePath;
+    \DB::beginTransaction();
+    try {
+        // Jika ada gambar baru di-upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('public/mahasiswa_images', $imageName);
+            $imagePath = \Storage::url($imagePath);
+
+            // Hapus gambar lama
+            if ($mahasiswa->user->img && \Storage::exists(str_replace('/storage/', 'public/', $mahasiswa->user->img))) {
+                \Storage::delete(str_replace('/storage/', 'public/', $mahasiswa->user->img));
             }
 
-            // Update data user
-            $mahasiswa->user->nama     = $request->nama;
-            $mahasiswa->user->email    = $request->email;
-            $mahasiswa->user->level_id = $request->level_id;
-            $mahasiswa->user->save();
-
-            // Update data mahasiswa
-            $mahasiswa->prodi_id = $request->prodi_id;
-            $mahasiswa->dosen_id = $request->dosen_id;
-            $mahasiswa->save();
-
-            \DB::commit();
-            return response()->json([
-                'status'  => true,
-                'message' => 'Data mahasiswa berhasil diperbarui.',
-            ]);
-        } catch (\Exception $e) {
-            \DB::rollback();
-            return response()->json([
-                'status'  => false,
-                'message' => 'Gagal memperbarui data: ' . $e->getMessage(),
-            ], 500);
+            $mahasiswa->user->img = $imagePath;
         }
+
+        // Update data user
+        $mahasiswa->user->nama = $request->nama;
+        $mahasiswa->user->email = $request->email;
+        $mahasiswa->user->level_id = $request->level_id;
+        $mahasiswa->user->save();
+
+        // Update data mahasiswa
+        $mahasiswa->prodi_id = $request->prodi_id;
+        $mahasiswa->dosen_id = $request->dosen_id;
+        $mahasiswa->save();
+
+        \DB::commit();
+        return response()->json([
+            'status' => true,
+            'message' => 'Data mahasiswa berhasil diperbarui.'
+        ]);
+    } catch (\Exception $e) {
+        \DB::rollback();
+        return response()->json([
+            'status' => false,
+            'message' => 'Gagal memperbarui data: ' . $e->getMessage()
+        ], 500);
     }
+}
 }
