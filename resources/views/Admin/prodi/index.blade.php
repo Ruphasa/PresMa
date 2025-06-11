@@ -1,4 +1,3 @@
-<!-- resources/views/prodi/index.blade.php -->
 @extends('layouts.template')
 @section('content')
     <div class="container">
@@ -12,6 +11,7 @@
                     <th>Aksi</th>
                 </tr>
             </thead>
+            <tbody></tbody>
         </table>
     </div>
 @endsection
@@ -22,9 +22,15 @@
         $('#table-prodi').DataTable({
             processing: true,
             serverSide: true,
-            ajax: '{{ route('prodi.list') }}',
+            ajax: {
+                url: '{{ route('prodi.list') }}',
+                type: 'POST',
+                data: {
+                    _token: '{{ csrf_token() }}'
+                }
+            },
             columns: [
-                { data: 'DT_RowIndex', name: 'DT_RowIndex' },
+                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
                 { data: 'nama_prodi', name: 'nama_prodi' },
                 { data: 'mahasiswa_count', name: 'mahasiswa_count' },
                 { data: 'action', name: 'action', orderable: false, searchable: false },

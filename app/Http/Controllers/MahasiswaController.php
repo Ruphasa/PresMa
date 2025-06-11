@@ -7,6 +7,11 @@ use App\Models\LevelModel;
 use App\Models\MahasiswaModel;
 use App\Models\UserModel;
 use App\Models\ProdiModel;
+<<<<<<< HEAD
+use App\Models\KategoriModel;
+=======
+use App\Models\UserModel;
+>>>>>>> ea7d55d3a3695df7dc30a063e3767a685734e195
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -314,6 +319,79 @@ class MahasiswaController extends Controller
     // Enable remote assets safely
     $pdf->getDomPDF()->getOptions()->setIsRemoteEnabled(true);
 
+<<<<<<< HEAD
+    return response($pdf->output(), 200)
+        ->header('Content-Type', 'application/pdf')
+        ->header('Content-Disposition', 'inline; filename="Data mahasiswa.pdf"');
+}
+
+public function edit_ajax($nim)
+{
+    // ... kode sebelumnya ...
+
+    $kategori = KategoriModel::all(); // Tambahkan baris ini
+    // atau KategoriModel::get(); tergantung preferensi
+
+    return view('Admin.mahasiswa.edit_ajax', [
+        'mahasiswa' => $mahasiswa,
+        'dosen' => $dosen,
+        'prodi' => $prodi,
+        'kategori' => $kategori // Pastikan ini di-pass
+    ]);
+}
+public function update_ajax(Request $request, $nim)
+{
+    if (!$request->ajax() && !$request->wantsJson()) {
+        return redirect('/');
+    }
+
+    $mahasiswa = MahasiswaModel::where('nim', $nim)->with('user')->first();
+
+    if (!$mahasiswa) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Data tidak ditemukan'
+        ], 404);
+    }
+
+    $rules = [
+        'nama' => 'required|string|max:255',
+        'email' => 'required|email|max:255|unique:m_user,email,' . $mahasiswa->user_id . ',user_id',
+        'level_id' => 'required|integer|exists:m_level,level_id',
+        'prodi_id' => 'required|integer|exists:m_prodi,prodi_id',
+        'dosen_id' => 'required|string|exists:m_dosen,nidn',
+        'image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+    ];
+
+    $validator = Validator::make($request->all(), $rules);
+    if ($validator->fails()) {
+        return response()->json([
+            'status' => false,
+            'message' => 'Validasi gagal.',
+            'msgField' => $validator->errors()->toArray()
+        ], 422);
+    }
+
+    \DB::beginTransaction();
+    try {
+        // Jika ada gambar baru di-upload
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
+            $imagePath = $image->storeAs('public/mahasiswa_images', $imageName);
+            $imagePath = \Storage::url($imagePath);
+
+            // Hapus gambar lama
+            if ($mahasiswa->user->img && \Storage::exists(str_replace('/storage/', 'public/', $mahasiswa->user->img))) {
+                \Storage::delete(str_replace('/storage/', 'public/', $mahasiswa->user->img));
+            }
+
+            $mahasiswa->user->img = $imagePath;
+=======
+        return response($pdf->output(), 200)
+            ->header('Content-Type', 'application/pdf')
+            ->header('Content-Disposition', 'inline; filename="Data mahasiswa.pdf"');
+    }
     return response($pdf->output(), 200)
         ->header('Content-Type', 'application/pdf')
         ->header('Content-Disposition', 'inline; filename="Data mahasiswa.pdf"');
@@ -325,16 +403,18 @@ public function edit_ajax($nim)
         ->with(['user', 'prodi', 'dosen'])
         ->first();
 
-    if (!$mahasiswa) {
-        return response()->json([
-            'status' => false,
-            'message' => 'Data tidak ditemukan'
-        ]);
-    }
+        if (! $mahasiswa) {
+            return response()->json([
+                'status'  => false,
+                'message' => 'Data tidak ditemukan',
+            ]);
+>>>>>>> ea7d55d3a3695df7dc30a063e3767a685734e195
+        }
 
-    $level = LevelModel::all();
-    $dosen = DosenModel::all();
-    $prodi = ProdiModel::all();
+        $level    = LevelModel::all();
+        $dosen    = DosenModel::all();
+        $prodi    = ProdiModel::all();
+        $kategori = KategoriModel::all();
 
     return view('Admin.mahasiswa.edit_ajax', [
         'mahasiswa' => $mahasiswa,
