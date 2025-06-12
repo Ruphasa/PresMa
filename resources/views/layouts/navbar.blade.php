@@ -156,9 +156,10 @@
                             data.recommended_competitions.forEach(competition => {
                                 notificationList.append(
                                     '<a class="dropdown-item" href="' +
-                                    '{{ url('Competition/competition.lomba_id') }}' +
+                                    '{{ url('Competition') }}/' + competition.lomba
+                                    .lomba_id +
                                     '">Recommended: ' +
-                                    competition.lomba_nama + '</a>'
+                                    competition.lomba.lomba_nama + '</a>'
                                 );
                             });
                             data.rejected_competitions.forEach(competition => {
@@ -166,7 +167,7 @@
                                     '<a class="dropdown-item" href="' +
                                     '{{ url('Competition/competition.lomba.lomba_id/edit') }}/' +
                                     '">Rejected Competition: ' +
-                                    competition.lomba_nama + '</a>'
+                                    competition.lomba.lomba_nama + '</a>'
                                 );
                             });
                             data.rejected_achievements.forEach(achievement => {
@@ -179,7 +180,7 @@
                             data.rejected_competitions.forEach(competition => {
                                 notificationList.append(
                                     '<a class="dropdown-item" href="{{ secure_url('Competition/competition.lomba_id/edit') }}">Rejected Competition: ' +
-                                    competition.lomba_nama + '</a>'
+                                    competition.lomba.lomba_nama + '</a>'
                                 );
                             });
                             if (data.pending_achievements > 0) {
