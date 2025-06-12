@@ -62,14 +62,14 @@ class AchievementController extends Controller
             })
             ->addColumn('action', function ($prestasi) {
                 if ($prestasi->status === 'pending') {
-                    $btn = '<button onclick="modalAction(\'' . url('Admin/achievement/' . $prestasi->prestasi_id .
+                    $btn = '<button onclick="modalAction(\'' . secure_url('Admin/achievement/' . $prestasi->prestasi_id .
                         '/validate_ajax') . '\')" class="btn btn-success btn-sm">Validasi</button> ';
-                    $btn .= '<button onclick="modalAction(\'' . url('Admin/achievement/' . $prestasi->prestasi_id .
+                    $btn .= '<button onclick="modalAction(\'' . secure_url('Admin/achievement/' . $prestasi->prestasi_id .
                         '/reject_ajax') . '\')" class="btn btn-danger btn-sm">Reject</button> ';
                     return $btn;
                 }
                 if ($prestasi->status === 'validated') {
-                    $btn = '<button onclick="modalAction(\'' . url('Admin/achievement/' . $prestasi->prestasi_id .
+                    $btn = '<button onclick="modalAction(\'' . secure_url('Admin/achievement/' . $prestasi->prestasi_id .
                         '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
                     return $btn;
                 }
@@ -105,9 +105,9 @@ class AchievementController extends Controller
                 return $prestasi->mahasiswa->user->nama ?? 'N/A'; // Assuming mahasiswa relation exists
             })
             ->addColumn('validate', function ($prestasi) {
-                $btn = '<button onclick="modalAction(\'' . url('Admin/achievement/' . $prestasi->prestasi_id .
+                $btn = '<button onclick="modalAction(\'' . secure_url('Admin/achievement/' . $prestasi->prestasi_id .
                     '/validate_ajax') . '\')" class="btn btn-success btn-sm">Validasi</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('Admin/achievement/' . $prestasi->prestasi_id .
+                $btn .= '<button onclick="modalAction(\'' . secure_url('Admin/achievement/' . $prestasi->prestasi_id .
                     '/reject_ajax') . '\')" class="btn btn-danger btn-sm">Reject</button> ';
                 return $btn;
             })
@@ -137,7 +137,7 @@ class AchievementController extends Controller
                 return $prestasi->mahasiswa->user->nama ?? 'N/A'; // Assuming mahasiswa relation exists
             })
             ->addColumn('action', function ($prestasi) {
-                $btn = '<button onclick="modalAction(\'' . url('/prestasi/' . $prestasi->prestasi_id .
+                $btn = '<button onclick="modalAction(\'' . secure_url('/prestasi/' . $prestasi->prestasi_id .
                     '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
                 return $btn;
             })

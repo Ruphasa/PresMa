@@ -23,7 +23,7 @@
                                 </div>
                             </div>
                         </div>
-                        <form action="{{ url('./login') }}" method="POST">
+                        <form action="{{ secure_url('./login') }}" method="POST">
                             @csrf
                             <div class="row gy-3 gy-md-4 overflow-hidden">
                                 <div class="col-12">

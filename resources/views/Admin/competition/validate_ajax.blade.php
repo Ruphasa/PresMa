@@ -11,12 +11,12 @@
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
                     Data lomba yang anda cari tidak ditemukan
                 </div>
-                <a href="{{ url('/Admin/competition') }}" class="btn btn-warning">Kembali</a>
+                <a href="{{ secure_url('/Admin/competition') }}" class="btn btn-warning">Kembali</a>
             </div>
         </div>
     </div>
 @else
-    <form action="{{ url('/Admin/competition/' . $competition->lomba_id . '/validate_ajax') }}" method="POST"
+    <form action="{{ secure_url('/Admin/competition/' . $competition->lomba_id . '/validate_ajax') }}" method="POST"
         id="form-validate-competition">
         @csrf
         <div id="modal-master" class="modal-dialog modal-lg" role="document">

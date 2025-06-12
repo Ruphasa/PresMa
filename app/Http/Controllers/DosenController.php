@@ -22,9 +22,9 @@ class DosenController extends Controller
                 return $dosen->mahasiswa->count();
             })
             ->addColumn('action', function ($dosen) {
-                $btn = '<button onclick="modalAction(\'' . url('/dosen/' . $dosen->nidn . '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/dosen/' . $dosen->nidn . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/dosen/' . $dosen->nidn . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button>';
+                $btn = '<button onclick="modalAction(\'' . secure_url('/dosen/' . $dosen->nidn . '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
+                $btn .= '<button onclick="modalAction(\'' . secure_url('/dosen/' . $dosen->nidn . '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
+                $btn .= '<button onclick="modalAction(\'' . secure_url('/dosen/' . $dosen->nidn . '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button>';
                 return $btn;
             })
             ->rawColumns(['action'])

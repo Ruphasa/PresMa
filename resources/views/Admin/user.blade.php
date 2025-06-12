@@ -31,7 +31,7 @@
                                     <div id="toolbar-mahasiswa" class="d-flex gap-2 mb-3">
                                         <button onclick="modalAction('{{ url('Admin/mahasiswa/create_ajax') }}')"
                                             class="btn btn-success">Tambah Data</button>
-                                        <a href="{{ url('Admin/mahasiswa/export_pdf') }}" class="btn btn-primary"
+                                        <a href="{{ secure_url('Admin/mahasiswa/export_pdf') }}" class="btn btn-primary"
                                             download>Export PDF</a>
                                         <button onclick="modalAction('{{ url('Admin/mahasiswa/import_pdf') }}')"
                                             class="btn btn-info">Import PDF</button>
@@ -73,7 +73,7 @@
                                     <div id="toolbar-dosen" class="d-flex gap-2 mb-3">
                                         <button onclick="modalAction('{{ url('Admin/dosen/create_ajax') }}')"
                                             class="btn btn-success">Tambah Data</button>
-                                        <a href="{{ url('Admin/dosen/export_pdf') }}" class="btn btn-primary"
+                                        <a href="{{ secure_url('Admin/dosen/export_pdf') }}" class="btn btn-primary"
                                             download>Export PDF</a>
                                         <button onclick="modalAction('{{ url('Admin/dosen/import_pdf') }}')"
                                             class="btn btn-info">Import PDF</button>
@@ -115,7 +115,7 @@
                                     <div id="toolbar-admin" class="d-flex gap-2 mb-3">
                                         <button onclick="modalAction('{{ url('Admin/admin/create_ajax') }}')"
                                             class="btn btn-success">Tambah Data</button>
-                                        <a href="{{ url('Admin/admin/export_pdf') }}" class="btn btn-primary"
+                                        <a href="{{ secure_url('Admin/admin/export_pdf') }}" class="btn btn-primary"
                                             download>Export PDF</a>
                                         <button onclick="modalAction('{{ url('Admin/admin/import_pdf') }}')"
                                             class="btn btn-info">Import PDF</button>

@@ -12,12 +12,12 @@
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
                     Data Mahasiswa tidak ditemukan
                 </div>
-                <a href="{{ url('/mahasiswa') }}" class="btn btn-warning">Kembali</a>
+                <a href="{{ secure_url('/mahasiswa') }}" class="btn btn-warning">Kembali</a>
             </div>
         </div>
     </div>
 @else
-    <form action="{{ url('/mahasiswa/' . $user->user_id . '/delete_ajax') }}" method="POST" id="form-delete">
+    <form action="{{ secure_url('/mahasiswa/' . $user->user_id . '/delete_ajax') }}" method="POST" id="form-delete">
         @csrf
         @method('DELETE')
         <div id="modal-master" class="modal-dialog modal-lg" role="document">

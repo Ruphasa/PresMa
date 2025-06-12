@@ -23,7 +23,7 @@
                             </div>
                         </div>
 
-                        <form action="{{ url('register') }}" method="POST">
+                        <form action="{{ secure_url('register') }}" method="POST">
                             @csrf
 
                             <!-- Default gambar -->
@@ -130,7 +130,7 @@
                             <div class="col-12 mt-5">
                                 <hr class="mt-5 mb-4 border-secondary-subtle">
                                 <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end">
-                                    <a href="{{ url('login') }}"
+                                    <a href="{{ secure_url('login') }}"
                                         class="link-secondary text-decoration-none">Login</a>
                                 </div>
                             </div>

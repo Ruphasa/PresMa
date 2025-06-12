@@ -12,12 +12,12 @@
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
                     Data dosen tidak ditemukan.
                 </div>
-                <a href="{{ url('/dosen') }}" class="btn btn-warning">Kembali</a>
+                <a href="{{ secure_url('/dosen') }}" class="btn btn-warning">Kembali</a>
             </div>
         </div>
     </div>
 @else
-    <form action="{{ url('/dosen/' . $dosen->nidn . '/update_ajax') }}" method="POST" id="form-edit">
+    <form action="{{ secure_url('/dosen/' . $dosen->nidn . '/update_ajax') }}" method="POST" id="form-edit">
         @csrf
         @method('PUT')
         <div id="modal-master" class="modal-dialog modal-md" role="document">

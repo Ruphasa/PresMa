@@ -1,4 +1,5 @@
-<form action="{{ url('Admin/mahasiswa/ajax') }}" method="POST" id="form-tambah-mahasiswa" enctype="multipart/form-data">
+<form action="{{ secure_url('Admin/mahasiswa/ajax') }}" method="POST" id="form-tambah-mahasiswa"
+    enctype="multipart/form-data">
     @csrf
     <div id="modal-master" class="modal-dialog modal-lg" role="document">
         <div class="modal-content">

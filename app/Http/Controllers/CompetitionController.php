@@ -42,9 +42,9 @@ class CompetitionController extends Controller
         return DataTables::of($competitions)
             ->addIndexColumn()
             ->addColumn('validate', function ($competition) {
-                $btn = '<button onclick="modalAction(\'' . url('Admin/competition/' . $competition->lomba_id .
+                $btn = '<button onclick="modalAction(\'' . secure_url('Admin/competition/' . $competition->lomba_id .
                     '/validate_ajax') . '\')" class="btn btn-success btn-sm">Validate</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('Admin/competition/' . $competition->lomba_id .
+                $btn .= '<button onclick="modalAction(\'' . secure_url('Admin/competition/' . $competition->lomba_id .
                     '/reject_ajax') . '\')" class="btn btn-danger btn-sm">Reject</button> ';
                 return $btn;
             })
@@ -73,11 +73,11 @@ class CompetitionController extends Controller
         return DataTables::of($competitions)
             ->addIndexColumn()
             ->addColumn('action', function ($competition) {
-                $btn = '<button onclick="modalAction(\'' . url('Admin/competition/' . $competition->lomba_id .
+                $btn = '<button onclick="modalAction(\'' . secure_url('Admin/competition/' . $competition->lomba_id .
                     '/') . '\')" class="btn btn-info btn-sm">Detail</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('Admin/competition/' . $competition->lomba_id .
+                $btn .= '<button onclick="modalAction(\'' . secure_url('Admin/competition/' . $competition->lomba_id .
                     '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('Admin/competition/' . $competition->lomba_id .
+                $btn .= '<button onclick="modalAction(\'' . secure_url('Admin/competition/' . $competition->lomba_id .
                     '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
                 return $btn;
             })

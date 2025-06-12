@@ -12,12 +12,12 @@
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
                     Data Program Studi tidak ditemukan.
                 </div>
-                <a href="{{ url('/prodi') }}" class="btn btn-warning">Kembali</a>
+                <a href="{{ secure_url('/prodi') }}" class="btn btn-warning">Kembali</a>
             </div>
         </div>
     </div>
 @else
-    <form action="{{ url('/prodi/' . $prodi->id . '/delete_ajax') }}" method="POST" id="form-delete-prodi">
+    <form action="{{ secure_url('/prodi/' . $prodi->id . '/delete_ajax') }}" method="POST" id="form-delete-prodi">
         @csrf
         @method('DELETE')
         <div id="modal-master" class="modal-dialog modal-md" role="document">

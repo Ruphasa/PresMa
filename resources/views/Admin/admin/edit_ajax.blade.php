@@ -13,7 +13,7 @@
         </div>
     </div>
 @else
-    <form action="{{ url('/admin/' . $admin->user_id . '/update_ajax') }}" method="POST" id="form-edit">
+    <form action="{{ secure_url('/admin/' . $admin->user_id . '/update_ajax') }}" method="POST" id="form-edit">
         @csrf
         @method('PUT')
         <div class="modal-dialog modal-lg">

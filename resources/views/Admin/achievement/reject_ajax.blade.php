@@ -11,13 +11,13 @@
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
                     Data prestasi yang anda cari tidak ditemukan
                 </div>
-                <a href="{{ url('/Admin/achievement') }}" class="btn btn-warning">Kembali</a>
+                <a href="{{ secure_url('/Admin/achievement') }}" class="btn btn-warning">Kembali</a>
             </div>
         </div>
     </div>
 @endempty
 @isset($achievement)
-    <form action="{{ url('/Admin/achievement/' . $achievement->prestasi_id . '/reject_ajax') }}" method="POST"
+    <form action="{{ secure_url('/Admin/achievement/' . $achievement->prestasi_id . '/reject_ajax') }}" method="POST"
         id="form-reject">
         @csrf
         <div id="modal-master" class="modal-dialog modal-lg" role="document">

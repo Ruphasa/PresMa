@@ -32,7 +32,7 @@
 <body>
     <div class="container-fluid p-0">
         <nav class="navbar navbar-expand-lg bg-white navbar-light py-3 py-lg-0 px-lg-5">
-            <a href="{{ url('/') }}" class="navbar-brand ml-lg-3">
+            <a href="{{ secure_url('/') }}" class="navbar-brand ml-lg-3">
                 <h1 class="m-0 text-uppercase text-primary"><i class="fa fa-book-reader mr-3"></i>PresMa</h1>
             </a>
             <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarCollapse">
@@ -40,25 +40,25 @@
             </button>
             <div class="collapse navbar-collapse justify-content-between px-lg-3" id="navbarCollapse">
                 <div class="navbar-nav mx-auto py-0">
-                    <a href="{{ url('/') }}"
+                    <a href="{{ secure_url('/') }}"
                         class="nav-item nav-link {{ $activeMenu == 'home' ? 'active' : '' }}">Home</a>
                     {{-- MODIFIKASI BAGIAN INI --}}
                     @if (Auth::check() && Auth::user()->hasRole('DP'))
-                        <a href="{{ url('/Achievement') }}"
+                        <a href="{{ secure_url('/Achievement') }}"
                             class="nav-item nav-link {{ $activeMenu == 'achievement' ? 'active' : '' }}">My Student
                             Achievement</a>
                     @endif
                     {{-- MODIFIKASI BAGIAN INI --}}
                     @if (Auth::check() && Auth::user()->hasRole('MHS'))
-                        <a href="{{ url('/Student/achievement') }}"
+                        <a href="{{ secure_url('/Student/achievement') }}"
                             class="nav-item nav-link {{ $activeMenu == 'achievement' ? 'active' : '' }}">My
                             Achievement</a>
                     @endif
-                    <a href="{{ url('/ListCompetition') }}"
+                    <a href="{{ secure_url('/ListCompetition') }}"
                         class="nav-item nav-link {{ $activeMenu == 'listcompetition' ? 'active' : '' }}">Competition</a>
                     {{-- MODIFIKASI BAGIAN INI --}}
                     @if (Auth::check() && Auth::user()->hasRole('ADM'))
-                        <a href="{{ url('/Admin') }}"
+                        <a href="{{ secure_url('/Admin') }}"
                             class="nav-item nav-link {{ $activeMenu == 'admin' ? 'active' : '' }}">Admin 🤫</a>
                     @endif
                 </div>
@@ -84,20 +84,20 @@
                             {{ Auth::user()->nama }}
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
-                            <a href="{{ url('/profile') }}" class="dropdown-item">
+                            <a href="{{ secure_url('/profile') }}" class="dropdown-item">
                                 <i class="fas fa-user mr-2"></i> Profile
                             </a>
-                            <a href="{{ url('/profile/edit') }}" class="dropdown-item">
+                            <a href="{{ secure_url('/profile/edit') }}" class="dropdown-item">
                                 <i class="fas fa-cog mr-2"></i> Settings
                             </a>
                             <div class="dropdown-divider"></div>
-                            <a href="{{ url('/logout') }}" class="dropdown-item">
+                            <a href="{{ secure_url('/logout') }}" class="dropdown-item">
                                 <i class="fas fa-sign-out-alt mr-2 btn btn-danger"></i> Logout
                             </a>
                         </div>
                     </div>
                 @else
-                    <a href="{{ url('/login') }}" class="btn btn-primary py-2 px-4">Login</a>
+                    <a href="{{ secure_url('/login') }}" class="btn btn-primary py-2 px-4">Login</a>
                 @endif
             </div>
         </nav>
@@ -178,7 +178,7 @@
                         } else if ({{ Auth::user()->hasRole('DP') ? 'true' : 'false' }}) {
                             data.rejected_competitions.forEach(competition => {
                                 notificationList.append(
-                                    '<a class="dropdown-item" href="{{ url('Competition/competition.lomba_id/edit') }}">Rejected Competition: ' +
+                                    '<a class="dropdown-item" href="{{ secure_url('Competition/competition.lomba_id/edit') }}">Rejected Competition: ' +
                                     competition.lomba_nama + '</a>'
                                 );
                             });

@@ -1,4 +1,4 @@
-<form action="{{ url('Admin/dosen/ajax') }}" method="POST" id="form-tambah-dosen">
+<form action="{{ secure_url('Admin/dosen/ajax') }}" method="POST" id="form-tambah-dosen">
     @csrf
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">

@@ -26,11 +26,11 @@ class MahasiswaController extends Controller
                 return $mahasiswa->dosen ? $mahasiswa->dosen->user->nama : '-';
             })
             ->addColumn('action', function ($mahasiswa) {
-                $btn = '<button onclick="modalAction(\'' . url('Admin/mahasiswa/' . $mahasiswa->nim .
+                $btn = '<button onclick="modalAction(\'' . secure_url('Admin/mahasiswa/' . $mahasiswa->nim .
                     '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('Admin/mahasiswa/' . $mahasiswa->nim .
+                $btn .= '<button onclick="modalAction(\'' . secure_url('Admin/mahasiswa/' . $mahasiswa->nim .
                     '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('Admin/mahasiswa/' . $mahasiswa->nim .
+                $btn .= '<button onclick="modalAction(\'' . secure_url('Admin/mahasiswa/' . $mahasiswa->nim .
                     '/delete_ajax') . '\')"  class="btn btn-danger btn-sm">Hapus</button> ';
                 return $btn;
             })

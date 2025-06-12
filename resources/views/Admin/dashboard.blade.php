@@ -10,7 +10,7 @@
                         <h1 class="display-4">Admin Dashboard</h1>
                         <p class="lead" id="timeNow">Selamat datang, kelola sistem Anda dengan mudah di sini.
                             {{ $timeNow }}</p>
-                        <a href="{{ url('Admin/dashboard/export-pdf') }}" class="btn btn-primary mt-3">Export to
+                        <a href="{{ secure_url('Admin/dashboard/export-pdf') }}" class="btn btn-primary mt-3">Export to
                             PDF</a>
                     </div>
                 </div>
@@ -23,7 +23,7 @@
                         <h5 class="card-title">Total Users</h5>
                         <h2 class="display-5" id="totalUsers">{{ $totalUsers ?? 0 }}</h2>
                         <p class="card-text">Jumlah pengguna terdaftar</p>
-                        <a href="{{ url('/Admin/user') }}" class="btn btn-light btn-sm">Lihat Detail</a>
+                        <a href="{{ secure_url('/Admin/user') }}" class="btn btn-light btn-sm">Lihat Detail</a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
@@ -31,7 +31,7 @@
                         <h5 class="card-title">Total Competitions</h5>
                         <h2 class="display-5" id="totalCompetitions">{{ $totalCompetitions ?? 0 }}</h2>
                         <p class="card-text">Jumlah lomba yang divalidasi</p>
-                        <a href="{{ url('/Admin/competition') }}" class="btn btn-light btn-sm">Lihat Detail</a>
+                        <a href="{{ secure_url('/Admin/competition') }}" class="btn btn-light btn-sm">Lihat Detail</a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
@@ -39,7 +39,7 @@
                         <h5 class="card-title">Total Achievements</h5>
                         <h2 class="display-5" id="totalAchievements">{{ $totalAchievements ?? 0 }}</h2>
                         <p class="card-text">Jumlah prestasi tercatat</p>
-                        <a href="{{ url('Admin/achievement') }}" class="btn btn-light btn-sm">Lihat Detail</a>
+                        <a href="{{ secure_url('Admin/achievement') }}" class="btn btn-light btn-sm">Lihat Detail</a>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-6 mb-4">
@@ -47,7 +47,7 @@
                         <h5 class="card-title">Pending Competitions</h5>
                         <h2 class="display-5" id="pendingCompetitions">{{ $pendingCompetitions ?? 0 }}</h2>
                         <p class="card-text">Jumlah lomba menunggu validasi</p>
-                        <a href="{{ url('/Admin/competition') }}" class="btn btn-light btn-sm">Lihat Detail</a>
+                        <a href="{{ secure_url('/Admin/competition') }}" class="btn btn-light btn-sm">Lihat Detail</a>
                     </div>
                 </div>
             </div>
