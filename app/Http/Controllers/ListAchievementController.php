@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\AchievementModel;
 use App\Models\CompetitionModel;
+use App\Models\RankModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 
@@ -111,7 +112,8 @@ class ListAchievementController extends Controller
         ];
         $activeMenu = 'achievement'; // set menu yang sedang aktif
         $lomba = CompetitionModel::all();
-        return view('createachievement', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu, 'lomba' => $lomba]);
+        $rank = RankModel::all();
+        return view('createachievement', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu, 'lomba' => $lomba, 'rank' => $rank]);
     }
 
     public function store(Request $request)
@@ -120,7 +122,7 @@ class ListAchievementController extends Controller
         $request->validate([
             'lomba_id' => 'required',
             'tingkat_prestasi' => 'required',
-            'juara_ke' => 'required|integer|min:1',
+            'juara_ke' => 'required',
             'bukti_prestasi' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
@@ -149,6 +151,7 @@ class ListAchievementController extends Controller
         $activeMenu = 'achievement'; // set menu yang sedang aktif
         $achievement = AchievementModel::findOrFail($id);
         $lomba = CompetitionModel::all();
+        $rank = RankModel::all();
         return view('studentachievementresubmit', [
             'id' => $id,
             'breadcrumb' => $breadcrumb,
@@ -157,6 +160,7 @@ class ListAchievementController extends Controller
             'achievement' => $achievement,
             'lomba' => $lomba,
             'bukti_prestasi' => $achievement->bukti_prestasi,
+            'rank' => $rank,
         ]);
     }
     public function update(Request $request, $id)
@@ -166,7 +170,7 @@ class ListAchievementController extends Controller
         $request->validate([
             'lomba_id' => 'required',
             'tingkat_prestasi' => 'required|string|max:255',
-            'juara_ke' => 'required|integer|min:1',
+            'juara_ke' => 'required',
             'bukti_prestasi' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 

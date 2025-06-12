@@ -40,8 +40,13 @@
                         </div>
                         <div class="form-group">
                             <label for="juara_ke">Juara ke</label>
-                            <input type="number" class="form-control" id="juara_ke" name="juara_ke"
-                                placeholder="Masukkan Juara ke (1, 2, 3...)" value="{{ $achievement->juara_ke }}" required>
+                            <select name="juara_ke" id="juara_ke" class="form-control" required>
+                                <option value="" disabled selected>Pilih Juara ke</option>
+                                @foreach ($rank as $r)
+                                    <option value="{{ $r }}" {{ $achievement->juara_ke == $r ? 'selected' : '' }}>
+                                        {{ $r->rank }}
+                                    </option>
+                                @endforeach
                         </div>
                         <div class="form-group">
                             <label for="bukti_prestasi">Bukti Prestasi (Gambar)</label>
