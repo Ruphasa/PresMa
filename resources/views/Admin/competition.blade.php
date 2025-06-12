@@ -112,7 +112,7 @@
                 scrollX: true,
                 autoWidth: false,
                 ajax: {
-                    url: "{{ url('Admin/competition/listPending') }}",
+                    url: "{{ secure_url('Admin/competition/listPending') }}",
                     dataType: "json",
                     type: "POST",
                     headers: {
@@ -179,7 +179,7 @@
                         scrollX: true,
                         autoWidth: false,
                         ajax: {
-                            url: "{{ url('Admin/competition/listValid') }}",
+                            url: "{{ secure_url('Admin/competition/listValid') }}",
                             dataType: "json",
                             type: "POST",
                             headers: {

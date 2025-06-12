@@ -31,7 +31,8 @@
 
                             <div class="row gy-3 gy-md-4 overflow-hidden">
                                 <div class="col-12">
-                                    <label for="nama" class="form-label">Nama <span class="text-danger">*</span></label>
+                                    <label for="nama" class="form-label">Nama <span
+                                            class="text-danger">*</span></label>
                                     <input type="text" class="form-control" name="nama" id="nama"
                                         placeholder="Nama lengkap" required>
                                 </div>
@@ -129,7 +130,8 @@
                             <div class="col-12 mt-5">
                                 <hr class="mt-5 mb-4 border-secondary-subtle">
                                 <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-end">
-                                    <a href="{{ url('login') }}" class="link-secondary text-decoration-none">Login</a>
+                                    <a href="{{ url('login') }}"
+                                        class="link-secondary text-decoration-none">Login</a>
                                 </div>
                             </div>
                         </div>
@@ -142,7 +144,7 @@
 </body>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const levelSelect = document.getElementById('level_id');
         const mahasiswaFields = document.getElementById('mahasiswa-fields');
         const dosenFields = document.getElementById('dosen-fields');

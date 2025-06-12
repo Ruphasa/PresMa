@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\AdminModel;
@@ -7,7 +6,6 @@ use App\Models\UserModel;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
-use PhpOffice\PhpSpreadsheet\IOFactory;
 use Yajra\DataTables\DataTables;
 
 class AdminController extends Controller
@@ -41,22 +39,22 @@ class AdminController extends Controller
 
     public function store_ajax(Request $request)
     {
-      if ($request->ajax() || $request->wantsJson()) {
+        if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                 'nama'=> 'required' ,
+                'nama'     => 'required',
                 'password' => 'required',
-                'level_id'=> 'required',
-                'email'=> 'required',
-                'img'=> 'required'
+                'level_id' => 'required',
+                'email'    => 'required',
+                'img'      => 'required',
             ];
 
             $validator = Validator::make($request->all(), $rules);
 
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => false,
-                    'message' => 'Validasi Gagal',
-                    'msgField' => $validator->errors()
+                    'status'   => false,
+                    'message'  => 'Validasi Gagal',
+                    'msgField' => $validator->errors(),
                 ]);
             }
 
@@ -64,32 +62,31 @@ class AdminController extends Controller
             try {
                 // Simpan data mahasiswa
                 $user = UserModel::create([
-                    'nama' => $request->nama,
+                    'nama'     => $request->nama,
                     'password' => $request->password,
-                    'level_id'=> $request->level_id,
-                    'email'=> $request->email,
-                    'img' => $request->img
+                    'level_id' => $request->level_id,
+                    'email'    => $request->email,
+                    'img'      => $request->img,
                 ]);
-
 
                 \DB::commit();
 
                 return response()->json([
-                    'status' => true,
-                    'message' => 'Data Mahasiswa berhasil disimpan'
+                    'status'  => true,
+                    'message' => 'Data Mahasiswa berhasil disimpan',
                 ]);
             } catch (\Exception $e) {
                 \DB::rollback();
                 return response()->json([
-                    'status' => false,
-                    'message' => 'Gagal menyimpan data: ' . $e->getMessage()
+                    'status'  => false,
+                    'message' => 'Gagal menyimpan data: ' . $e->getMessage(),
                 ]);
             }
         }
 
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'nip' => 'required|string|unique:m_admin,nip',
+                'nip'     => 'required|string|unique:m_admin,nip',
                 'user_id' => 'required|integer|exists:m_user,user_id',
             ];
 
@@ -97,22 +94,22 @@ class AdminController extends Controller
 
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => false,
-                    'message' => 'Validasi Gagal',
-                    'msgField' => $validator->errors()
+                    'status'   => false,
+                    'message'  => 'Validasi Gagal',
+                    'msgField' => $validator->errors(),
                 ]);
             }
 
             try {
                 AdminModel::create($request->only(['nip', 'user_id']));
                 return response()->json([
-                    'status' => true,
-                    'message' => 'Data Admin berhasil disimpan'
+                    'status'  => true,
+                    'message' => 'Data Admin berhasil disimpan',
                 ]);
             } catch (\Exception $e) {
                 return response()->json([
-                    'status' => false,
-                    'message' => 'Gagal menyimpan data: ' . $e->getMessage()
+                    'status'  => false,
+                    'message' => 'Gagal menyimpan data: ' . $e->getMessage(),
                 ]);
             }
         }
@@ -121,18 +118,18 @@ class AdminController extends Controller
 
     public function show_ajax(string $id)
     {
-        $user = UserModel::find($id);
+        $user  = UserModel::find($id);
         $admin = AdminModel::where('user_id', $id)->with('user')->get();
 
         return view('Admin.Admin.show_ajax', [
-            'breadcrumb' => (object)[
+            'breadcrumb' => (object) [
                 'title' => 'Detail Admin',
-                'list' => ['Home', 'Admin', 'Detail']
+                'list'  => ['Home', 'Admin', 'Detail'],
             ],
-            'page' => (object)['title' => 'Detail Admin'],
-            'user' => $user,
-            'admin' => $admin,
-            'activeMenu' => 'admin'
+            'page'       => (object) ['title' => 'Detail Admin'],
+            'user'       => $user,
+            'admin'      => $admin,
+            'activeMenu' => 'admin',
         ]);
     }
 
@@ -140,10 +137,10 @@ class AdminController extends Controller
     {
         if ($request->ajax() || $request->wantsJson()) {
             $user = UserModel::find($id);
-            if (!$user) {
+            if (! $user) {
                 return response()->json([
-                    'status' => false,
-                    'message' => 'Data tidak ditemukan'
+                    'status'  => false,
+                    'message' => 'Data tidak ditemukan',
                 ]);
             }
 
@@ -152,13 +149,13 @@ class AdminController extends Controller
                 $user->delete();
 
                 return response()->json([
-                    'status' => true,
-                    'message' => 'Data admin dan user berhasil dihapus'
+                    'status'  => true,
+                    'message' => 'Data admin dan user berhasil dihapus',
                 ]);
             } catch (\Exception $e) {
                 return response()->json([
-                    'status' => false,
-                    'message' => 'Gagal menghapus data: ' . $e->getMessage()
+                    'status'  => false,
+                    'message' => 'Gagal menghapus data: ' . $e->getMessage(),
                 ]);
             }
         }
@@ -179,83 +176,83 @@ class AdminController extends Controller
     }
 
     public function edit_ajax(string $id)
-{
-    $admin = AdminModel::where('user_id', $id)->with('user')->first();
+    {
+        $admin = AdminModel::where('user_id', $id)->with('user')->first();
 
-    if (!$admin) {
+        if (! $admin) {
+            return view('Admin.Admin.edit_ajax', [
+                'admin' => null,
+            ]);
+        }
+
+        $user = UserModel::all(); // Jika kamu butuh daftar user lain untuk dropdown, sesuaikan jika tidak perlu
+
         return view('Admin.Admin.edit_ajax', [
-            'admin' => null
+            'admin' => $admin,
+            'user'  => $user,
         ]);
     }
 
-    $user = UserModel::all(); // Jika kamu butuh daftar user lain untuk dropdown, sesuaikan jika tidak perlu
+    public function update_ajax(Request $request, string $id)
+    {
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'nama'  => 'required|min:3',
+                'email' => 'required|email',
+                'nip'   => 'required|string',
+            ];
 
-    return view('Admin.Admin.edit_ajax', [
-        'admin' => $admin,
-        'user' => $user
-    ]);
-}
+            $validator = Validator::make($request->all(), $rules);
 
-public function update_ajax(Request $request, string $id)
-{
-    if ($request->ajax() || $request->wantsJson()) {
-        $rules = [
-            'nama' => 'required|min:3',
-            'email' => 'required|email',
-            'nip' => 'required|string',
-        ];
-
-        $validator = Validator::make($request->all(), $rules);
-
-        if ($validator->fails()) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Validasi Gagal',
-                'msgField' => $validator->errors()
-            ]);
-        }
-
-        try {
-            $admin = AdminModel::where('user_id', $id)->first();
-            if (!$admin) {
+            if ($validator->fails()) {
                 return response()->json([
-                    'status' => false,
-                    'message' => 'Data Admin tidak ditemukan'
+                    'status'   => false,
+                    'message'  => 'Validasi Gagal',
+                    'msgField' => $validator->errors(),
                 ]);
             }
 
-            $user = UserModel::find($id);
-            if (!$user) {
+            try {
+                $admin = AdminModel::where('user_id', $id)->first();
+                if (! $admin) {
+                    return response()->json([
+                        'status'  => false,
+                        'message' => 'Data Admin tidak ditemukan',
+                    ]);
+                }
+
+                $user = UserModel::find($id);
+                if (! $user) {
+                    return response()->json([
+                        'status'  => false,
+                        'message' => 'Data User tidak ditemukan',
+                    ]);
+                }
+
+                // Update user
+                $user->update([
+                    'nama'  => $request->nama,
+                    'email' => $request->email,
+                ]);
+
+                // Update admin
+                $admin->update([
+                    'nip' => $request->nip,
+                ]);
+
                 return response()->json([
-                    'status' => false,
-                    'message' => 'Data User tidak ditemukan'
+                    'status'  => true,
+                    'message' => 'Data Admin berhasil diperbarui',
+                ]);
+            } catch (\Exception $e) {
+                return response()->json([
+                    'status'  => false,
+                    'message' => 'Gagal mengupdate data: ' . $e->getMessage(),
                 ]);
             }
-
-            // Update user
-            $user->update([
-                'nama' => $request->nama,
-                'email' => $request->email,
-            ]);
-
-            // Update admin
-            $admin->update([
-                'nip' => $request->nip,
-            ]);
-
-            return response()->json([
-                'status' => true,
-                'message' => 'Data Admin berhasil diperbarui'
-            ]);
-        } catch (\Exception $e) {
-            return response()->json([
-                'status' => false,
-                'message' => 'Gagal mengupdate data: ' . $e->getMessage()
-            ]);
         }
+
+        return redirect('/');
     }
-
-    return redirect('/');
-}
 
 }

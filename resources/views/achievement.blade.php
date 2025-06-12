@@ -40,7 +40,8 @@
                 $('#myModal').html(''); // Bersihkan semua konten lama
                 $('#myModal').load(url, function() {
                     $('#myModal').modal('show'); // Tampilkan modal setelah konten dimuat
-                    $('#myModal').data('url', url); // Simpan URL untuk keperluan POST
+                    $('#myModal').data('url',
+                        url); // Simpan url untuk keperluan POST
                 });
             };
             $('#table-achievements').DataTable({

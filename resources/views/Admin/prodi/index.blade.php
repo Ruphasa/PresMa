@@ -17,25 +17,40 @@
 @endsection
 
 @push('scripts')
-<script>
-    $(document).ready(function () {
-        $('#table-prodi').DataTable({
-            processing: true,
-            serverSide: true,
-            ajax: {
-                url: '{{ route('prodi.list') }}',
-                type: 'POST',
-                data: {
-                    _token: '{{ csrf_token() }}'
-                }
-            },
-            columns: [
-                { data: 'DT_RowIndex', name: 'DT_RowIndex', orderable: false, searchable: false },
-                { data: 'nama_prodi', name: 'nama_prodi' },
-                { data: 'mahasiswa_count', name: 'mahasiswa_count' },
-                { data: 'action', name: 'action', orderable: false, searchable: false },
-            ]
+    <script>
+        $(document).ready(function() {
+            $('#table-prodi').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: {
+                    url: '{{ route('prodi.list') }}',
+                    type: 'POST',
+                    data: {
+                        _token: '{{ csrf_token() }}'
+                    }
+                },
+                columns: [{
+                        data: 'DT_RowIndex',
+                        name: 'DT_RowIndex',
+                        orderable: false,
+                        searchable: false
+                    },
+                    {
+                        data: 'nama_prodi',
+                        name: 'nama_prodi'
+                    },
+                    {
+                        data: 'mahasiswa_count',
+                        name: 'mahasiswa_count'
+                    },
+                    {
+                        data: 'action',
+                        name: 'action',
+                        orderable: false,
+                        searchable: false
+                    },
+                ]
+            });
         });
-    });
-</script>
+    </script>
 @endpush

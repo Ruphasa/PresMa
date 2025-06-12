@@ -159,7 +159,7 @@
                 serverSide: true,
                 responsive: true,
                 ajax: {
-                    url: "{{ url('Admin/mahasiswa/list') }}",
+                    url: "{{ secure_url('Admin/mahasiswa/list') }}",
                     dataType: "json",
                     type: "POST",
                     headers: {
@@ -213,7 +213,7 @@
                 serverSide: true,
                 responsive: true,
                 ajax: {
-                    url: "{{ url('Admin/dosen/list') }}",
+                    url: "{{ secure_url('Admin/dosen/list') }}",
                     dataType: "json",
                     type: "POST",
                     headers: {
@@ -257,7 +257,7 @@
                 serverSide: true,
                 responsive: true,
                 ajax: {
-                    url: "{{ url('Admin/admin/list') }}", // Adjusted endpoint to match convention
+                    url: "{{ secure_url('Admin/admin/list') }}", // Adjusted endpoint to match convention
                     dataType: "json",
                     type: "POST",
                     headers: {

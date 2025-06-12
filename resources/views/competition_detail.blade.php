@@ -17,7 +17,7 @@
                     <div class="col-lg-4 col-md-6 pb-4">
                         <a class="courses-list-item position-relative d-block overflow-hidden mb-2"
                             href="{{ url('competition/' . $c->lomba_id) }}">
-                            <img class="img-fluid" src="{{ asset('Edukate/img/courses-1.jpg') }}" alt="">
+                            <img class="img-fluid" src="{{ secure_asset('Edukate/img/courses-1.jpg') }}" alt="">
                             <div class="courses-text">
                                 <h4 class="text-center text-white px-3">{{ $c->lomba_nama }}</h4>
                                 <div class="border-top w-100 mt-3">

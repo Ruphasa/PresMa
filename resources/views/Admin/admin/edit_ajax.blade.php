@@ -34,7 +34,8 @@
                     </div>
                     <div class="form-group">
                         <label>Email</label>
-                        <input type="email" name="email" class="form-control" value="{{ $admin->user->email }}" required>
+                        <input type="email" name="email" class="form-control" value="{{ $admin->user->email }}"
+                            required>
                         <small id="error-email" class="text-danger"></small>
                     </div>
                 </div>
@@ -49,9 +50,17 @@
     <script>
         $('#form-edit').validate({
             rules: {
-                nama: { required: true, minlength: 3 },
-                email: { required: true, email: true },
-                nip: { required: true }
+                nama: {
+                    required: true,
+                    minlength: 3
+                },
+                email: {
+                    required: true,
+                    email: true
+                },
+                nip: {
+                    required: true
+                }
             },
             submitHandler: function(form) {
                 $.ajax({

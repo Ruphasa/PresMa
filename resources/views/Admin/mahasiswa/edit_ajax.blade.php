@@ -29,18 +29,21 @@
                 <div class="modal-body">
                     <div class="form-group">
                         <label>NIM</label>
-                        <input value="{{ $mahasiswa->nim }}" type="text" name="nim" id="nim" class="form-control" readonly>
+                        <input value="{{ $mahasiswa->nim }}" type="text" name="nim" id="nim"
+                            class="form-control" readonly>
                     </div>
 
                     <div class="form-group">
                         <label>Nama</label>
-                        <input value="{{ $mahasiswa->user->nama }}" type="text" name="nama" id="nama" class="form-control">
+                        <input value="{{ $mahasiswa->user->nama }}" type="text" name="nama" id="nama"
+                            class="form-control">
                         <small id="error-nama" class="error-text form-text text-danger"></small>
                     </div>
 
                     <div class="form-group">
                         <label>Email</label>
-                        <input value="{{ $mahasiswa->user->email }}" type="email" name="email" id="email" class="form-control">
+                        <input value="{{ $mahasiswa->user->email }}" type="email" name="email" id="email"
+                            class="form-control">
                         <small id="error-email" class="error-text form-text text-danger"></small>
                     </div>
 
@@ -48,7 +51,8 @@
                         <label>Program Studi</label>
                         <select name="prodi_id" class="form-control" id="prodi_id">
                             @foreach ($prodi as $item)
-                                <option value="{{ $item->prodi_id }}" {{ $item->prodi_id == $mahasiswa->prodi_id ? 'selected' : '' }}>
+                                <option value="{{ $item->prodi_id }}"
+                                    {{ $item->prodi_id == $mahasiswa->prodi_id ? 'selected' : '' }}>
                                     {{ $item->prodi_nama }}
                                 </option>
                             @endforeach
@@ -60,7 +64,8 @@
                         <label>Dosen Pembimbing</label>
                         <select name="dosen_id" class="form-control" id="dosen_id">
                             @foreach ($dosen as $item)
-                                <option value="{{ $item->nidn }}" {{ $item->nidn == $mahasiswa->dosen_id ? 'selected' : '' }}>
+                                <option value="{{ $item->nidn }}"
+                                    {{ $item->nidn == $mahasiswa->dosen_id ? 'selected' : '' }}>
                                     {{ $item->user->nama }}
                                 </option>
                             @endforeach
@@ -70,13 +75,15 @@
 
                     <div class="form-group">
                         <label>Angkatan</label>
-                        <input value="{{ $mahasiswa->angkatan }}" type="text" name="angkatan" id="angkatan" class="form-control">
+                        <input value="{{ $mahasiswa->angkatan }}" type="text" name="angkatan" id="angkatan"
+                            class="form-control">
                         <small id="error-angkatan" class="error-text form-text text-danger"></small>
                     </div>
 
                     <div class="form-group">
                         <label>IPK</label>
-                        <input value="{{ $mahasiswa->ipk }}" type="text" name="ipk" id="ipk" class="form-control">
+                        <input value="{{ $mahasiswa->ipk }}" type="text" name="ipk" id="ipk"
+                            class="form-control">
                         <small id="error-ipk" class="error-text form-text text-danger"></small>
                     </div>
 
@@ -84,7 +91,8 @@
                         <label>Preferensi Lomba</label>
                         <select name="prefrensi_lomba" id="prefrensi_lomba" class="form-control">
                             @foreach ($kategori as $item)
-                                <option value="{{ $item->kategori_id }}" {{ $item->kategori_id == $mahasiswa->prefrensi_lomba ? 'selected' : '' }}>
+                                <option value="{{ $item->kategori_id }}"
+                                    {{ $item->kategori_id == $mahasiswa->prefrensi_lomba ? 'selected' : '' }}>
                                     {{ $item->kategori_nama }}
                                 </option>
                             @endforeach
@@ -101,23 +109,43 @@
     </form>
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#form-edit').validate({
                 rules: {
-                    nama: { required: true, minlength: 3 },
-                    email: { required: true, email: true },
-                    prodi_id: { required: true },
-                    dosen_id: { required: true },
-                    angkatan: { required: true, digits: true },
-                    ipk: { required: true, number: true, min: 0, max: 4 },
-                    prefrensi_lomba: { required: true },
+                    nama: {
+                        required: true,
+                        minlength: 3
+                    },
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    prodi_id: {
+                        required: true
+                    },
+                    dosen_id: {
+                        required: true
+                    },
+                    angkatan: {
+                        required: true,
+                        digits: true
+                    },
+                    ipk: {
+                        required: true,
+                        number: true,
+                        min: 0,
+                        max: 4
+                    },
+                    prefrensi_lomba: {
+                        required: true
+                    },
                 },
-                submitHandler: function (form) {
+                submitHandler: function(form) {
                     $.ajax({
                         url: form.action,
                         type: form.method,
                         data: $(form).serialize(),
-                        success: function (response) {
+                        success: function(response) {
                             if (response.status) {
                                 $('#myModal').modal('hide');
                                 Swal.fire({

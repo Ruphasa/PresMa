@@ -79,8 +79,8 @@
                 @if (Auth::user())
                     <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle" data-toggle="dropdown" role="button">
-                            <img src="{{ asset('storage/img/' . Auth::user()->username . '.png') }}" alt=""
-                                class="img-size-50 img-circle mr-2">
+                            <img src="{{ secure_asset('storage/img/' . Auth::user()->username . '.png') }}"
+                                alt="" class="img-size-50 img-circle mr-2">
                             {{ Auth::user()->nama }}
                         </a>
                         <div class="dropdown-menu dropdown-menu-right">
@@ -156,7 +156,7 @@
                             data.recommended_competitions.forEach(competition => {
                                 notificationList.append(
                                     '<a class="dropdown-item" href="' +
-                                    '{{ url('Competition/competition.lomba.lomba_id') }}' +
+                                    '{{ url('Competition/competition.lomba_id') }}' +
                                     '">Recommended: ' +
                                     competition.lomba_nama + '</a>'
                                 );
@@ -185,7 +185,8 @@
                             if (data.pending_achievements > 0) {
                                 notificationList.append(
                                     '<a class="dropdown-item" href="' +
-                                    '{{ url('/Achievement') }}' + '">Pending Achievements: ' +
+                                    '{{ url('/Achievement') }}' +
+                                    '">Pending Achievements: ' +
                                     data.pending_achievements + '</a>'
                                 );
                             }

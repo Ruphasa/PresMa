@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Favicon -->
-    <link href="{{ asset('Edukate/img/favicon.ico') }}" rel="icon">
+    <link href="{{ secure_asset('Edukate/img/favicon.ico') }}" rel="icon">
 
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
@@ -20,10 +20,10 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.10.0/css/all.min.css" rel="stylesheet">
 
     <!-- Libraries Stylesheet -->
-    <link href="{{ asset('Edukate/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('Edukate/lib/owlcarousel/assets/owl.carousel.min.css') }}" rel="stylesheet">
 
     <!-- Customized Bootstrap Stylesheet -->
-    <link href="{{ asset('Edukate/css/style.css') }}" rel="stylesheet">
+    <link href="{{ secure_asset('Edukate/css/style.css') }}" rel="stylesheet">
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <!-- Data Table -->
@@ -92,10 +92,10 @@
     <!-- Bootstrap JS (includes Popper.js for Bootstrap 4) -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
-    <script src="{{ asset('Edukate/lib/easing/easing.min.js') }}"></script>
-    <script src="{{ asset('Edukate/lib/waypoints/waypoints.min.js') }}"></script>
-    <script src="{{ asset('Edukate/lib/counterup/counterup.min.js') }}"></script>
-    <script src="{{ asset('Edukate/lib/owlcarousel/owl.carousel.min.js') }}"></script>
+    <script src="{{ secure_asset('Edukate/lib/easing/easing.min.js') }}"></script>
+    <script src="{{ secure_asset('Edukate/lib/waypoints/waypoints.min.js') }}"></script>
+    <script src="{{ secure_asset('Edukate/lib/counterup/counterup.min.js') }}"></script>
+    <script src="{{ secure_asset('Edukate/lib/owlcarousel/owl.carousel.min.js') }}"></script>
 
     <!-- Include DataTables JS -->
     <script src="https://cdn.datatables.net/1.13.6/js/jquery.dataTables.min.js"></script>
@@ -103,7 +103,7 @@
     <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
 
     <!-- Template Javascript -->
-    <script src="{{ asset('Edukate/js/main.js') }}"></script>
+    <script src="{{ secure_asset('Edukate/js/main.js') }}"></script>
     <script>
         $.ajaxSetup({
             headers: {

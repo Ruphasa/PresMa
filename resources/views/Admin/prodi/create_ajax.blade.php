@@ -9,7 +9,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                
+
                 <div class="form-group">
                     <label>Kode Prodi</label>
                     <input type="text" name="kode_prodi" class="form-control" required>
@@ -31,9 +31,9 @@
     </div>
 </form>
 
-<script src="{{ asset('js/vendor/jquery-3.6.0.min.js') }}"></script>
-<script src="{{ asset('js/vendor/jquery.validate.min.js') }}"></script>
-<script src="{{ asset('js/vendor/sweetalert2.min.js') }}"></script>
+<script src="{{ secure_asset('js/vendor/jquery-3.6.0.min.js') }}"></script>
+<script src="{{ secure_asset('js/vendor/jquery.validate.min.js') }}"></script>
+<script src="{{ secure_asset('js/vendor/sweetalert2.min.js') }}"></script>
 <script>
     $(document).ready(function() {
         $('#form-tambah-prodi').validate({
@@ -74,7 +74,8 @@
                         }
                     },
                     error: function(xhr) {
-                        Swal.fire('Error', 'Terjadi kesalahan: ' + xhr.responseText, 'error');
+                        Swal.fire('Error', 'Terjadi kesalahan: ' + xhr.responseText,
+                            'error');
                     }
                 });
                 return false;

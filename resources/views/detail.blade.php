@@ -12,7 +12,8 @@
                             </h6>
                             <h1 class="display-4">{{ $competition->lomba_nama }}</h1>
                         </div>
-                        <img class="img-fluid rounded w-100 mb-4" src="{{ asset('Edukate/img/header.jpg') }}" alt="Image">
+                        <img class="img-fluid rounded w-100 mb-4" src="{{ secure_asset('Edukate/img/header.jpg') }}"
+                            alt="Image">
                         <p>{{ $competition->lomba_detail }}</p>
 
                         <p>Sadipscing labore amet rebum est et justo gubergren. Et eirmod ipsum sit diam ut magna lorem.
@@ -26,7 +27,7 @@
                     <div class="owl-carousel related-carousel position-relative" style="padding: 0 30px;">
                         @for ($index = 0; $index < 4; $index++)
                             <a class="courses-list-item position-relative d-block overflow-hidden mb-2" href="detail.html">
-                                <img class="img-fluid" src="{{ asset('Edukate/img/courses-1.jpg') }}" alt="">
+                                <img class="img-fluid" src="{{ secure_asset('Edukate/img/courses-1.jpg') }}" alt="">
                                 <div class="courses-text">
                                     <h4 class="text-center text-white px-3">Web design & development courses for
                                         beginners</h4>
@@ -83,7 +84,7 @@
                         <h2 class="mb-4">Recent Courses</h2>
                         @for ($index = 0; $index < 4; $index++)
                             <a class="d-flex align-items-center text-decoration-none mb-4" href="">
-                                <img class="img-fluid rounded" src="{{ asset('Edukate/img/courses-80x80.jpg') }}"
+                                <img class="img-fluid rounded" src="{{ secure_asset('Edukate/img/courses-80x80.jpg') }}"
                                     alt="">
                                 <div class="pl-3">
                                     <h6>Web design & development courses for beginners</h6>

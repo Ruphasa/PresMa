@@ -10,7 +10,8 @@
                         <h1 class="display-4">Admin Dashboard</h1>
                         <p class="lead" id="timeNow">Selamat datang, kelola sistem Anda dengan mudah di sini.
                             {{ $timeNow }}</p>
-                        <a href="{{ url('Admin/dashboard/export-pdf') }}" class="btn btn-primary mt-3">Export to PDF</a>
+                        <a href="{{ url('Admin/dashboard/export-pdf') }}" class="btn btn-primary mt-3">Export to
+                            PDF</a>
                     </div>
                 </div>
             </div>
@@ -182,7 +183,7 @@
             // Fungsi untuk memperbarui data secara real-time
             function updateDashboardStats() {
                 $.ajax({
-                    url: '{{ url('Admin/dashboard/stats') }}',
+                    url: '{{ secure_url('Admin/dashboard/stats') }}',
                     method: 'GET',
                     success: function(response) {
                         console.log('Stats response:', response);

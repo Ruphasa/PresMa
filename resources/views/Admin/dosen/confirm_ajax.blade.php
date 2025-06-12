@@ -52,7 +52,7 @@
                     <div class="mt-3">
                         <h6>Daftar Mahasiswa yang diajar:</h6>
                         <ul>
-                            @foreach($dosen->mahasiswa as $mahasiswa)
+                            @foreach ($dosen->mahasiswa as $mahasiswa)
                                 <li>{{ $mahasiswa->nim }} - {{ $mahasiswa->user->username ?? 'Tidak ditemukan' }}</li>
                             @endforeach
                         </ul>
@@ -68,24 +68,25 @@
     </form>
 
     <script>
-        $(document).ready(function () {
-            $("#form-delete").on('submit', function (e) {
+        $(document).ready(function() {
+            $("#form-delete").on('submit', function(e) {
                 e.preventDefault();
                 let form = this;
                 $.ajax({
                     url: form.action,
                     method: form.method,
                     data: $(form).serialize(),
-                    success: function (response) {
+                    success: function(response) {
                         if (response.status) {
                             $('#myModal').modal('hide');
                             Swal.fire('Berhasil', response.message, 'success');
-                            dataDosen.ajax.reload(); // Pastikan ini sesuai dengan ID DataTable Anda
+                            dataDosen.ajax
+                                .reload(); // Pastikan ini sesuai dengan ID DataTable Anda
                         } else {
                             Swal.fire('Gagal', response.message, 'error');
                         }
                     },
-                    error: function () {
+                    error: function() {
                         Swal.fire('Error', 'Terjadi kesalahan pada server', 'error');
                     }
                 });

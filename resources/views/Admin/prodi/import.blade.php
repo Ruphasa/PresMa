@@ -10,7 +10,7 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label>Download Template</label>
-                    <a href="{{ asset('template_prodi.xlsx') }}" class="btn btn-info btn-sm" download>
+                    <a href="{{ secure_asset('template_prodi.xlsx') }}" class="btn btn-info btn-sm" download>
                         <i class="fa fa-file-excel"></i> Download
                     </a>
                     <small id="error-file_prodi" class="error-text form-text text-danger"></small>
@@ -32,12 +32,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         $("#form-import").validate({
             rules: {
-                file_Prodi: { required: true, extension: "xlsx,xls" }
+                file_Prodi: {
+                    required: true,
+                    extension: "xlsx,xls"
+                }
             },
-            submitHandler: function (form) {
+            submitHandler: function(form) {
                 var formData = new FormData(form);
                 $.ajax({
                     url: form.action,
@@ -45,7 +48,7 @@
                     data: formData,
                     processData: false,
                     contentType: false,
-                    success: function (response) {
+                    success: function(response) {
                         if (response.status) {
                             $('#myModal').modal('hide');
                             Swal.fire('Berhasil', response.message, 'success');
@@ -54,27 +57,28 @@
                             }
                         } else {
                             $('.error-text').text('');
-                            $.each(response.msgField, function (prefix, val) {
+                            $.each(response.msgField, function(prefix, val) {
                                 $('#error-' + prefix).text(val[0]);
                             });
                             Swal.fire('Gagal', response.message, 'error');
                         }
                     },
-                    error: function () {
-                        Swal.fire('Error', 'Terjadi kesalahan saat mengunggah file.', 'error');
+                    error: function() {
+                        Swal.fire('Error', 'Terjadi kesalahan saat mengunggah file.',
+                            'error');
                     }
                 });
                 return false;
             },
             errorElement: 'span',
-            errorPlacement: function (error, element) {
+            errorPlacement: function(error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function (element) {
+            highlight: function(element) {
                 $(element).addClass('is-invalid');
             },
-            unhighlight: function (element) {
+            unhighlight: function(element) {
                 $(element).removeClass('is-invalid');
             }
         });

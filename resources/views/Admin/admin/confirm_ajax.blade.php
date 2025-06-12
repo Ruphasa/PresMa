@@ -44,7 +44,7 @@
                             <td>{{ $user->nama }}</td>
                         </tr>
                     </table>
-                    
+
 
                 </div>
                 <div class="modal-footer">
@@ -56,26 +56,27 @@
     </form>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
-        $(document).ready(function () {
-            $("#form-delete").on('submit', function (e) {
+        $(document).ready(function() {
+            $("#form-delete").on('submit', function(e) {
                 e.preventDefault();
                 let form = this;
                 $.ajax({
                     url: form.action,
                     method: form.method,
                     data: $(form).serialize(),
-                    success: function (response) {
+                    success: function(response) {
                         if (response.status) {
                             $('#myModal').modal('hide');
                             Swal.fire('Berhasil', response.message, 'success');
-                            dataAdmin.ajax.reload(); // Pastikan ini sesuai dengan ID DataTable Anda
+                            dataAdmin.ajax
+                                .reload(); // Pastikan ini sesuai dengan ID DataTable Anda
                         } else {
                             Swal.fire('Gagal', response.message, 'error');
                         }
                     },
-                    error: function () {
+                    error: function() {
                         Swal.fire('Error', 'Terjadi kesalahan pada server', 'error');
                     }
                 });

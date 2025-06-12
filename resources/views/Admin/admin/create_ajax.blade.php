@@ -52,48 +52,54 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         // Validasi dan submit form untuk Admin
         $("#form-tambah-admin").validate({
             rules: {
-                nip: { required: true },
-                user_id: { required: true },
+                nip: {
+                    required: true
+                },
+                user_id: {
+                    required: true
+                },
             },
-            submitHandler: function (form) {
+            submitHandler: function(form) {
                 $.ajax({
                     url: form.action,
                     type: form.method,
                     data: $(form).serialize(),
-                    success: function (response) {
+                    success: function(response) {
                         if (response.status) {
-                            $('#myModal').modal('hide');  // Pastikan modal dengan ID ini ada
+                            $('#myModal').modal(
+                                'hide'); // Pastikan modal dengan ID ini ada
                             Swal.fire('Berhasil', response.message, 'success');
-                             if (typeof dataAdmin !== 'undefined') {
-                                 dataAdmin.ajax.reload(); // Reload DataTable Admin jika ada
-                             }
+                            if (typeof dataAdmin !== 'undefined') {
+                                dataAdmin.ajax
+                                    .reload(); // Reload DataTable Admin jika ada
+                            }
                         } else {
                             $('.error-text').text('');
-                            $.each(response.msgField, function (prefix, val) {
+                            $.each(response.msgField, function(prefix, val) {
                                 $('#error-' + prefix).text(val[0]);
                             });
                             Swal.fire('Gagal', response.message, 'error');
                         }
                     },
-                    error: function () {
+                    error: function() {
                         Swal.fire('Error', 'Terjadi kesalahan pada server', 'error');
                     }
                 });
                 return false;
             },
             errorElement: 'span',
-            errorPlacement: function (error, element) {
+            errorPlacement: function(error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function (element) {
+            highlight: function(element) {
                 $(element).addClass('is-invalid');
             },
-            unhighlight: function (element) {
+            unhighlight: function(element) {
                 $(element).removeClass('is-invalid');
             }
         });

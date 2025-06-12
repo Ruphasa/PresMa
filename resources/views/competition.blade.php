@@ -11,10 +11,10 @@
                         </h6>
                         <h1 class="display-4">List of Competitions Available</h1>
                         <div class="btn btn-primary mb-4">
-                        <a class="text-white" href="{{ url('Competition/create') }}">
-                            <i class="fa fa-plus mr-2"></i> Suggest New Competition
-                        </a>
-                    </div>
+                            <a class="text-white" href="{{ url('Competition/create') }}">
+                                <i class="fa fa-plus mr-2"></i> Suggest New Competition
+                            </a>
+                        </div>
                     </div>
                 </div><!-- End Portfolio Filters -->
             </div>
@@ -23,7 +23,7 @@
                     <div class="col-lg-4 col-md-6 pb-4">
                         <a class="courses-list-item position-relative d-block overflow-hidden mb-2"
                             href="{{ url('Competition/' . $c->lomba_id) }}">
-                            <img class="img-fluid" src="{{ asset('Edukate/img/courses-1.jpg') }}" alt="">
+                            <img class="img-fluid" src="{{ secure_asset('Edukate/img/courses-1.jpg') }}" alt="">
                             <div class="courses-text">
                                 <h4 class="text-center text-white px-3">{{ $c->lomba_nama }}</h4>
                                 <div class="border-top w-100 mt-3">

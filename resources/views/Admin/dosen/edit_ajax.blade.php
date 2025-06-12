@@ -68,19 +68,27 @@
     </form>
 
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $('#form-edit').validate({
                 rules: {
-                    nama: { required: true, minlength: 3 },
-                    email: { required: true, email: true },
-                    username: { required: true }
+                    nama: {
+                        required: true,
+                        minlength: 3
+                    },
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    username: {
+                        required: true
+                    }
                 },
-                submitHandler: function (form) {
+                submitHandler: function(form) {
                     $.ajax({
                         url: form.action,
                         type: form.method,
                         data: $(form).serialize(),
-                        success: function (response) {
+                        success: function(response) {
                             if (response.status) {
                                 $('#myModal').modal('hide');
                                 Swal.fire({

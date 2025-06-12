@@ -16,7 +16,8 @@
         </div>
     </div>
 @else
-    <form action="{{ url('/Admin/competition/' . $competition->lomba_id . '/reject_ajax') }}" method="POST" id="form-reject-competition">
+    <form action="{{ url('/Admin/competition/' . $competition->lomba_id . '/reject_ajax') }}" method="POST"
+        id="form-reject-competition">
         @csrf
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
@@ -28,7 +29,8 @@
                 <div class="modal-body">
                     <div class="alert alert-warning">
                         <h5><i class="icon fas fa-ban"></i> Konfirmasi !!!</h5>
-                        Apakah Anda ingin menolak lomba seperti di bawah ini? Status akan diubah menjadi <strong>Rejected</strong>. Silakan masukkan alasan penolakan.
+                        Apakah Anda ingin menolak lomba seperti di bawah ini? Status akan diubah menjadi
+                        <strong>Rejected</strong>. Silakan masukkan alasan penolakan.
                     </div>
                     <table class="table table-sm table-bordered table-striped">
                         <tr>
@@ -54,7 +56,8 @@
                     </table>
                     <div class="form-group">
                         <label for="keterangan">Alasan Penolakan:</label>
-                        <textarea class="form-control" id="keterangan" name="keterangan" rows="3" placeholder="Masukkan alasan penolakan..." required></textarea>
+                        <textarea class="form-control" id="keterangan" name="keterangan" rows="3"
+                            placeholder="Masukkan alasan penolakan..." required></textarea>
                         <span id="error-keterangan" class="error-text text-danger"></span>
                     </div>
                 </div>
@@ -66,7 +69,7 @@
         </div>
     </form>
     <script>
-        $(document).ready(function () {
+        $(document).ready(function() {
             $("#form-reject-competition").validate({
                 rules: {
                     reject_note: {
@@ -76,12 +79,12 @@
                 messages: {
                     reject_note: "Alasan penolakan wajib diisi."
                 },
-                submitHandler: function (form) {
+                submitHandler: function(form) {
                     $.ajax({
                         url: form.action,
                         type: form.method,
                         data: $(form).serialize(),
-                        success: function (response) {
+                        success: function(response) {
                             if (response.success) {
                                 $('#myModal').modal('hide');
                                 Swal.fire({
@@ -93,7 +96,7 @@
                                 $('#table-valid-competitions').DataTable().ajax.reload();
                             } else {
                                 $('.error-text').text('');
-                                $.each(response.msgField, function (prefix, val) {
+                                $.each(response.msgField, function(prefix, val) {
                                     $('#error-' + prefix).text(val[0]);
                                 });
                                 Swal.fire({
@@ -107,14 +110,14 @@
                     return false;
                 },
                 errorElement: 'span',
-                errorPlacement: function (error, element) {
+                errorPlacement: function(error, element) {
                     error.addClass('invalid-feedback');
                     element.closest('.form-group').append(error);
                 },
-                highlight: function (element, errorClass, validClass) {
+                highlight: function(element, errorClass, validClass) {
                     $(element).addClass('is-invalid');
                 },
-                unhighlight: function (element, errorClass, validClass) {
+                unhighlight: function(element, errorClass, validClass) {
                     $(element).removeClass('is-invalid');
                 }
             });

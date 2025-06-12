@@ -16,7 +16,7 @@
                 <div class="col-md-12">
                     <div class="card shadow-lg border-0 rounded-lg">
                         <div class="card-body text-center py-4">
-                            <img src="{{ asset('storage/img/' . auth()->user()->img) }}" alt="Foto Profil"
+                            <img src="{{ secure_asset('storage/img/' . auth()->user()->img) }}" alt="Foto Profil"
                                 class="rounded-circle mb-3" width="120" height="120"
                                 onerror="this.onerror=null; this.src='https://via.placeholder.com/120?text=No+Image';">
                             <h3 class="mb-0">{{ auth()->user()->nama }}</h3>

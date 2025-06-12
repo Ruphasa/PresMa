@@ -10,7 +10,7 @@
             <div class="modal-body">
                 <div class="form-group">
                     <label>Download Template</label>
-                    <a href="{{ asset('template_admin.xlsx') }}" class="btn btn-info btn-sm" download><i
+                    <a href="{{ secure_asset('template_admin.xlsx') }}" class="btn btn-info btn-sm" download><i
                             class="fa fa-file-excel"></i>Download</a>
                     <small id="error-file_admin" class="error-text form-text text-danger"></small>
                 </div>
@@ -31,12 +31,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
         $("#form-import").validate({
             rules: {
-                file_admin: { required: true, extension: "xlsx,xls" }, // Perbaiki validasi extension
+                file_admin: {
+                    required: true,
+                    extension: "xlsx,xls"
+                }, // Perbaiki validasi extension
             },
-            submitHandler: function (form) {
+            submitHandler: function(form) {
                 var formData = new FormData(form);
                 $.ajax({
                     url: form.action,
@@ -44,7 +47,7 @@
                     data: formData,
                     processData: false,
                     contentType: false,
-                    success: function (response) {
+                    success: function(response) {
                         if (response.status) {
                             $('#myModal').modal('hide');
                             Swal.fire({
@@ -58,7 +61,7 @@
                             }
                         } else {
                             $('.error-text').text('');
-                            $.each(response.msgField, function (prefix, val) {
+                            $.each(response.msgField, function(prefix, val) {
                                 $('#error-' + prefix).text(val[0]);
                             });
                             Swal.fire({
@@ -68,7 +71,7 @@
                             });
                         }
                     },
-                    error: function (xhr, status, error) {
+                    error: function(xhr, status, error) {
                         console.error("Error:", error);
                         Swal.fire({
                             icon: 'error',
@@ -80,14 +83,14 @@
                 return false;
             },
             errorElement: 'span',
-            errorPlacement: function (error, element) {
+            errorPlacement: function(error, element) {
                 error.addClass('invalid-feedback');
                 element.closest('.form-group').append(error);
             },
-            highlight: function (element, errorClass, validClass) {
+            highlight: function(element, errorClass, validClass) {
                 $(element).addClass('is-invalid');
             },
-            unhighlight: function (element, errorClass, validClass) {
+            unhighlight: function(element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
             }
         });

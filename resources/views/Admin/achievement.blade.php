@@ -98,7 +98,8 @@
                 $('#myModal').html(''); // Bersihkan semua konten lama
                 $('#myModal').load(url, function() {
                     $('#myModal').modal('show'); // Tampilkan modal setelah konten dimuat
-                    $('#myModal').data('url', url); // Simpan URL untuk keperluan POST
+                    $('#myModal').data('url',
+                        url); // Simpan url untuk keperluan POST
                 });
             };
 
@@ -111,7 +112,7 @@
                 scrollX: true,
                 autoWidth: false,
                 ajax: {
-                    url: "{{ url('Admin/achievement/listPending') }}",
+                    url: "{{ secure_url('Admin/achievement/listPending') }}",
                     dataType: "json",
                     type: "POST",
                     headers: {
@@ -166,7 +167,7 @@
                         scrollX: true,
                         autoWidth: false,
                         ajax: {
-                            url: "{{ url('Admin/achievement/listValid') }}",
+                            url: "{{ secure_url('Admin/achievement/listValid') }}",
                             dataType: "json",
                             type: "POST",
                             headers: {

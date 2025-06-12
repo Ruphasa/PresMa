@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\AchievementModel;
@@ -7,19 +6,18 @@ use App\Models\CompetitionModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 
-
 class AchievementController extends Controller
 {
     public function index()
     {
         $breadcrumb = (object) [
             'title' => 'Prestasi List',
-            'list' => ['Admin /', 'Prestasi'],
+            'list'  => ['Admin /', 'Prestasi'],
         ];
         $page = (object) [
-            'title' => 'Daftar Prestasi yang terdaftar dalam sistem'
+            'title' => 'Daftar Prestasi yang terdaftar dalam sistem',
         ];
-        $lomba = CompetitionModel::all();
+        $lomba      = CompetitionModel::all();
         $activeMenu = 'achievements'; // set menu yang sedang aktif
         return view('Admin.achievement', ['breadcrumb' => $breadcrumb, 'page' => $page, 'lomba' => $lomba, 'activeMenu' => $activeMenu]);
     }
@@ -28,12 +26,12 @@ class AchievementController extends Controller
     {
         $breadcrumb = (object) [
             'title' => 'Prestasi List',
-            'list' => ['Admin /', 'Prestasi'],
+            'list'  => ['Admin /', 'Prestasi'],
         ];
         $page = (object) [
-            'title' => 'Daftar Prestasi yang terdaftar dalam sistem'
+            'title' => 'Daftar Prestasi yang terdaftar dalam sistem',
         ];
-        $lomba = CompetitionModel::all();
+        $lomba      = CompetitionModel::all();
         $activeMenu = 'achievements'; // set menu yang sedang aktif
         return view('dosen.achievement', ['breadcrumb' => $breadcrumb, 'page' => $page, 'lomba' => $lomba, 'activeMenu' => $activeMenu]);
     }
@@ -50,7 +48,7 @@ class AchievementController extends Controller
             'status'
         )
             ->with('lomba', 'mahasiswa')
-            ->where('status', '!=','rejected')
+            ->where('status', '!=', 'rejected')
             ->whereHas('mahasiswa', function ($query) {
                 $query->where('dosen_id', auth()->user()->dosen->nidn);
             })
@@ -181,16 +179,15 @@ class AchievementController extends Controller
         try {
             $achievement = AchievementModel::findOrFail($id);
             if ($achievement->status === 'pending') {
-                $achievement->status = 'rejected';
+                $achievement->status     = 'rejected';
                 $achievement->keterangan = request()->input('reject_note'); // Simpan note jika ada kolom di model
                 $achievement->save();
                 return response()->json(['success' => true, 'message' => 'Prestasi berhasil ditolak']);
             }
             return response()->json(['success' => false, 'message' => 'Prestasi tidak dalam status pending']);
         } catch (\Exception $e) {
-            return response()->json(['success' => false, 'message' => 'Terjadi kesalahan: ' . $e->getMessage()]);
+            return response()->json(['gagal' => false, 'message' => 'Terjadi kesalahan: ' . $e->getMessage()]);
         }
     }
 
 }
-

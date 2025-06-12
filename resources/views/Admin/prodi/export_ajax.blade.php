@@ -79,7 +79,7 @@
     <table class="border-bottom-header">
         <tr>
             <td width="15%" class="text-center">
-                <img src="{{ asset('polinema-bw.png') }}">
+                <img src="{{ secure_asset('polinema-bw.png') }}">
             </td>
             <td width="85%">
                 <span class="text-center d-block font-11 font-bold mb-1">KEMENTERIAN
@@ -108,14 +108,14 @@
             </tr>
         </thead>
         <tbody>
-            @foreach($mahasiswa as $m)
-            <tr>
-                <td class="text-center">{{ $loop->iteration }}</td>
-                <td>{{ $m->nim }}</td>
-                <td>{{ $m->user->username }}</td>
-                <td>{{ $m->user->email }}</td>
-                <td>{{ $m->prodi->nama_prodi }}</td>
-            </tr>
+            @foreach ($mahasiswa as $m)
+                <tr>
+                    <td class="text-center">{{ $loop->iteration }}</td>
+                    <td>{{ $m->nim }}</td>
+                    <td>{{ $m->user->username }}</td>
+                    <td>{{ $m->user->email }}</td>
+                    <td>{{ $m->prodi->nama_prodi }}</td>
+                </tr>
             @endforeach
         </tbody>
     </table>

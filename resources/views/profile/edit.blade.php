@@ -35,7 +35,7 @@
                                 @endif
                                 <div class="text-center mb-4">
                                     <img src="{{ auth()->user()->img
-                                        ? asset('storage/img/' . auth()->user()->img)
+                                        ? secure_asset('storage/img/' . auth()->user()->img)
                                         : 'https://ui-avatars.com/api/?name=' . urlencode(auth()->user()->nama) . '&size=120&background=random' }}"
                                         alt="Foto Profil" class="rounded-circle shadow" width="120" height="120"
                                         onerror="this.onerror=null; this.src='https://via.placeholder.com/120?text=No+Image';" />

@@ -48,7 +48,7 @@
                 </div>
                 <div class="col-lg-5" style="min-height: 500px;">
                     <div class="position-relative h-100">
-                        <img class="position-absolute w-100 h-100" src="{{ asset('Edukate/img/feature.jpg') }}"
+                        <img class="position-absolute w-100 h-100" src="{{ secure_asset('Edukate/img/feature.jpg') }}"
                             style="object-fit: cover;">
                     </div>
                 </div>
@@ -63,7 +63,7 @@
             <div class="row">
                 <div class="col-lg-5 mb-5 mb-lg-0" style="min-height: 500px;">
                     <div class="position-relative h-100">
-                        <img class="position-absolute w-100 h-100" src="{{ asset('Edukate/img/about.jpg') }}"
+                        <img class="position-absolute w-100 h-100" src="{{ secure_asset('Edukate/img/about.jpg') }}"
                             style="object-fit: cover;">
                     </div>
                 </div>
@@ -118,7 +118,7 @@
             <div class="owl-carousel team-carousel position-relative" style="padding: 0 30px;">
                 @foreach ($topStudents as $index => $student)
                     <div class="team-item">
-                        <img class="img-fluid w-100" src="{{ asset($student->img ?? 'Edukate/img/team-1.jpg') }}"
+                        <img class="img-fluid w-100" src="{{ secure_asset($student->img ?? 'Edukate/img/team-1.jpg') }}"
                             alt="">
                         <div class="bg-light text-center p-4">
                             <h5 class="mb-3">{{ $student->nama ?? 'Nama Tidak Tersedia' }}</h5>
@@ -147,7 +147,7 @@
         <div class="owl-carousel courses-carousel">
             @foreach ($latestCompetitions as $competition)
                 <div class="courses-item position-relative">
-                    <img class="img-fluid" src="{{ asset('Edukate/img/courses-1.jpg') }}" alt="">
+                    <img class="img-fluid" src="{{ secure_asset('Edukate/img/courses-1.jpg') }}" alt="">
                     <div class="courses-text">
                         <h4 class="text-center text-white px-3">{{ $competition->lomba_nama }}</h4>
                         <div class="border-top w-100 mt-3">

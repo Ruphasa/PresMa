@@ -76,11 +76,11 @@
                     success: function(response) {
                         if (response.status) {
                             $('#myModal').modal(
-                            'hide'); // Pastikan modal dengan ID ini ada
+                                'hide'); // Pastikan modal dengan ID ini ada
                             Swal.fire('Berhasil', response.message, 'success');
                             if (typeof dataDosen !== 'undefined') {
                                 dataDosen.ajax
-                            .reload(); // Reload DataTable Dosen jika ada
+                                    .reload(); // Reload DataTable Dosen jika ada
                             }
                         } else {
                             $('.error-text').text('');

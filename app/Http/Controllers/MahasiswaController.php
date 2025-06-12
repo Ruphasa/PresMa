@@ -86,7 +86,7 @@ class MahasiswaController extends Controller
                 $image     = $request->file('image');
                 $imageName = time() . '_' . uniqid() . '.' . $image->getClientOriginalExtension();
                 $imagePath = $image->storeAs('public/mahasiswa_images', $imageName);
-                $imagePath = Storage::url($imagePath); // Dapatkan URL publik
+                $imagePath = Storage::url($imagePath); // Dapatkan url publik
             }
 
             // 3. Simpan data ke tabel User (m_user)

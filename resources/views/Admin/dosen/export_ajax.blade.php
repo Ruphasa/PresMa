@@ -79,7 +79,7 @@
     <table class="border-bottom-header">
         <tr>
             <td width="15%" class="text-center">
-                <img src="{{ asset('polinema-bw.png') }}">
+                <img src="{{ secure_asset('polinema-bw.png') }}">
             </td>
             <td width="85%">
                 <span class="text-center d-block font-11 font-bold mb-1">KEMENTERIAN
@@ -95,19 +95,26 @@
         </tr>
     </table>
 
-    <h3 class="text-center">LAPORAN DATA DOSEN</h3> <table class="border-all">
+    <h3 class="text-center">LAPORAN DATA DOSEN</h3>
+    <table class="border-all">
         <thead>
             <tr>
                 <th class="text-center">No</th>
-                <th>NIDN</th> <th>Nama Dosen</th> <th>Email</th>
+                <th>NIDN</th>
+                <th>Nama Dosen</th>
+                <th>Email</th>
                 <th>Jumlah Mahasiswa</th>
             </tr>
         </thead>
         <tbody>
-            @foreach($dosen as $d)  <tr>
-                <td class="text-center">{{ $loop->iteration }}</td>
-                <td>{{ $d->nidn }}</td> <td>{{ $d->user->nama }}</td> <td>{{ $d->user->email }}</td>
-                <td>{{ $d->mahasiswa->count() }}</td> </tr>
+            @foreach ($dosen as $d)
+                <tr>
+                    <td class="text-center">{{ $loop->iteration }}</td>
+                    <td>{{ $d->nidn }}</td>
+                    <td>{{ $d->user->nama }}</td>
+                    <td>{{ $d->user->email }}</td>
+                    <td>{{ $d->mahasiswa->count() }}</td>
+                </tr>
             @endforeach
         </tbody>
     </table>

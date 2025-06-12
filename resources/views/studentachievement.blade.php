@@ -159,7 +159,7 @@
                 $('#myModal').modal('show').find('.modal-content').remove(); // Clear previous content
                 $('#myModal').append('<div class="modal-content"></div>'); // Add new modal-content div
                 $('#myModal .modal-content').load(url, function() {
-                    // Store the URL for the POST request in the modal's data attribute
+                    // Store the url for the POST request in the modal's data attribute
                     $('#myModal').data('url', url);
                 });
             };
@@ -264,8 +264,8 @@
             });
 
             //Rejected Achievements Table
-                var tableReject;
-                tableReject = $('#table-reject-achievements').DataTable({
+            var tableReject;
+            tableReject = $('#table-reject-achievements').DataTable({
                 processing: true,
                 serverSide: true,
                 responsive: true,
