@@ -43,6 +43,28 @@
                             <input type="number" class="form-control" id="juara_ke" name="juara_ke"
                                 placeholder="Masukkan Juara ke (1, 2, 3...)" value="{{ $achievement->juara_ke }}" required>
                         </div>
+                        <div class="form-group">
+                            <label for="bukti_prestasi">Bukti Prestasi (Gambar)</label>
+                            <input type="file" class="form-control-file" id="bukti_prestasi" name="bukti_prestasi"
+                                accept="image/*" required>
+                        </div>
+                        <div class="form-group">
+                            <img id="previewImage" src="{{ asset('storage/' . $achievement->bukti_prestasi) }}"
+                                alt="Preview Image" class="img-fluid" style="display: block; max-width: 100%;">
+                        </div>
+                        <script>
+                            document.getElementById('bukti_prestasi').addEventListener('change', function() {
+                                const file = this.files[0];
+                                if (file) {
+                                    const reader = new FileReader();
+                                    reader.onload = function(e) {
+                                        const previewImage = document.getElementById('previewImage');
+                                        previewImage.src = e.target.result;
+                                    }
+                                    reader.readAsDataURL(file);
+                                }
+                            });
+                        </script>
                         <!-- Hidden, Mahasiswa NIM -->
                         <input type="hidden" name="mahasiswa_nim" value="{{ auth()->user()->nim }}">
                         <!-- Submit -->

@@ -41,6 +41,30 @@
                         </div>
                         <!-- Hidden, Mahasiswa NIM -->
                         <input type="hidden" name="mahasiswa_id" value="{{ auth()->user()->nim }}">
+                        <!-- Upload Bukti Gambar -->
+                        <div class="form-group">
+                            <label for="bukti_prestasi">Bukti Prestasi (Gambar)</label>
+                            <input type="file" class="form-control-file" id="bukti_prestasi" name="bukti_prestasi"
+                                accept="image/*" required>
+                        </div>
+                        <!-- Show Image Preview -->
+                        <div class="form-group">
+                            <img id="previewImage" src="#" alt="Preview Image" class="img-fluid" style="display: none;">
+                        </div>
+                        <script>
+                            document.getElementById('bukti_prestasi').addEventListener('change', function() {
+                                const file = this.files[0];
+                                if (file) {
+                                    const reader = new FileReader();
+                                    reader.onload = function(e) {
+                                        const previewImage = document.getElementById('previewImage');
+                                        previewImage.src = e.target.result;
+                                        previewImage.style.display = 'block';
+                                    }
+                                    reader.readAsDataURL(file);
+                                }
+                            });
+                        </script>
                         <!-- Submit -->
                         <button class="btn btn-primary" type="submit">
                             <i class="fa fa-plus"></i> Tambah Prestasi

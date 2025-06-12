@@ -22,6 +22,8 @@ class CreatePrestasiTable extends Migration
             $table->enum('status', ['pending', 'validated', 'rejected','outdated'])->default('pending');
             $table->string('keterangan')->nullable();
             $table->integer('point')->default(0);
+            //image bukti
+            $table->string('bukti_prestasi')->nullable();
             $table->timestamps();
 
             $table->foreign('mahasiswa_id')->references('nim')->on('m_mahasiswa');

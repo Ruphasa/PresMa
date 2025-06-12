@@ -51,6 +51,10 @@ class ListAchievementController extends Controller
 
         return DataTables::of($prestasi)
             ->addIndexColumn()
+            // Action for SEE DETAILS
+            ->addColumn('action', function ($row) {
+                return '<a href="' . route('achievement.show', $row->prestasi_id) . '" class="btn btn-info btn-sm">See Details</a>';
+            })
             ->make(true);
     }
 
@@ -89,6 +93,7 @@ class ListAchievementController extends Controller
             ->get();
         return DataTables::of($prestasi)
             ->addIndexColumn()
+            // Action for RESUBMIT
             ->addColumn(('action'), function ($row) {
                 return '<a href="" class="btn btn-primary btn-sm">Re-submit</a>'; //Later
             })
@@ -116,6 +121,7 @@ class ListAchievementController extends Controller
             'lomba_id' => 'required',
             'tingkat_prestasi' => 'required',
             'juara_ke' => 'required|integer|min:1',
+            'bukti_prestasi' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         AchievementModel::create([
@@ -125,6 +131,7 @@ class ListAchievementController extends Controller
             'juara_ke' => $request->juara_ke,
             'status' => 'pending',
             'point' => 0,
+            'bukti_prestasi' => $request->file('bukti_prestasi')->store('prestasi', 'public'),
         ]);
 
         return redirect('./Student/achievement/')->with('success', 'Prestasi berhasil ditambahkan!');
@@ -148,7 +155,8 @@ class ListAchievementController extends Controller
             'page' => $page,
             'activeMenu' => $activeMenu,
             'achievement' => $achievement,
-            'lomba' => $lomba
+            'lomba' => $lomba,
+            'bukti_prestasi' => $achievement->bukti_prestasi,
         ]);
     }
     public function update(Request $request, $id)
@@ -159,14 +167,37 @@ class ListAchievementController extends Controller
             'lomba_id' => 'required',
             'tingkat_prestasi' => 'required|string|max:255',
             'juara_ke' => 'required|integer|min:1',
+            'bukti_prestasi' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $achievement->update([
             'lomba_id' => $request->lomba_id,
             'tingkat_prestasi' => $request->tingkat_prestasi,
             'juara_ke' => $request->juara_ke,
+            'status' => 'pending',
+            'bukti_prestasi' => $request->file('bukti_prestasi') ? $request->file('bukti_prestasi')->store('prestasi', 'public') : $achievement->bukti_prestasi,
         ]);
 
         return redirect('./Student/achievement/')->with('success', 'Prestasi berhasil diperbarui.');
+    }
+
+    // SHOW A SINGLE ACHIEVEMENT
+    public function show($id)
+    {
+        $achievement = AchievementModel::findOrFail($id);
+        $breadcrumb = (object) [
+            'title' => 'Achievement Detail',
+            'list' => ['Achievement', 'Detail'],
+        ];
+        $page = (object) [
+            'title' => 'Detail Prestasi',
+        ];
+        $activeMenu = 'achievement'; // set menu yang sedang aktif
+        return view('achievementdetail', [
+            'breadcrumb' => $breadcrumb,
+            'page' => $page,
+            'activeMenu' => $activeMenu,
+            'achievement' => $achievement,
+        ]);
     }
 }
