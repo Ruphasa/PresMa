@@ -172,7 +172,7 @@
                 scrollX: true,
                 autoWidth: false,
                 ajax: {
-                    url: "{{ url('Student/achievement/listPending') }}",
+                    url: "{{ secure_url('Student/achievement/listPending') }}",
                     dataType: "json",
                     type: "POST",
                     headers: {
@@ -221,7 +221,7 @@
                         scrollX: true,
                         autoWidth: false,
                         ajax: {
-                            url: "{{ url('Student/achievement/listValid') }}",
+                            url: "{{ secure_url('Student/achievement/listValid') }}",
                             dataType: "json",
                             type: "POST",
                             headers: {
@@ -272,7 +272,7 @@
                 scrollX: true,
                 autoWidth: true,
                 ajax: {
-                    url: "{{ url('Student/achievement/listReject') }}",
+                    url: "{{ secure_url('Student/achievement/listReject') }}",
                     dataType: "json",
                     type: "POST",
                     headers: {

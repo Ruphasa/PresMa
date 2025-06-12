@@ -49,7 +49,7 @@
                 serverSide: true,
                 responsive: true,
                 ajax: {
-                    url: "{{ url('Dosen/achievement/list') }}",
+                    url: "{{ secure_url('Dosen/achievement/list') }}",
                     dataType: "json",
                     type: "POST",
                     headers: {
